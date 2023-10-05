@@ -5,3 +5,9 @@ A collection of useful things I've learned. Inspired by [jakelazaroff/til/](http
 Subscribe via [RSS](https://saurabh-kumar.com/til/rss.xml)!
 
 ---
+
+1 TILs so far:
+
+## vscode
+
+- [Navigating between terminals](/vscode/navigating-between-terminals.md)
