@@ -151,10 +151,11 @@ jobs:
 
             // write feed
             await writeFile("rss.xml", rss.join("\n"));
+            console.log("Done.")
 
       - name: Commit and push if README or RSS changed
         run: |-
           git config --global user.email "actions@users.noreply.github.com"
           git config --global user.name "TIL Bot"
-          git diff --quiet || git commit --all --message "Update README.md or rss.xml"
+          git diff --quiet || git add README.md rss.xml || git commit --all --message "Update README.md or rss.xml"
           git push
