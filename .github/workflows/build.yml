@@ -151,6 +151,7 @@ jobs:
 
             // write feed
             await writeFile("rss.xml", rss.join("\n"));
+            console.log(rss.join("\n"));
             console.log("Done.")
 
       - name: Commit and push if README or RSS changed
