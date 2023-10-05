@@ -126,8 +126,6 @@ jobs:
             const dateOptions = { year: "numeric", month: "short", day: "numeric", hour: "2-digit", minute: "2-digit", second: "2-digit", timeZoneName: "short" };
             for (const item of feed) {
               rss.push(`<item>`);
-
-
               const itemLink = `${link}/blob/${branch}/${item.name}`;
               rss.push(`<guid>${itemLink}</guid>`);
               rss.push(`<link>${itemLink}</link>`);
@@ -158,5 +156,5 @@ jobs:
         run: |-
           git config --global user.email "actions@users.noreply.github.com"
           git config --global user.name "TIL Bot"
-          git diff --quiet || git add README.md rss.xml || git commit --all --message "Update README.md or rss.xml"
+          git diff --quiet || git commit --all --message "Update README.md or rss.xml"
           git push
