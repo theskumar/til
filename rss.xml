@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+<channel>
+<title>theskumar TIL</title>
+<description>A collection of useful things I've learned.</description>
+<link>https://github.com/theskumar/til</link>
+<item>
+<guid>https://github.com/theskumar/til/blob/main/vscode/navigating-between-terminals.md</guid>
+<link>https://github.com/theskumar/til/blob/main/vscode/navigating-between-terminals.md</link>
+<title>TIL: Navigating between terminals</title>
+<pubDate>Thu, 05 Oct 2023 07:34:58 GMT</pubDate>
+<content:encoded>&lt;p&gt;I use iTerm as my primarily navigation and had a time using the vscode in-built terminals because of the fact that it was very hard to navigate around with keyboard shortcuts. &lt;/p&gt;
+&lt;p&gt;I&amp;#39;ve updated by keybindings to make it more intuitive. Add the following to your &lt;code&gt;keybindings.json&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Use &lt;code&gt;cmd+[&lt;/code&gt; and &lt;code&gt;cmd+]&lt;/code&gt; to focus on previous and next terminal.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-json&quot;&gt;{ &amp;quot;key&amp;quot;: &amp;quot;cmd+]&amp;quot;, &amp;quot;command&amp;quot;: &amp;quot;workbench.action.terminal.focusNext&amp;quot;, &amp;quot;when&amp;quot;: &amp;quot;terminalFocus&amp;quot;},
+{ &amp;quot;key&amp;quot;: &amp;quot;cmd+[&amp;quot;, &amp;quot;command&amp;quot;: &amp;quot;workbench.action.terminal.focusPrevious&amp;quot;, &amp;quot;when&amp;quot;: &amp;quot;terminalFocus&amp;quot;},
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;To use &lt;code&gt;cmd+&amp;lt;num&amp;gt;&lt;/code&gt; to focus on different terminals:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-json&quot;&gt;{ &amp;quot;key&amp;quot;: &amp;quot;cmd+1&amp;quot;, &amp;quot;command&amp;quot;: &amp;quot;workbench.action.terminal.focusAtIndex1&amp;quot;, &amp;quot;when&amp;quot;: &amp;quot;terminalFocus&amp;quot;},
+{ &amp;quot;key&amp;quot;: &amp;quot;cmd+2&amp;quot;, &amp;quot;command&amp;quot;: &amp;quot;workbench.action.terminal.focusAtIndex2&amp;quot;, &amp;quot;when&amp;quot;: &amp;quot;terminalFocus&amp;quot;},
+{ &amp;quot;key&amp;quot;: &amp;quot;cmd+3&amp;quot;, &amp;quot;command&amp;quot;: &amp;quot;workbench.action.terminal.focusAtIndex3&amp;quot;, &amp;quot;when&amp;quot;: &amp;quot;terminalFocus&amp;quot;},
+{ &amp;quot;key&amp;quot;: &amp;quot;cmd+4&amp;quot;, &amp;quot;command&amp;quot;: &amp;quot;workbench.action.terminal.focusAtIndex4&amp;quot;, &amp;quot;when&amp;quot;: &amp;quot;terminalFocus&amp;quot;},
+{ &amp;quot;key&amp;quot;: &amp;quot;cmd+5&amp;quot;, &amp;quot;command&amp;quot;: &amp;quot;workbench.action.terminal.focusAtIndex5&amp;quot;, &amp;quot;when&amp;quot;: &amp;quot;terminalFocus&amp;quot;},
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;To create new terminal using &lt;code&gt;cmd+n&lt;/code&gt;, the default was hard to remember.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-json&quot;&gt;{ 
+    &amp;quot;key&amp;quot;: &amp;quot;cmd+n&amp;quot;,
+    &amp;quot;command&amp;quot;: &amp;quot;workbench.action.terminal.new&amp;quot;,
+    &amp;quot;when&amp;quot;: &amp;quot;terminalFocus &amp;amp;&amp;amp; terminalHasBeenCreated || terminalFocus &amp;amp;&amp;amp; terminalProcessSupported&amp;quot;
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;To kill the terminal using &lt;code&gt;cmd+w&lt;/code&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-json&quot;&gt;{ 
+    &amp;quot;key&amp;quot;: &amp;quot;cmd+w&amp;quot;,
+    &amp;quot;command&amp;quot;: &amp;quot;workbench.action.terminal.kill&amp;quot;,
+    &amp;quot;when&amp;quot;: &amp;quot;terminalFocus&amp;quot;
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;Bonus:&lt;/strong&gt; I&amp;#39;ve configured &lt;code&gt;cmd+t&lt;/code&gt; to quickly toggle between terminal and code editor.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-json&quot;&gt;{
+    &amp;quot;key&amp;quot;: &amp;quot;cmd+t&amp;quot;,
+    &amp;quot;command&amp;quot;: &amp;quot;workbench.action.terminal.focus&amp;quot;,
+    &amp;quot;when&amp;quot;: &amp;quot;!terminalFocus&amp;quot;
+},
+{
+    &amp;quot;key&amp;quot;: &amp;quot;cmd+t&amp;quot;,
+    &amp;quot;command&amp;quot;: &amp;quot;workbench.action.terminal.toggleTerminal&amp;quot;
+},
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;a href=&quot;https://github.com/jbranchaud/til/blob/master/vscode/toggle-between-terminals.md&quot;&gt;source&lt;/a&gt;&lt;/p&gt;
+</content:encoded>
+</item>
+</channel>
+</rss>
