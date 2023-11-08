@@ -5,6 +5,23 @@
 <description>A collection of useful things I've learned.</description>
 <link>https://github.com/theskumar/til</link>
 <item>
+<guid>https://github.com/theskumar/til/blob/main/react/setstate-is-async.md</guid>
+<link>https://github.com/theskumar/til/blob/main/react/setstate-is-async.md</link>
+<title>TIL: &#x60;setState&#x60; is Asynchronous</title>
+<pubDate>Wed, 08 Nov 2023 04:55:04 GMT</pubDate>
+<content:encoded>&lt;p&gt;When beginning with React, I didn&amp;#39;t initially realize that the &lt;code&gt;setState&lt;/code&gt; function is asynchronous.&lt;/p&gt;
+&lt;p&gt;If you call &lt;code&gt;setState&lt;/code&gt; and then immediately refer to &lt;code&gt;this.state&lt;/code&gt;, it&amp;#39;s likely that it won&amp;#39;t be updated yet.&lt;/p&gt;
+&lt;p&gt;If you need to set the state and immediately act on that change, you can pass in a callback function like this:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-js&quot;&gt;this.setState({name: &amp;#39;Jon&amp;#39;}, function() {
+    // called after state has been updated
+    // and the component has been re-rendered
+});
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Another option is to use the &lt;code&gt;componentWillUpdate&lt;/code&gt; or &lt;code&gt;componentDidUpdate&lt;/code&gt; lifecycle methods. These methods are called immediately before and after rendering due to a state change. They&amp;#39;re also invoked when props change. If you want to respond only to state changes, consider using the callback approach.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://daveceddia.com/react-gotchas/&quot;&gt;source&lt;/a&gt;&lt;/p&gt;
+</content:encoded>
+</item>
+<item>
 <guid>https://github.com/theskumar/til/blob/main/vscode/navigating-between-terminals.md</guid>
 <link>https://github.com/theskumar/til/blob/main/vscode/navigating-between-terminals.md</link>
 <title>TIL: Navigating between terminals</title>

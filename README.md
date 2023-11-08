@@ -6,7 +6,11 @@ Subscribe via [RSS](https://saurabh-kumar.com/til/rss.xml)!
 
 ---
 
-1 TILs so far:
+2 TILs so far:
+
+## react
+
+- [`setState` is Asynchronous](/react/setstate-is-async.md)
 
 ## vscode
 
