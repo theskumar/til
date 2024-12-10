@@ -6,7 +6,11 @@ Subscribe via [RSS](https://saurabh-kumar.com/til/rss.xml)!
 
 ---
 
-2 TILs so far:
+3 TILs so far:
+
+## github
+
+- [actions/checkout may leak GitHub credentials](/github/checkout-can-leak-github-creds.md)
 
 ## react
 
