@@ -1,8 +1,11 @@
 # Navigating between terminals
 
-I use iTerm as my primarily navigation and had a time using the vscode in-built terminals because of the fact that it was very hard to navigate around with keyboard shortcuts. 
+I use iTerm as my primarily navigation and had a time using the vscode in-built
+terminals because of the fact that it was very hard to navigate around with
+keyboard shortcuts.
 
-I've updated by keybindings to make it more intuitive. Add the following to your `keybindings.json`
+I've updated by keybindings to make it more intuitive. Add the following to your
+`keybindings.json`
 
 Use `cmd+[` and `cmd+]` to focus on previous and next terminal.
 
@@ -25,7 +28,7 @@ To use `cmd+<num>` to focus on different terminals:
 To create new terminal using `cmd+n`, the default was hard to remember.
 
 ```json
-{ 
+{
     "key": "cmd+n",
     "command": "workbench.action.terminal.new",
     "when": "terminalFocus && terminalHasBeenCreated || terminalFocus && terminalProcessSupported"
@@ -35,7 +38,7 @@ To create new terminal using `cmd+n`, the default was hard to remember.
 To kill the terminal using `cmd+w`:
 
 ```json
-{ 
+{
     "key": "cmd+w",
     "command": "workbench.action.terminal.kill",
     "when": "terminalFocus"
