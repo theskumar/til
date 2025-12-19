@@ -52,8 +52,7 @@ jobs:
             const files = await glob.create("./**/*.md").then(globber => globber.glob());
             const entries = files
               .filter(name => !name.endsWith("/README.md")) // exclude README.md
-              .map(name => name.replace(/^\.\//, "")) // remove leading ./
-              .filter(name => name.includes("/")) // exclude top-level markdown files
+              .filter(name => name.split("/").length > 1) // exclude top-level markdown files
               .sort()
               .map(name => name.split("/").slice(-2));
 
@@ -106,8 +105,7 @@ jobs:
             const modified = files
               .filter(name => !name.includes("/node_modules/")) // exclude node_modules
               .filter(name => !name.endsWith("/README.md")) // exclude README.md
-              .map(name => name.replace(/^\.\//, "")) // remove leading ./
-              .filter(name => name.includes("/")) // exclude top-level markdown files
+              .filter(name => name.split("/").length > 1) // exclude top-level markdown files
               .map(name => name.split("/").slice(-2).join("/"))
               .map(async file => [file, await run("git log --follow --format=%ad --date=unix " + file)]);
 
