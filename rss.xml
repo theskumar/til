@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/">
 <channel>
 <title>theskumar TIL</title>
@@ -9,8 +9,7 @@
 <link>https://github.com/theskumar/til/blob/main/fts/pg_textsearch.md</link>
 <title>TIL: BM25 Ranking in PostgreSQL with pg_textsearch</title>
 <pubDate>Fri, 19 Dec 2025 10:39:33 GMT</pubDate>
-<content:encoded
-            >&lt;p&gt;Today I learned about &lt;strong&gt;pg_textsearch&lt;/strong&gt;, a new PostgreSQL extension by Timescale that brings BM25 relevance-ranked full-text search to Postgres.&lt;/p&gt;
+<content:encoded>&lt;p&gt;Today I learned about &lt;strong&gt;pg_textsearch&lt;/strong&gt;, a new PostgreSQL extension by Timescale that brings BM25 relevance-ranked full-text search to Postgres.&lt;/p&gt;
 &lt;h2&gt;What is BM25?&lt;/h2&gt;
 &lt;p&gt;BM25 (Best Matching 25) is the industry-standard ranking algorithm used by search engines like Elasticsearch and Lucene. Unlike simple term frequency counting, BM25 provides smarter relevance scoring through:&lt;/p&gt;
 &lt;ul&gt;
@@ -25,7 +24,7 @@
 &lt;/ul&gt;
 &lt;h2&gt;Basic Usage&lt;/h2&gt;
 &lt;pre&gt;&lt;code class=&quot;language-sql&quot;&gt;-- Create a BM25 index
-CREATE INDEX docs_idx ON documents USING bm25(content)
+CREATE INDEX docs_idx ON documents USING bm25(content) 
   WITH (text_config=&amp;#39;english&amp;#39;);
 
 -- Search with the &amp;lt;@&amp;gt; operator (returns negative scores—lower is better)
@@ -118,14 +117,11 @@ LIMIT 10;
 </content:encoded>
 </item>
 <item>
-<guid
-            >https://github.com/theskumar/til/blob/main/github/checkout-can-leak-github-creds.md</guid>
-<link
-            >https://github.com/theskumar/til/blob/main/github/checkout-can-leak-github-creds.md</link>
+<guid>https://github.com/theskumar/til/blob/main/github/checkout-can-leak-github-creds.md</guid>
+<link>https://github.com/theskumar/til/blob/main/github/checkout-can-leak-github-creds.md</link>
 <title>TIL: actions/checkout may leak GitHub credentials</title>
 <pubDate>Tue, 10 Dec 2024 07:29:08 GMT</pubDate>
-<content:encoded
-            >&lt;p&gt;The popular &lt;a href=&quot;https://github.com/actions/checkout&quot;&gt;&lt;code&gt;actions/checkout&lt;/code&gt;&lt;/a&gt; GitHub
+<content:encoded>&lt;p&gt;The popular &lt;a href=&quot;https://github.com/actions/checkout&quot;&gt;&lt;code&gt;actions/checkout&lt;/code&gt;&lt;/a&gt; GitHub
 Action can unintentionally expose workflow credentials by saving them in the
 &lt;code&gt;.git/config&lt;/code&gt; file.&lt;/p&gt;
 &lt;p&gt;By default, it stores a copy of the workflow&amp;#39;s credential (either the default
@@ -154,14 +150,11 @@ workflows for potential credential leaks.&lt;/p&gt;
 </content:encoded>
 </item>
 <item>
-<guid
-            >https://github.com/theskumar/til/blob/main/react/setstate-is-async.md</guid>
-<link
-            >https://github.com/theskumar/til/blob/main/react/setstate-is-async.md</link>
+<guid>https://github.com/theskumar/til/blob/main/react/setstate-is-async.md</guid>
+<link>https://github.com/theskumar/til/blob/main/react/setstate-is-async.md</link>
 <title>TIL: &#x60;setState&#x60; is Asynchronous</title>
 <pubDate>Wed, 08 Nov 2023 04:55:04 GMT</pubDate>
-<content:encoded
-            >&lt;p&gt;When beginning with React, I didn&amp;#39;t initially realize that the &lt;code&gt;setState&lt;/code&gt;
+<content:encoded>&lt;p&gt;When beginning with React, I didn&amp;#39;t initially realize that the &lt;code&gt;setState&lt;/code&gt;
 function is asynchronous.&lt;/p&gt;
 &lt;p&gt;If you call &lt;code&gt;setState&lt;/code&gt; and then immediately refer to &lt;code&gt;this.state&lt;/code&gt;, it&amp;#39;s likely
 that it won&amp;#39;t be updated yet.&lt;/p&gt;
@@ -180,14 +173,11 @@ want to respond only to state changes, consider using the callback approach.&lt;
 </content:encoded>
 </item>
 <item>
-<guid
-            >https://github.com/theskumar/til/blob/main/vscode/navigating-between-terminals.md</guid>
-<link
-            >https://github.com/theskumar/til/blob/main/vscode/navigating-between-terminals.md</link>
+<guid>https://github.com/theskumar/til/blob/main/vscode/navigating-between-terminals.md</guid>
+<link>https://github.com/theskumar/til/blob/main/vscode/navigating-between-terminals.md</link>
 <title>TIL: Navigating between terminals</title>
 <pubDate>Thu, 05 Oct 2023 07:34:58 GMT</pubDate>
-<content:encoded
-            >&lt;p&gt;I use iTerm as my primarily navigation and had a time using the vscode in-built
+<content:encoded>&lt;p&gt;I use iTerm as my primarily navigation and had a time using the vscode in-built
 terminals because of the fact that it was very hard to navigate around with
 keyboard shortcuts.&lt;/p&gt;
 &lt;p&gt;I&amp;#39;ve updated by keybindings to make it more intuitive. Add the following to your
