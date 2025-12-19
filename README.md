@@ -10,7 +10,7 @@ Subscribe via [RSS](https://saurabh-kumar.com/til/rss.xml)!
 
 ## fts
 
-- [TIL: BM25 Ranking in PostgreSQL with pg_textsearch](/fts/pg_textsearch.md)
+- [BM25 Ranking in PostgreSQL with pg_textsearch](/fts/pg_textsearch.md)
 
 ## github
 

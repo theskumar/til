@@ -7,7 +7,7 @@
 <item>
 <guid>https://github.com/theskumar/til/blob/main/fts/pg_textsearch.md</guid>
 <link>https://github.com/theskumar/til/blob/main/fts/pg_textsearch.md</link>
-<title>TIL: TIL: BM25 Ranking in PostgreSQL with pg_textsearch</title>
+<title>TIL: BM25 Ranking in PostgreSQL with pg_textsearch</title>
 <pubDate>Fri, 19 Dec 2025 10:39:33 GMT</pubDate>
 <content:encoded>&lt;p&gt;Today I learned about &lt;strong&gt;pg_textsearch&lt;/strong&gt;, a new PostgreSQL extension by Timescale that brings BM25 relevance-ranked full-text search to Postgres.&lt;/p&gt;
 &lt;h2&gt;What is BM25?&lt;/h2&gt;
