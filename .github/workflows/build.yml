@@ -1,5 +1,7 @@
-# This script creates a nice README.md with an index of all TIL files.
-# TIL files are Markdown files named anything other than README.md.
+# This script:
+# 1. Extracts weekly notes from til.md into weekly/*.md files (runs weekly)
+# 2. Creates a README.md with an index of all TIL files
+# 3. Generates an RSS feed
 #
 # The readme is split into two sections: the "header" and the "index",
 # separated by three hyphens on their own line.
@@ -12,6 +14,10 @@ on:
   push:
     branches:
       - main
+  schedule:
+    # Run every Sunday at midnight UTC to generate the completed week
+    - cron: "0 0 * * 0"
+  workflow_dispatch: # Allow manual triggering
 
 jobs:
   build:
@@ -21,6 +27,9 @@ jobs:
         uses: actions/checkout@v3
         with:
           fetch-depth: 0 # get full history or else it'll be overwritten
+
+      - name: Extract weekly notes
+        run: node extract-weekly.js
 
       - name: Regenerate README
         uses: actions/github-script@v6
@@ -65,7 +74,8 @@ jobs:
               for (const file of entries) {
                 const filepath = [category, file].join("/");
                 const contents = await readFile(filepath).then(file => file.toString());
-                const [, title] = contents.match(/^# (.+)$/m);
+                const match = contents.match(/^# (.+)$/m);
+                const title = match ? match[1] : file.replace(".md", "");
                 readme += `- [${title}](/${filepath})\n`;
               }
             }
@@ -130,7 +140,8 @@ jobs:
               rss.push(`<guid>${itemLink}</guid>`);
               rss.push(`<link>${itemLink}</link>`);
 
-              const [, title] = item.content.match(/^# (.+)$/m);
+              const match = item.content.match(/^# (.+)$/m);
+              const title = match ? match[1] : item.name;
               rss.push(`<title>TIL: ${he.escape(title)}</title>`);
 
               const pubDate = new Intl.DateTimeFormat("en-US", dateOptions).format(item.date);
@@ -152,9 +163,10 @@ jobs:
             console.log(rss.join("\n"));
             console.log("Done.")
 
-      - name: Commit and push if README or RSS changed
+      - name: Commit and push if changed
         run: |-
           git config --global user.email "actions@users.noreply.github.com"
           git config --global user.name "TIL Bot"
-          git diff --quiet || git commit --all --message "Update README.md or rss.xml"
+          git add -A
+          git diff --staged --quiet || git commit --message "Update weekly notes, README.md, and rss.xml"
           git push
