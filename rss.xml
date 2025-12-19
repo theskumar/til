@@ -5,6 +5,118 @@
 <description>A collection of useful things I've learned.</description>
 <link>https://github.com/theskumar/til</link>
 <item>
+<guid>https://github.com/theskumar/til/blob/main/fts/pg_textsearch.md</guid>
+<link>https://github.com/theskumar/til/blob/main/fts/pg_textsearch.md</link>
+<title>TIL: TIL: BM25 Ranking in PostgreSQL with pg_textsearch</title>
+<pubDate>Fri, 19 Dec 2025 10:39:33 GMT</pubDate>
+<content:encoded>&lt;p&gt;Today I learned about &lt;strong&gt;pg_textsearch&lt;/strong&gt;, a new PostgreSQL extension by Timescale that brings BM25 relevance-ranked full-text search to Postgres.&lt;/p&gt;
+&lt;h2&gt;What is BM25?&lt;/h2&gt;
+&lt;p&gt;BM25 (Best Matching 25) is the industry-standard ranking algorithm used by search engines like Elasticsearch and Lucene. Unlike simple term frequency counting, BM25 provides smarter relevance scoring through:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Term Frequency Saturation&lt;/strong&gt;: Mentioning a word 10 times isn&amp;#39;t 10x better than once—diminishing returns kick in&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Inverse Document Frequency (IDF)&lt;/strong&gt;: Rare terms get higher weight than common ones&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Document Length Normalization&lt;/strong&gt;: Short and long documents are compared fairly&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The formula uses two tunable parameters:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;k1&lt;/code&gt; (default 1.2): Controls term frequency saturation&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;b&lt;/code&gt; (default 0.75): Controls length normalization (0 = none, 1 = full)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Basic Usage&lt;/h2&gt;
+&lt;pre&gt;&lt;code class=&quot;language-sql&quot;&gt;-- Create a BM25 index
+CREATE INDEX docs_idx ON documents USING bm25(content) 
+  WITH (text_config=&amp;#39;english&amp;#39;);
+
+-- Search with the &amp;lt;@&amp;gt; operator (returns negative scores—lower is better)
+SELECT title, content &amp;lt;@&amp;gt; &amp;#39;database search&amp;#39; as score
+FROM documents
+ORDER BY content &amp;lt;@&amp;gt; &amp;#39;database search&amp;#39;
+LIMIT 10;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;pg_textsearch vs PostgreSQL Built-in FTS&lt;/h2&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Aspect&lt;/th&gt;
+&lt;th&gt;PostgreSQL FTS&lt;/th&gt;
+&lt;th&gt;pg_textsearch (BM25)&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;Ranking&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;Basic term frequency&lt;/td&gt;
+&lt;td&gt;Probabilistic with IDF&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;Operator&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;@@&lt;/code&gt; with &lt;code&gt;tsquery&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;&amp;lt;@&amp;gt;&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;Boolean queries&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;Rich (&lt;code&gt;&amp;amp;&lt;/code&gt;, &lt;code&gt;|&lt;/code&gt;, &lt;code&gt;!&lt;/code&gt;, &lt;code&gt;&amp;lt;-&amp;gt;&lt;/code&gt;)&lt;/td&gt;
+&lt;td&gt;Simple (implicit AND)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;Phrase search&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;Yes&lt;/td&gt;
+&lt;td&gt;No&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;Highlighting&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;ts_headline()&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;No&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;Relevance quality&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;Basic&lt;/td&gt;
+&lt;td&gt;Industry-standard&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;Maturity&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;Battle-tested&lt;/td&gt;
+&lt;td&gt;Prerelease (v0.1.x)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;&lt;/table&gt;
+&lt;h2&gt;When to Use Each&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;Use PostgreSQL FTS when you need:&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Complex boolean queries (&lt;code&gt;(postgresql | mysql) &amp;amp; !oracle&lt;/code&gt;)&lt;/li&gt;
+&lt;li&gt;Phrase search (&lt;code&gt;&amp;#39;full text search&amp;#39;&lt;/code&gt;)&lt;/li&gt;
+&lt;li&gt;Highlighting/snippets&lt;/li&gt;
+&lt;li&gt;Prefix matching (&lt;code&gt;data:*&lt;/code&gt;)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Use pg_textsearch when you need:&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;High-quality relevance ranking (like Google/Elasticsearch)&lt;/li&gt;
+&lt;li&gt;Simple search box UX (type words, get ranked results)&lt;/li&gt;
+&lt;li&gt;Fair comparison across varying document lengths&lt;/li&gt;
+&lt;li&gt;Proper rare-term weighting&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Hybrid Approach&lt;/h2&gt;
+&lt;p&gt;You can combine both—use FTS for filtering and BM25 for ranking:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-sql&quot;&gt;SELECT title, body &amp;lt;@&amp;gt; &amp;#39;database performance&amp;#39; as score
+FROM articles
+WHERE body_tsv @@ to_tsquery(&amp;#39;english&amp;#39;, &amp;#39;database &amp;amp; !mysql&amp;#39;)  -- FTS filter
+ORDER BY body &amp;lt;@&amp;gt; &amp;#39;database performance&amp;#39;  -- BM25 ranking
+LIMIT 10;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;Key Takeaways&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;BM25 is what makes modern search engines feel &amp;quot;smart&amp;quot;—it&amp;#39;s not just counting words&lt;/li&gt;
+&lt;li&gt;pg_textsearch brings this to Postgres without needing Elasticsearch&lt;/li&gt;
+&lt;li&gt;The &lt;code&gt;&amp;lt;@&amp;gt;&lt;/code&gt; operator returns negative scores (more negative = more relevant)&lt;/li&gt;
+&lt;li&gt;For production search, consider the hybrid approach: FTS for filtering, BM25 for ranking&lt;/li&gt;
+&lt;li&gt;The extension is still prerelease—not yet recommended for production&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2&gt;Resources&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/timescale/pg_textsearch&quot;&gt;pg_textsearch on GitHub&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://www.postgresql.org/docs/current/textsearch.html&quot;&gt;PostgreSQL Full Text Search Docs&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</content:encoded>
+</item>
+<item>
 <guid>https://github.com/theskumar/til/blob/main/github/checkout-can-leak-github-creds.md</guid>
 <link>https://github.com/theskumar/til/blob/main/github/checkout-can-leak-github-creds.md</link>
 <title>TIL: actions/checkout may leak GitHub credentials</title>

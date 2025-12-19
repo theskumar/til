@@ -1,4 +1,4 @@
-# TIL: BM25 Ranking in PostgreSQL with pg_textsearch
+# BM25 Ranking in PostgreSQL with pg_textsearch
 
 Today I learned about **pg_textsearch**, a new PostgreSQL extension by Timescale that brings BM25 relevance-ranked full-text search to Postgres.
 
