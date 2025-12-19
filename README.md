@@ -1,4 +1,4 @@
-# Today I Learned
+# Things I Learned
 
 A collection of useful things I've learned. Inspired by [jakelazaroff/til/](https://github.com/jakelazaroff/til/) and others.
 
