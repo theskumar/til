@@ -1,5 +1,6 @@
 # Dec 2025
 
+- 20 Dec 2025. [Proxyman](https://proxyman.com/) is more user-friendly http debugging proxy than Charles Proxy on MacOS
 - 19 Dec 2025. "Choose Boring Tech" by [Dan McKinley](https://boringtechnology.club/)
   - "The failure mode of boring tech are well-understood"
 - 19 Dec 2025. Notes from ["Django rapid architecture"](https://www.django-rapid-architecture.org/)
