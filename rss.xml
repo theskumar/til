@@ -221,5 +221,33 @@ keyboard shortcuts.&lt;/p&gt;
 &lt;p&gt;&lt;a href=&quot;https://github.com/jbranchaud/til/blob/master/vscode/toggle-between-terminals.md&quot;&gt;source&lt;/a&gt;&lt;/p&gt;
 </content:encoded>
 </item>
+<item>
+<guid>https://github.com/theskumar/til/blob/main/weekly/2025-12-21.md</guid>
+<link>https://github.com/theskumar/til/blob/main/weekly/2025-12-21.md</link>
+<title>TIL: Week of December 21, 2025</title>
+<pubDate>Thu, 01 Jan 1970 00:00:00 GMT</pubDate>
+<content:encoded>&lt;p&gt;Things I learned during the week ending December 21, 2025.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;New tools:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/gjtorikian/gh-actions-lockfile&quot;&gt;gh-actions-lockfile&lt;/a&gt; to generate and verify lockfiles for gh-actions&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://proxyman.com/&quot;&gt;Proxyman&lt;/a&gt; is more user-friendly http debugging proxy than Charles Proxy on MacOS&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&amp;quot;Choose Boring Tech&amp;quot; by &lt;a href=&quot;https://boringtechnology.club/&quot;&gt;Dan McKinley&lt;/a&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&amp;quot;The failure mode of boring tech are well-understood&amp;quot;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Notes from &lt;a href=&quot;https://www.django-rapid-architecture.org/&quot;&gt;&amp;quot;Django rapid architecture&amp;quot;&lt;/a&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Recommends organizing the codebase with interfaces at the top layer followed by readers and &amp;quot;actions&amp;quot;, Finally, &amp;#39;data&amp;#39; as the bottom layer to organize Django codebase to allow for a simple code structure that allows for scaling&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&quot;https://github.com/tensorchord/VectorChord/&quot;&gt;VectorChord&lt;/a&gt; is a faster pgvector alternative.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+</content:encoded>
+</item>
 </channel>
 </rss>

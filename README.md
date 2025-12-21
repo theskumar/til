@@ -6,7 +6,7 @@ Subscribe via [RSS](https://saurabh-kumar.com/til/rss.xml)!
 
 ---
 
-4 TILs so far:
+5 TILs so far:
 
 ## fts
 
@@ -23,3 +23,7 @@ Subscribe via [RSS](https://saurabh-kumar.com/til/rss.xml)!
 ## vscode
 
 - [Navigating between terminals](/vscode/navigating-between-terminals.md)
+
+## weekly
+
+- [Week of December 21, 2025](/weekly/2025-12-21.md)
