@@ -1,6 +1,7 @@
 # Dec 2025
 
-- 27 Dec 2025. [how uv got so fast](https://nesbitt.io/2025/12/26/how-uv-got-so-fast.html). UV performance is because of design decisions while rust contributes to micro optimizations. 
+- 27 Dec 2025. [how uv got so fast](https://nesbitt.io/2025/12/26/how-uv-got-so-fast.html). UV performance is because of design decisions while rust contributes to micro optimizations.
+- 24 Dec 2025. "[LangGraph](https://docs.langchain.com/oss/python/langgraph/overview) is an orchestration framework for building stateful multi-agent applications using LLMs. It provides low-level primitives such as nodes and edges, along with built-in features that give developers granular control over agent workflows, memory management and state persistence. This means developers can start with a simple pre-built graph and scale to complex, evolving agent architectures. With support for streaming, advanced context management and resilience patterns like model fallbacks and tool error handling, LangGraph enables you to build robust, production-grade agentic applications. Its graph-based approach ensures predictable, customizable workflows and simplifies debugging and scaling."
 - 22 Dec 2025. Notes from [Thoughtworks - Technology Radar vol 33](https://www.thoughtworks.com/content/dam/thoughtworks/documents/radar/2025/11/tr_technology_radar_vol_33_en.pdf)
   - text-to-sql solutions aren't working as expected
   - pnpm, langGraph, and pydantic recommended for adoption
