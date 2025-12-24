@@ -69,6 +69,12 @@ ORDER BY body <@> 'database performance'  -- BM25 ranking
 LIMIT 10;
 ```
 
+## Taking step further with Semantic Search
+
+Pure vector search might miss exact matches; pure keyword search misses synonyms. Hybrid gets the best of both — a search for "ML algorithms" would find documents about "machine learning techniques" (semantic) and those with the exact phrase (keyword).
+
+This [article](https://www.tigerdata.com/blog/you-dont-need-elasticsearch-bm25-is-now-in-postgres) outlines with code sample how to combine BM25 with Vector Search in PostgreSQL.
+
 ## Key Takeaways
 
 1. BM25 is what makes modern search engines feel "smart"—it's not just counting words
