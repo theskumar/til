@@ -2,7 +2,7 @@
 
 - 22 Dec 2025. Notes from [Thoughtworks - Technology Radar vol 33](https://www.thoughtworks.com/content/dam/thoughtworks/documents/radar/2025/11/tr_technology_radar_vol_33_en.pdf)
   - text-to-sql solutions aren't working as expected
-  - pnpm and pydantic moves to adopt zone
+  - pnpm, langGraph, and pydantic recommended for adoption
 - 22 Dec 2025. [`npx -y npm-check-updates`](https://github.com/raineorshine/npm-check-updates) tells you the latest versions of your `package.json`, ignoring pinned versions.
 - 22 Dec 2025. [Inversion of Control](https://en.wikipedia.org/wiki/Inversion_of_control) principle -- "Don't call us, we'll call you".
   - This design principle is used widely in Web Frameworks, GUI programs, etc in the form of event listeners, dependency injections, callbacks to avoid boilerplate code, resuability and testability.
