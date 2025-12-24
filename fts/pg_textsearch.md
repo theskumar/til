@@ -11,6 +11,7 @@ BM25 (Best Matching 25) is the industry-standard ranking algorithm used by searc
 - **Document Length Normalization**: Short and long documents are compared fairly
 
 The formula uses two tunable parameters:
+
 - `k1` (default 1.2): Controls term frequency saturation
 - `b` (default 0.75): Controls length normalization (0 = none, 1 = full)
 
@@ -18,7 +19,7 @@ The formula uses two tunable parameters:
 
 ```sql
 -- Create a BM25 index
-CREATE INDEX docs_idx ON documents USING bm25(content) 
+CREATE INDEX docs_idx ON documents USING bm25(content)
   WITH (text_config='english');
 
 -- Search with the <@> operator (returns negative scores—lower is better)
@@ -30,25 +31,27 @@ LIMIT 10;
 
 ## pg_textsearch vs PostgreSQL Built-in FTS
 
-| Aspect | PostgreSQL FTS | pg_textsearch (BM25) |
-|--------|---------------|----------------------|
-| **Ranking** | Basic term frequency | Probabilistic with IDF |
-| **Operator** | `@@` with `tsquery` | `<@>` |
-| **Boolean queries** | Rich (`&`, `\|`, `!`, `<->`) | Simple (implicit AND) |
-| **Phrase search** | Yes | No |
-| **Highlighting** | `ts_headline()` | No |
-| **Relevance quality** | Basic | Industry-standard |
-| **Maturity** | Battle-tested | Prerelease (v0.1.x) |
+| Aspect                | PostgreSQL FTS               | pg_textsearch (BM25)   |
+| --------------------- | ---------------------------- | ---------------------- |
+| **Ranking**           | Basic term frequency         | Probabilistic with IDF |
+| **Operator**          | `@@` with `tsquery`          | `<@>`                  |
+| **Boolean queries**   | Rich (`&`, `\|`, `!`, `<->`) | Simple (implicit AND)  |
+| **Phrase search**     | Yes                          | No                     |
+| **Highlighting**      | `ts_headline()`              | No                     |
+| **Relevance quality** | Basic                        | Industry-standard      |
+| **Maturity**          | Battle-tested                | Prerelease (v0.1.x)    |
 
 ## When to Use Each
 
 **Use PostgreSQL FTS when you need:**
+
 - Complex boolean queries (`(postgresql | mysql) & !oracle`)
 - Phrase search (`'full text search'`)
 - Highlighting/snippets
 - Prefix matching (`data:*`)
 
 **Use pg_textsearch when you need:**
+
 - High-quality relevance ranking (like Google/Elasticsearch)
 - Simple search box UX (type words, get ranked results)
 - Fair comparison across varying document lengths
@@ -78,3 +81,4 @@ LIMIT 10;
 
 - [pg_textsearch on GitHub](https://github.com/timescale/pg_textsearch)
 - [PostgreSQL Full Text Search Docs](https://www.postgresql.org/docs/current/textsearch.html)
+- [Hybrid search using BM25 and pgVector](https://www.tigerdata.com/blog/you-dont-need-elasticsearch-bm25-is-now-in-postgres)
