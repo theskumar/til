@@ -129,6 +129,9 @@ WHERE body_tsv @@ to_tsquery(&amp;#39;english&amp;#39;, &amp;#39;database &amp;a
 ORDER BY body &amp;lt;@&amp;gt; &amp;#39;database performance&amp;#39;  -- BM25 ranking
 LIMIT 10;
 &lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;Taking step further with Semantic Search&lt;/h2&gt;
+&lt;p&gt;Pure vector search might miss exact matches; pure keyword search misses synonyms. Hybrid gets the best of both — a search for &amp;quot;ML algorithms&amp;quot; would find documents about &amp;quot;machine learning techniques&amp;quot; (semantic) and those with the exact phrase (keyword).&lt;/p&gt;
+&lt;p&gt;This &lt;a href=&quot;https://www.tigerdata.com/blog/you-dont-need-elasticsearch-bm25-is-now-in-postgres&quot;&gt;article&lt;/a&gt; outlines with code sample how to combine BM25 with Vector Search in PostgreSQL.&lt;/p&gt;
 &lt;h2&gt;Key Takeaways&lt;/h2&gt;
 &lt;ol&gt;
 &lt;li&gt;BM25 is what makes modern search engines feel &amp;quot;smart&amp;quot;—it&amp;#39;s not just counting words&lt;/li&gt;
