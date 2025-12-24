@@ -5,6 +5,34 @@
 <description>A collection of useful things I've learned.</description>
 <link>https://github.com/theskumar/til</link>
 <item>
+<guid>https://github.com/theskumar/til/blob/main/weekly/2025-12-21.md</guid>
+<link>https://github.com/theskumar/til/blob/main/weekly/2025-12-21.md</link>
+<title>TIL: Week of December 21, 2025</title>
+<pubDate>Fri, 19 Dec 2025 15:58:02 GMT</pubDate>
+<content:encoded>&lt;p&gt;Things I learned during the week ending December 21, 2025.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;New tools:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/gjtorikian/gh-actions-lockfile&quot;&gt;gh-actions-lockfile&lt;/a&gt; to generate and verify lockfiles for gh-actions&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://proxyman.com/&quot;&gt;Proxyman&lt;/a&gt; is more user-friendly http debugging proxy than Charles Proxy on MacOS&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&amp;quot;Choose Boring Tech&amp;quot; by &lt;a href=&quot;https://boringtechnology.club/&quot;&gt;Dan McKinley&lt;/a&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&amp;quot;The failure mode of boring tech are well-understood&amp;quot;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Notes from &lt;a href=&quot;https://www.django-rapid-architecture.org/&quot;&gt;&amp;quot;Django rapid architecture&amp;quot;&lt;/a&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Recommends organizing the codebase with interfaces at the top layer followed by readers and &amp;quot;actions&amp;quot;, Finally, &amp;#39;data&amp;#39; as the bottom layer to organize Django codebase to allow for a simple code structure that allows for scaling&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&quot;https://github.com/tensorchord/VectorChord/&quot;&gt;VectorChord&lt;/a&gt; is a faster pgvector alternative.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+</content:encoded>
+</item>
+<item>
 <guid>https://github.com/theskumar/til/blob/main/fts/pg_textsearch.md</guid>
 <link>https://github.com/theskumar/til/blob/main/fts/pg_textsearch.md</link>
 <title>TIL: BM25 Ranking in PostgreSQL with pg_textsearch</title>
@@ -24,7 +52,7 @@
 &lt;/ul&gt;
 &lt;h2&gt;Basic Usage&lt;/h2&gt;
 &lt;pre&gt;&lt;code class=&quot;language-sql&quot;&gt;-- Create a BM25 index
-CREATE INDEX docs_idx ON documents USING bm25(content) 
+CREATE INDEX docs_idx ON documents USING bm25(content)
   WITH (text_config=&amp;#39;english&amp;#39;);
 
 -- Search with the &amp;lt;@&amp;gt; operator (returns negative scores—lower is better)
@@ -113,6 +141,7 @@ LIMIT 10;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&quot;https://github.com/timescale/pg_textsearch&quot;&gt;pg_textsearch on GitHub&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&quot;https://www.postgresql.org/docs/current/textsearch.html&quot;&gt;PostgreSQL Full Text Search Docs&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://www.tigerdata.com/blog/you-dont-need-elasticsearch-bm25-is-now-in-postgres&quot;&gt;Hybrid search using BM25 and pgVector&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 </content:encoded>
 </item>
@@ -219,34 +248,6 @@ keyboard shortcuts.&lt;/p&gt;
 },
 &lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;&lt;a href=&quot;https://github.com/jbranchaud/til/blob/master/vscode/toggle-between-terminals.md&quot;&gt;source&lt;/a&gt;&lt;/p&gt;
-</content:encoded>
-</item>
-<item>
-<guid>https://github.com/theskumar/til/blob/main/weekly/2025-12-21.md</guid>
-<link>https://github.com/theskumar/til/blob/main/weekly/2025-12-21.md</link>
-<title>TIL: Week of December 21, 2025</title>
-<pubDate>Thu, 01 Jan 1970 00:00:00 GMT</pubDate>
-<content:encoded>&lt;p&gt;Things I learned during the week ending December 21, 2025.&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;New tools:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;https://github.com/gjtorikian/gh-actions-lockfile&quot;&gt;gh-actions-lockfile&lt;/a&gt; to generate and verify lockfiles for gh-actions&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;https://proxyman.com/&quot;&gt;Proxyman&lt;/a&gt; is more user-friendly http debugging proxy than Charles Proxy on MacOS&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;&amp;quot;Choose Boring Tech&amp;quot; by &lt;a href=&quot;https://boringtechnology.club/&quot;&gt;Dan McKinley&lt;/a&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&amp;quot;The failure mode of boring tech are well-understood&amp;quot;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Notes from &lt;a href=&quot;https://www.django-rapid-architecture.org/&quot;&gt;&amp;quot;Django rapid architecture&amp;quot;&lt;/a&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Recommends organizing the codebase with interfaces at the top layer followed by readers and &amp;quot;actions&amp;quot;, Finally, &amp;#39;data&amp;#39; as the bottom layer to organize Django codebase to allow for a simple code structure that allows for scaling&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;&lt;a href=&quot;https://github.com/tensorchord/VectorChord/&quot;&gt;VectorChord&lt;/a&gt; is a faster pgvector alternative.&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
 </content:encoded>
 </item>
 </channel>
