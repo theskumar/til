@@ -253,5 +253,31 @@ keyboard shortcuts.&lt;/p&gt;
 &lt;p&gt;&lt;a href=&quot;https://github.com/jbranchaud/til/blob/master/vscode/toggle-between-terminals.md&quot;&gt;source&lt;/a&gt;&lt;/p&gt;
 </content:encoded>
 </item>
+<item>
+<guid>https://github.com/theskumar/til/blob/main/weekly/2025-12-28.md</guid>
+<link>https://github.com/theskumar/til/blob/main/weekly/2025-12-28.md</link>
+<title>TIL: Week of December 28, 2025</title>
+<pubDate>Thu, 01 Jan 1970 00:00:00 GMT</pubDate>
+<content:encoded>&lt;p&gt;Things I learned during the week ending December 28, 2025.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&quot;https://nesbitt.io/2025/12/26/how-uv-got-so-fast.html&quot;&gt;how uv got so fast&lt;/a&gt;. UV performance is because of design decisions while rust contributes to micro optimizations. &lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Notes from &lt;a href=&quot;https://www.thoughtworks.com/content/dam/thoughtworks/documents/radar/2025/11/tr_technology_radar_vol_33_en.pdf&quot;&gt;Thoughtworks - Technology Radar vol 33&lt;/a&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;text-to-sql solutions aren&amp;#39;t working as expected&lt;/li&gt;
+&lt;li&gt;pnpm, langGraph, and pydantic recommended for adoption&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&quot;https://github.com/raineorshine/npm-check-updates&quot;&gt;&lt;code&gt;npx -y npm-check-updates&lt;/code&gt;&lt;/a&gt; tells you the latest versions of your &lt;code&gt;package.json&lt;/code&gt;, ignoring pinned versions.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&quot;https://en.wikipedia.org/wiki/Inversion_of_control&quot;&gt;Inversion of Control&lt;/a&gt; principle -- &amp;quot;Don&amp;#39;t call us, we&amp;#39;ll call you&amp;quot;.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;This design principle is used widely in Web Frameworks, GUI programs, etc in the form of event listeners, dependency injections, callbacks to avoid boilerplate code, resuability and testability.&lt;/li&gt;
+&lt;li&gt;Some popular examples are DOM, Flask, &lt;a href=&quot;https://docs.nestjs.com/providers&quot;&gt;NestJS&lt;/a&gt;, Angular, etc.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+</content:encoded>
+</item>
 </channel>
 </rss>
