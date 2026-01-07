@@ -1,5 +1,8 @@
 # Jan 2025
 
+- 07 Jan 2026. Text based diagramming tools:
+  - [Kroki](https://github.com/yuzutech/kroki) self-hosted solution for unified interface to buch of diagramming tools, including mermaid, d2, etc.
+  - [d2](https://github.com/terrastruct/d2) provides a clean syntax and output as well.
 - 07 Jan 2026. "[Django Postgres Migration Tools](https://github.com/kraken-tech/django-pg-migration-tools?tab=readme-ov-file) - add-on for safer and more scalable migrations in django.
 
 # Dec 2025
