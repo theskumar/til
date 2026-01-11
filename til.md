@@ -1,7 +1,12 @@
 # Jan 2025
 
+- 11 Jan 2026. Puzer published a [github recommendor](https://puzer.github.io/github_recommender/) that uses semantic embedding from user's github stars all client side, I found some great recommendations which I plan to use:
+  - [pamburus/hl](https://github.com/pamburus/hl): A fast and powerful log viewer and processor that converts JSON logs or logfmt logs into a clear human-readable format. (⭐2657)
+  - [samwho/spacer](https://github.com/samwho/spacer): CLI tool to insert spacers when command output stops (⭐1663)
+  - [darrenburns/posting](https://github.com/darrenburns/posting): The modern API client that lives in your terminal. (⭐11134)
+  - [plutov/oq](https://github.com/plutov/oq): Terminal OpenAPI Spec viewer (⭐943)
 - 07 Jan 2026. Text based diagramming tools:
-  - [Kroki](https://github.com/yuzutech/kroki) self-hosted solution for unified interface to buch of diagramming tools, including mermaid, d2, etc.
+  - [yuzutech/kroki](https://github.com/yuzutech/kroki): self-hosted solution for unified interface to buch of diagramming tools, including mermaid, d2, etc.! (⭐3875)
   - [d2](https://github.com/terrastruct/d2) provides a clean syntax and output as well.
 - 07 Jan 2026. "[Django Postgres Migration Tools](https://github.com/kraken-tech/django-pg-migration-tools?tab=readme-ov-file) - add-on for safer and more scalable migrations in django.
 
