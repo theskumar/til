@@ -5,6 +5,24 @@
 <description>A collection of useful things I've learned.</description>
 <link>https://github.com/theskumar/til</link>
 <item>
+<guid>https://github.com/theskumar/til/blob/main/weekly/2026-01-11.md</guid>
+<link>https://github.com/theskumar/til/blob/main/weekly/2026-01-11.md</link>
+<title>TIL: Week of January 11, 2026</title>
+<pubDate>Sun, 11 Jan 2026 01:21:03 GMT</pubDate>
+<content:encoded>&lt;p&gt;Things I learned during the week ending January 11, 2026.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;Text based diagramming tools:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/yuzutech/kroki&quot;&gt;Kroki&lt;/a&gt; self-hosted solution for unified interface to buch of diagramming tools, including mermaid, d2, etc.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/terrastruct/d2&quot;&gt;d2&lt;/a&gt; provides a clean syntax and output as well.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&amp;quot;&lt;a href=&quot;https://github.com/kraken-tech/django-pg-migration-tools?tab=readme-ov-file&quot;&gt;Django Postgres Migration Tools&lt;/a&gt; - add-on for safer and more scalable migrations in django.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+</content:encoded>
+</item>
+<item>
 <guid>https://github.com/theskumar/til/blob/main/weekly/2025-12-28.md</guid>
 <link>https://github.com/theskumar/til/blob/main/weekly/2025-12-28.md</link>
 <title>TIL: Week of December 28, 2025</title>
@@ -277,24 +295,6 @@ keyboard shortcuts.&lt;/p&gt;
 },
 &lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;&lt;a href=&quot;https://github.com/jbranchaud/til/blob/master/vscode/toggle-between-terminals.md&quot;&gt;source&lt;/a&gt;&lt;/p&gt;
-</content:encoded>
-</item>
-<item>
-<guid>https://github.com/theskumar/til/blob/main/weekly/2026-01-11.md</guid>
-<link>https://github.com/theskumar/til/blob/main/weekly/2026-01-11.md</link>
-<title>TIL: Week of January 11, 2026</title>
-<pubDate>Thu, 01 Jan 1970 00:00:00 GMT</pubDate>
-<content:encoded>&lt;p&gt;Things I learned during the week ending January 11, 2026.&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;Text based diagramming tools:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;https://github.com/yuzutech/kroki&quot;&gt;Kroki&lt;/a&gt; self-hosted solution for unified interface to buch of diagramming tools, including mermaid, d2, etc.&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;https://github.com/terrastruct/d2&quot;&gt;d2&lt;/a&gt; provides a clean syntax and output as well.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;&amp;quot;&lt;a href=&quot;https://github.com/kraken-tech/django-pg-migration-tools?tab=readme-ov-file&quot;&gt;Django Postgres Migration Tools&lt;/a&gt; - add-on for safer and more scalable migrations in django.&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
 </content:encoded>
 </item>
 </channel>
