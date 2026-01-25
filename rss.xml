@@ -5,6 +5,29 @@
 <description>A collection of useful things I've learned.</description>
 <link>https://github.com/theskumar/til</link>
 <item>
+<guid>https://github.com/theskumar/til/blob/main/weekly/2026-01-18.md</guid>
+<link>https://github.com/theskumar/til/blob/main/weekly/2026-01-18.md</link>
+<title>TIL: Week of January 18, 2026</title>
+<pubDate>Sun, 18 Jan 2026 01:19:56 GMT</pubDate>
+<content:encoded>&lt;p&gt;Things I learned during the week ending January 18, 2026.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;Learnt about &lt;a href=&quot;https://tryvoiceink.com/&quot;&gt;VoiceLink&lt;/a&gt;, an alternative to [Wispr Flow] that have been using as my STT software, with it&amp;#39;s pricing model VoiceLink might be better replacement if it performs as good as WisprFlow&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;The free-threaded version of python can be added to uv and github actions with &lt;code&gt;t&lt;/code&gt; suffix. e.g. &lt;code&gt;3.14t&lt;/code&gt; and &lt;code&gt;3.13t&lt;/code&gt; &lt;a href=&quot;https://github.com/actions/setup-python?tab=readme-ov-file#basic-usage&quot;&gt;source&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Puzer published a &lt;a href=&quot;https://puzer.github.io/github_recommender/&quot;&gt;github recommendor&lt;/a&gt; that uses semantic embedding from user&amp;#39;s github stars all client side, I found some great recommendations which I plan to use:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/pamburus/hl&quot;&gt;pamburus/hl&lt;/a&gt;: A fast and powerful log viewer and processor that converts JSON logs or logfmt logs into a clear human-readable format. (⭐2657)&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/samwho/spacer&quot;&gt;samwho/spacer&lt;/a&gt;: CLI tool to insert spacers when command output stops (⭐1663)&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/darrenburns/posting&quot;&gt;darrenburns/posting&lt;/a&gt;: The modern API client that lives in your terminal. (⭐11134)&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/plutov/oq&quot;&gt;plutov/oq&lt;/a&gt;: Terminal OpenAPI Spec viewer (⭐943)&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/wey-gu/py-pglite&quot;&gt;wey-gu/py-pglite&lt;/a&gt;: PGlite wrapper in Python for testing. Test your app with Postgres just as lite as SQLite. (⭐577)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+</content:encoded>
+</item>
+<item>
 <guid>https://github.com/theskumar/til/blob/main/weekly/2026-01-11.md</guid>
 <link>https://github.com/theskumar/til/blob/main/weekly/2026-01-11.md</link>
 <title>TIL: Week of January 11, 2026</title>
@@ -295,29 +318,6 @@ keyboard shortcuts.&lt;/p&gt;
 },
 &lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;&lt;a href=&quot;https://github.com/jbranchaud/til/blob/master/vscode/toggle-between-terminals.md&quot;&gt;source&lt;/a&gt;&lt;/p&gt;
-</content:encoded>
-</item>
-<item>
-<guid>https://github.com/theskumar/til/blob/main/weekly/2026-01-18.md</guid>
-<link>https://github.com/theskumar/til/blob/main/weekly/2026-01-18.md</link>
-<title>TIL: Week of January 18, 2026</title>
-<pubDate>Thu, 01 Jan 1970 00:00:00 GMT</pubDate>
-<content:encoded>&lt;p&gt;Things I learned during the week ending January 18, 2026.&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;Learnt about &lt;a href=&quot;https://tryvoiceink.com/&quot;&gt;VoiceLink&lt;/a&gt;, an alternative to [Wispr Flow] that have been using as my STT software, with it&amp;#39;s pricing model VoiceLink might be better replacement if it performs as good as WisprFlow&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;The free-threaded version of python can be added to uv and github actions with &lt;code&gt;t&lt;/code&gt; suffix. e.g. &lt;code&gt;3.14t&lt;/code&gt; and &lt;code&gt;3.13t&lt;/code&gt; &lt;a href=&quot;https://github.com/actions/setup-python?tab=readme-ov-file#basic-usage&quot;&gt;source&lt;/a&gt;&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Puzer published a &lt;a href=&quot;https://puzer.github.io/github_recommender/&quot;&gt;github recommendor&lt;/a&gt; that uses semantic embedding from user&amp;#39;s github stars all client side, I found some great recommendations which I plan to use:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;https://github.com/pamburus/hl&quot;&gt;pamburus/hl&lt;/a&gt;: A fast and powerful log viewer and processor that converts JSON logs or logfmt logs into a clear human-readable format. (⭐2657)&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;https://github.com/samwho/spacer&quot;&gt;samwho/spacer&lt;/a&gt;: CLI tool to insert spacers when command output stops (⭐1663)&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;https://github.com/darrenburns/posting&quot;&gt;darrenburns/posting&lt;/a&gt;: The modern API client that lives in your terminal. (⭐11134)&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;https://github.com/plutov/oq&quot;&gt;plutov/oq&lt;/a&gt;: Terminal OpenAPI Spec viewer (⭐943)&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;https://github.com/wey-gu/py-pglite&quot;&gt;wey-gu/py-pglite&lt;/a&gt;: PGlite wrapper in Python for testing. Test your app with Postgres just as lite as SQLite. (⭐577)&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
 </content:encoded>
 </item>
 </channel>
