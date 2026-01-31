@@ -1,5 +1,17 @@
 # Jan 2025
 
+- 31 Jan 2026. Notes on "How AI assistance impacts the formation of coding skills" [Article](https://www.anthropic.com/research/AI-assistance-coding-skills) [HN](https://news.ycombinator.com/item?id=46820924)
+  - AI speeds up coding but reduces deep understanding and mastery
+  - Juniors (1-3 years experience) showed speed improvements with AI, but 4+ year developers showed no difference
+  - Modern software work is more about requirements, specs, documentation, and communication than raw coding skill
+  - Small sample size (n<8) and study design limitations make results questionable
+  - Takeaways:
+    1. **Use AI for high-scoring interaction patterns**: Ask conceptual questions and request explanations rather than just code generation
+    2. **Adopt AI for documentation and specs**: Multiple developers report dramatic improvements in tickets, PRs, and documentation quality
+    3. **Be deliberate about learning**: If using AI, actively practice explaining concepts and avoid pure copy-paste workflows
+    4. **Use AI to reduce grunt work**: Let it handle boilerplate, test writing, and repetitive tasks while focusing on architecture and requirements
+  - **The research confirms what many suspected: AI coding assistants create a real trade-off between speed and skill development, but the practical significance is hotly contested.** The critical question isn't whether AI reduces learning (it does), but whether deep coding skill remains as valuable as expressing requirements clearly—and whether we're comfortable with a generation of developers who can't function without AI assistance.
+- 12 Jan 2026. Distributed Key-value store -- https://etcd.io/
 - 12 Jan 2026. Learnt about [VoiceLink](https://tryvoiceink.com/), an alternative to [Wispr Flow] that have been using as my STT software, with it's pricing model VoiceLink might be better replacement if it performs as good as WisprFlow
 - 12 Jan 2026. The free-threaded version of python can be added to uv and github actions with `t` suffix. e.g. `3.14t` and `3.13t` [source](https://github.com/actions/setup-python?tab=readme-ov-file#basic-usage)
 - 11 Jan 2026. Puzer published a [github recommendor](https://puzer.github.io/github_recommender/) that uses semantic embedding from user's github stars all client side, I found some great recommendations which I plan to use:
