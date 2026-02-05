@@ -1,5 +1,8 @@
 # Feb 2025
 
+-  05 Feb 2026. On blockchain, UIPC (Universal IPC) and SIPC (Secure IPC) are frameworks that allows different network to talk to each other using a standard protocol. While UIPC acts as the universal courier, SIPC acts as the security guard. Together, they create "Internet of Blockchains". [Gemini](https://gemini.google.com/app/b8339d20bf7f33cf) 
+	- [Cosmos IBC](https://docs.cosmos.network/ibc/v10.1.x/intro) & [Polkadot - XCM](https://wiki.polkadot.network/docs/learn-xcm) are two industry leading protocols for UIPC
+	- For the SIPC, **Zero-Knowledge Proofs** and **Rollup architecture** also "Trustless bridges" or "Cross-rollup communication" are often more frequently used terms in blockchain literatures. 
 - 05 Feb 2026. [Vortex](https://vortex.dev/) a newer format is supported by [duckdb](https://duckdb.org/2026/01/23/duckdb-vortex-extension) promises to be faster for random access and has zero-copy metadata, with better compression. While the support across the board is limited but worth considering for LLM/RAG based uses over parquet. 
 - 05 Feb 2026. **Designing Data-Intensive Applications: The Big Ideas Behind Reliable, Scalable, and Maintainable Systems** by Martin Kleppmann manages to be both rigorous technical manual and something approaching a philosophical treatise on the nature of truth, consistency, and trust in distributed systems. [Claude][https://claude.ai/chat/0f58f2f6-bd56-41a1-a785-8267afa5a3d1]
 	- Foundation. He starts by asking the questions *"What do we actually want in our data systems"*, answers them as - reliability, scalability and maintainability.
