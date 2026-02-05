@@ -5,6 +5,31 @@
 <description>A collection of useful things I've learned.</description>
 <link>https://github.com/theskumar/til</link>
 <item>
+<guid>https://github.com/theskumar/til/blob/main/weekly/2026-02-01.md</guid>
+<link>https://github.com/theskumar/til/blob/main/weekly/2026-02-01.md</link>
+<title>TIL: Week of February 1, 2026</title>
+<pubDate>Thu, 05 Feb 2026 06:37:55 GMT</pubDate>
+<content:encoded>&lt;p&gt;Things I learned during the week ending February 1, 2026.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Notes on &amp;quot;How AI assistance impacts the formation of coding skills&amp;quot; &lt;a href=&quot;https://www.anthropic.com/research/AI-assistance-coding-skills&quot;&gt;Article&lt;/a&gt; &lt;a href=&quot;https://news.ycombinator.com/item?id=46820924&quot;&gt;HN&lt;/a&gt;&lt;ul&gt;
+&lt;li&gt;AI speeds up coding but reduces deep understanding and mastery&lt;/li&gt;
+&lt;li&gt;Juniors (1-3 years experience) showed speed improvements with AI, but 4+ year developers showed no difference&lt;/li&gt;
+&lt;li&gt;Modern software work is more about requirements, specs, documentation, and communication than raw coding skill&lt;/li&gt;
+&lt;li&gt;Small sample size (n&amp;lt;8) and study design limitations make results questionable&lt;/li&gt;
+&lt;li&gt;Takeaways:&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;Use AI for high-scoring interaction patterns&lt;/strong&gt;: Ask conceptual questions and request explanations rather than just code generation&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Adopt AI for documentation and specs&lt;/strong&gt;: Multiple developers report dramatic improvements in tickets, PRs, and documentation quality&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Be deliberate about learning&lt;/strong&gt;: If using AI, actively practice explaining concepts and avoid pure copy-paste workflows&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Use AI to reduce grunt work&lt;/strong&gt;: Let it handle boilerplate, test writing, and repetitive tasks while focusing on architecture and requirements&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;The research confirms what many suspected: AI coding assistants create a real trade-off between speed and skill development, but the practical significance is hotly contested.&lt;/strong&gt; The critical question isn&amp;#39;t whether AI reduces learning (it does), but whether deep coding skill remains as valuable as expressing requirements clearly—and whether we&amp;#39;re comfortable with a generation of developers who can&amp;#39;t function without AI assistance.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+</content:encoded>
+</item>
+<item>
 <guid>https://github.com/theskumar/til/blob/main/weekly/2026-01-18.md</guid>
 <link>https://github.com/theskumar/til/blob/main/weekly/2026-01-18.md</link>
 <title>TIL: Week of January 18, 2026</title>
@@ -318,31 +343,6 @@ keyboard shortcuts.&lt;/p&gt;
 },
 &lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;&lt;a href=&quot;https://github.com/jbranchaud/til/blob/master/vscode/toggle-between-terminals.md&quot;&gt;source&lt;/a&gt;&lt;/p&gt;
-</content:encoded>
-</item>
-<item>
-<guid>https://github.com/theskumar/til/blob/main/weekly/2026-02-01.md</guid>
-<link>https://github.com/theskumar/til/blob/main/weekly/2026-02-01.md</link>
-<title>TIL: Week of February 1, 2026</title>
-<pubDate>Thu, 01 Jan 1970 00:00:00 GMT</pubDate>
-<content:encoded>&lt;p&gt;Things I learned during the week ending February 1, 2026.&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Notes on &amp;quot;How AI assistance impacts the formation of coding skills&amp;quot; &lt;a href=&quot;https://www.anthropic.com/research/AI-assistance-coding-skills&quot;&gt;Article&lt;/a&gt; &lt;a href=&quot;https://news.ycombinator.com/item?id=46820924&quot;&gt;HN&lt;/a&gt;&lt;ul&gt;
-&lt;li&gt;AI speeds up coding but reduces deep understanding and mastery&lt;/li&gt;
-&lt;li&gt;Juniors (1-3 years experience) showed speed improvements with AI, but 4+ year developers showed no difference&lt;/li&gt;
-&lt;li&gt;Modern software work is more about requirements, specs, documentation, and communication than raw coding skill&lt;/li&gt;
-&lt;li&gt;Small sample size (n&amp;lt;8) and study design limitations make results questionable&lt;/li&gt;
-&lt;li&gt;Takeaways:&lt;ol&gt;
-&lt;li&gt;&lt;strong&gt;Use AI for high-scoring interaction patterns&lt;/strong&gt;: Ask conceptual questions and request explanations rather than just code generation&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Adopt AI for documentation and specs&lt;/strong&gt;: Multiple developers report dramatic improvements in tickets, PRs, and documentation quality&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Be deliberate about learning&lt;/strong&gt;: If using AI, actively practice explaining concepts and avoid pure copy-paste workflows&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Use AI to reduce grunt work&lt;/strong&gt;: Let it handle boilerplate, test writing, and repetitive tasks while focusing on architecture and requirements&lt;/li&gt;
-&lt;/ol&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;The research confirms what many suspected: AI coding assistants create a real trade-off between speed and skill development, but the practical significance is hotly contested.&lt;/strong&gt; The critical question isn&amp;#39;t whether AI reduces learning (it does), but whether deep coding skill remains as valuable as expressing requirements clearly—and whether we&amp;#39;re comfortable with a generation of developers who can&amp;#39;t function without AI assistance.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
 </content:encoded>
 </item>
 </channel>
