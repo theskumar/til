@@ -1,5 +1,6 @@
 # Feb 2025
 
+- 05 Feb 2026. [Vortex](https://vortex.dev/) a newer format is supported by [duckdb](https://duckdb.org/2026/01/23/duckdb-vortex-extension) promises to be faster for random access and has zero-copy metadata, with better compression. While the support across the board is limited but worth considering for LLM/RAG based uses over parquet. 
 - 05 Feb 2026. **Designing Data-Intensive Applications: The Big Ideas Behind Reliable, Scalable, and Maintainable Systems** by Martin Kleppmann manages to be both rigorous technical manual and something approaching a philosophical treatise on the nature of truth, consistency, and trust in distributed systems. [Claude][https://claude.ai/chat/0f58f2f6-bd56-41a1-a785-8267afa5a3d1]
 	- Foundation. He starts by asking the questions *"What do we actually want in our data systems"*, answers them as - reliability, scalability and maintainability.
 		- Reliability. The question isn't whether failure will happen, it will, but the whether the systems can survive them.
