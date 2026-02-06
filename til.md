@@ -1,6 +1,10 @@
 # Feb 2025
 
--  05 Feb 2026. On blockchain, UIPC (Universal IPC) and SIPC (Secure IPC) are frameworks that allows different network to talk to each other using a standard protocol. While UIPC acts as the universal courier, SIPC acts as the security guard. Together, they create "Internet of Blockchains". [Gemini](https://gemini.google.com/app/b8339d20bf7f33cf) 
+- 06 Feb 2026. Opus 4.6 launch. 
+  - context compaction (beta) and 1M context window, enables longer agentic tasks without loosing context. 
+  - they claim it has found 500 Zero-Day Flaws in open-source projects (yet to see the proofs though) 
+  - agent teams, multiple agent coordinates with a  leader agent.  https://code.claude.com/docs/en/agent-teams
+- 05 Feb 2026. On blockchain, UIPC (Universal IPC) and SIPC (Secure IPC) are frameworks that allows different network to talk to each other using a standard protocol. While UIPC acts as the universal courier, SIPC acts as the security guard. Together, they create "Internet of Blockchains". [Gemini](https://gemini.google.com/app/b8339d20bf7f33cf) 
 	- [Cosmos IBC](https://docs.cosmos.network/ibc/v10.1.x/intro) & [Polkadot - XCM](https://wiki.polkadot.network/docs/learn-xcm) are two industry leading protocols for UIPC
 	- For the SIPC, **Zero-Knowledge Proofs** and **Rollup architecture** also "Trustless bridges" or "Cross-rollup communication" are often more frequently used terms in blockchain literatures. 
 - 05 Feb 2026. [Vortex](https://vortex.dev/) a newer format is supported by [duckdb](https://duckdb.org/2026/01/23/duckdb-vortex-extension) promises to be faster for random access and has zero-copy metadata, with better compression. While the support across the board is limited but worth considering for LLM/RAG based uses over parquet. 
