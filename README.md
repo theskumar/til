@@ -6,7 +6,7 @@ Subscribe via [RSS](https://saurabh-kumar.com/til/rss.xml)!
 
 ---
 
-9 TILs so far:
+10 TILs so far:
 
 ## fts
 
@@ -31,3 +31,4 @@ Subscribe via [RSS](https://saurabh-kumar.com/til/rss.xml)!
 - [Week of January 11, 2026](/weekly/2026-01-11.md)
 - [Week of January 18, 2026](/weekly/2026-01-18.md)
 - [Week of February 1, 2026](/weekly/2026-02-01.md)
+- [Week of February 8, 2026](/weekly/2026-02-08.md)
