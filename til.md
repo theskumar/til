@@ -1,23 +1,24 @@
 # Feb 2025
 
-- 06 Feb 2026. Opus 4.6 launch. 
-  - context compaction (beta) and 1M context window, enables longer agentic tasks without loosing context. 
-  - they claim it has found 500 Zero-Day Flaws in open-source projects (yet to see the proofs though) 
-  - agent teams, multiple agent coordinates with a  leader agent.  https://code.claude.com/docs/en/agent-teams
-- 05 Feb 2026. On blockchain, UIPC (Universal IPC) and SIPC (Secure IPC) are frameworks that allows different network to talk to each other using a standard protocol. While UIPC acts as the universal courier, SIPC acts as the security guard. Together, they create "Internet of Blockchains". [Gemini](https://gemini.google.com/app/b8339d20bf7f33cf) 
-	- [Cosmos IBC](https://docs.cosmos.network/ibc/v10.1.x/intro) & [Polkadot - XCM](https://wiki.polkadot.network/docs/learn-xcm) are two industry leading protocols for UIPC
-	- For the SIPC, **Zero-Knowledge Proofs** and **Rollup architecture** also "Trustless bridges" or "Cross-rollup communication" are often more frequently used terms in blockchain literatures. 
-- 05 Feb 2026. [Vortex](https://vortex.dev/) a newer format is supported by [duckdb](https://duckdb.org/2026/01/23/duckdb-vortex-extension) promises to be faster for random access and has zero-copy metadata, with better compression. While the support across the board is limited but worth considering for LLM/RAG based uses over parquet. 
+- 10 Feb 2026. [Hono](https://hono.dev/) based on web standards is a great option for js runtimes esp. if you plan to deploy your code to cloudflare workers, bun or deno. You get faster startup time and cross-platform compatibility.
+- 06 Feb 2026. Opus 4.6 launch.
+  - context compaction (beta) and 1M context window, enables longer agentic tasks without loosing context.
+  - they claim it has found 500 Zero-Day Flaws in open-source projects (yet to see the proofs though)
+  - agent teams, multiple agent coordinates with a leader agent. https://code.claude.com/docs/en/agent-teams
+- 05 Feb 2026. On blockchain, UIPC (Universal IPC) and SIPC (Secure IPC) are frameworks that allows different network to talk to each other using a standard protocol. While UIPC acts as the universal courier, SIPC acts as the security guard. Together, they create "Internet of Blockchains". [Gemini](https://gemini.google.com/app/b8339d20bf7f33cf)
+  - [Cosmos IBC](https://docs.cosmos.network/ibc/v10.1.x/intro) & [Polkadot - XCM](https://wiki.polkadot.network/docs/learn-xcm) are two industry leading protocols for UIPC
+  - For the SIPC, **Zero-Knowledge Proofs** and **Rollup architecture** also "Trustless bridges" or "Cross-rollup communication" are often more frequently used terms in blockchain literatures.
+- 05 Feb 2026. [Vortex](https://vortex.dev/) a newer format is supported by [duckdb](https://duckdb.org/2026/01/23/duckdb-vortex-extension) promises to be faster for random access and has zero-copy metadata, with better compression. While the support across the board is limited but worth considering for LLM/RAG based uses over parquet.
 - 05 Feb 2026. **Designing Data-Intensive Applications: The Big Ideas Behind Reliable, Scalable, and Maintainable Systems** by Martin Kleppmann manages to be both rigorous technical manual and something approaching a philosophical treatise on the nature of truth, consistency, and trust in distributed systems. [Claude][https://claude.ai/chat/0f58f2f6-bd56-41a1-a785-8267afa5a3d1]
-	- Foundation. He starts by asking the questions *"What do we actually want in our data systems"*, answers them as - reliability, scalability and maintainability.
-		- Reliability. The question isn't whether failure will happen, it will, but the whether the systems can survive them.
-		- Scalability. It's not a binary question of whether a system is "scalable" or "not scalable". Ask - "What happens when specific load parameter increase?"
-		- Maintainability - most underappreciated of the three, he argues the majority of cost isn't in initial development but in ongoing maintainence.
-	- The data model wars - the skill isn't in choosing the "best" database but in understanding which tradeoffs matter for your specific problem.
-	- Storage engines. Two major approaches to read & write data from disk, neither is universally better.
-		- **Log-structured storage** (like LSM-trees) optimizes for writes, every write is appended and the merged/compacted later. 
-		- **Page-oriented storage** (like B-trees) optimizes for reads, data is stored in fixed-sized block, which then get updated in-place, more like filing cabinet with each document has a designated slot.
-	- Instead of asking "how do I build this?" ask "what does it mean for this to work correctly?"
+  - Foundation. He starts by asking the questions _"What do we actually want in our data systems"_, answers them as - reliability, scalability and maintainability.
+    - Reliability. The question isn't whether failure will happen, it will, but the whether the systems can survive them.
+    - Scalability. It's not a binary question of whether a system is "scalable" or "not scalable". Ask - "What happens when specific load parameter increase?"
+    - Maintainability - most underappreciated of the three, he argues the majority of cost isn't in initial development but in ongoing maintainence.
+  - The data model wars - the skill isn't in choosing the "best" database but in understanding which tradeoffs matter for your specific problem.
+  - Storage engines. Two major approaches to read & write data from disk, neither is universally better.
+    - **Log-structured storage** (like LSM-trees) optimizes for writes, every write is appended and the merged/compacted later.
+    - **Page-oriented storage** (like B-trees) optimizes for reads, data is stored in fixed-sized block, which then get updated in-place, more like filing cabinet with each document has a designated slot.
+  - Instead of asking "how do I build this?" ask "what does it mean for this to work correctly?"
 
 # Jan 2025
 
