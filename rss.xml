@@ -5,6 +5,29 @@
 <description>A collection of useful things I've learned.</description>
 <link>https://github.com/theskumar/til</link>
 <item>
+<guid>https://github.com/theskumar/til/blob/main/weekly/2026-02-08.md</guid>
+<link>https://github.com/theskumar/til/blob/main/weekly/2026-02-08.md</link>
+<title>TIL: Week of February 8, 2026</title>
+<pubDate>Sun, 08 Feb 2026 02:01:32 GMT</pubDate>
+<content:encoded>&lt;p&gt;Things I learned during the week ending February 8, 2026.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;Opus 4.6 launch. &lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;context compaction (beta) and 1M context window, enables longer agentic tasks without loosing context. &lt;/li&gt;
+&lt;li&gt;they claim it has found 500 Zero-Day Flaws in open-source projects (yet to see the proofs though) &lt;/li&gt;
+&lt;li&gt;agent teams, multiple agent coordinates with a  leader agent.  &lt;a href=&quot;https://code.claude.com/docs/en/agent-teams&quot;&gt;https://code.claude.com/docs/en/agent-teams&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;On blockchain, UIPC (Universal IPC) and SIPC (Secure IPC) are frameworks that allows different network to talk to each other using a standard protocol. While UIPC acts as the universal courier, SIPC acts as the security guard. Together, they create &amp;quot;Internet of Blockchains&amp;quot;. &lt;a href=&quot;https://gemini.google.com/app/b8339d20bf7f33cf&quot;&gt;Gemini&lt;/a&gt; &lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&quot;https://vortex.dev/&quot;&gt;Vortex&lt;/a&gt; a newer format is supported by &lt;a href=&quot;https://duckdb.org/2026/01/23/duckdb-vortex-extension&quot;&gt;duckdb&lt;/a&gt; promises to be faster for random access and has zero-copy metadata, with better compression. While the support across the board is limited but worth considering for LLM/RAG based uses over parquet. &lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;Designing Data-Intensive Applications: The Big Ideas Behind Reliable, Scalable, and Maintainable Systems&lt;/strong&gt; by Martin Kleppmann manages to be both rigorous technical manual and something approaching a philosophical treatise on the nature of truth, consistency, and trust in distributed systems. [Claude][&lt;a href=&quot;https://claude.ai/chat/0f58f2f6-bd56-41a1-a785-8267afa5a3d1%5D&quot;&gt;https://claude.ai/chat/0f58f2f6-bd56-41a1-a785-8267afa5a3d1]&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+</content:encoded>
+</item>
+<item>
 <guid>https://github.com/theskumar/til/blob/main/weekly/2026-02-01.md</guid>
 <link>https://github.com/theskumar/til/blob/main/weekly/2026-02-01.md</link>
 <title>TIL: Week of February 1, 2026</title>
@@ -343,29 +366,6 @@ keyboard shortcuts.&lt;/p&gt;
 },
 &lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;&lt;a href=&quot;https://github.com/jbranchaud/til/blob/master/vscode/toggle-between-terminals.md&quot;&gt;source&lt;/a&gt;&lt;/p&gt;
-</content:encoded>
-</item>
-<item>
-<guid>https://github.com/theskumar/til/blob/main/weekly/2026-02-08.md</guid>
-<link>https://github.com/theskumar/til/blob/main/weekly/2026-02-08.md</link>
-<title>TIL: Week of February 8, 2026</title>
-<pubDate>Thu, 01 Jan 1970 00:00:00 GMT</pubDate>
-<content:encoded>&lt;p&gt;Things I learned during the week ending February 8, 2026.&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;Opus 4.6 launch. &lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;context compaction (beta) and 1M context window, enables longer agentic tasks without loosing context. &lt;/li&gt;
-&lt;li&gt;they claim it has found 500 Zero-Day Flaws in open-source projects (yet to see the proofs though) &lt;/li&gt;
-&lt;li&gt;agent teams, multiple agent coordinates with a  leader agent.  &lt;a href=&quot;https://code.claude.com/docs/en/agent-teams&quot;&gt;https://code.claude.com/docs/en/agent-teams&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;On blockchain, UIPC (Universal IPC) and SIPC (Secure IPC) are frameworks that allows different network to talk to each other using a standard protocol. While UIPC acts as the universal courier, SIPC acts as the security guard. Together, they create &amp;quot;Internet of Blockchains&amp;quot;. &lt;a href=&quot;https://gemini.google.com/app/b8339d20bf7f33cf&quot;&gt;Gemini&lt;/a&gt; &lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;&lt;a href=&quot;https://vortex.dev/&quot;&gt;Vortex&lt;/a&gt; a newer format is supported by &lt;a href=&quot;https://duckdb.org/2026/01/23/duckdb-vortex-extension&quot;&gt;duckdb&lt;/a&gt; promises to be faster for random access and has zero-copy metadata, with better compression. While the support across the board is limited but worth considering for LLM/RAG based uses over parquet. &lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;&lt;strong&gt;Designing Data-Intensive Applications: The Big Ideas Behind Reliable, Scalable, and Maintainable Systems&lt;/strong&gt; by Martin Kleppmann manages to be both rigorous technical manual and something approaching a philosophical treatise on the nature of truth, consistency, and trust in distributed systems. [Claude][&lt;a href=&quot;https://claude.ai/chat/0f58f2f6-bd56-41a1-a785-8267afa5a3d1%5D&quot;&gt;https://claude.ai/chat/0f58f2f6-bd56-41a1-a785-8267afa5a3d1]&lt;/a&gt;&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
 </content:encoded>
 </item>
 </channel>
