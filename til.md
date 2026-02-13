@@ -1,5 +1,7 @@
 # Feb 2025
 
+- 13 Feb 2026. [zoocache](https://github.com/albertobadia/zoocache) is a sematic dependency based cache manager, that support in-memory, LMDB or redis backends. Integration with [Django](https://github.com/albertobadia/zoocache/blob/main/docs/django_user_guide.md) looks interesting.
+- 12 Feb 2026. [Handy](https://handy.computer/) Looks like a promising tool for to replace WisperFlow and VoiceInk for speech to text conversion. [via](https://dannysmith.notion.site/Danny-s-Software-313c769fa9c04819a37d813da0485c78)
 - 10 Feb 2026. [Hono](https://hono.dev/) based on web standards is a great option for js runtimes esp. if you plan to deploy your code to cloudflare workers, bun or deno. You get faster startup time and cross-platform compatibility.
 - 06 Feb 2026. Opus 4.6 launch.
   - context compaction (beta) and 1M context window, enables longer agentic tasks without loosing context.
