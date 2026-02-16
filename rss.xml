@@ -5,6 +5,125 @@
 <description>A collection of useful things I've learned.</description>
 <link>https://github.com/theskumar/til</link>
 <item>
+<guid>https://github.com/theskumar/til/blob/main/docs/CATEGORIZING_TIL_NOTES_WITH_EMBEDDINGS.md</guid>
+<link>https://github.com/theskumar/til/blob/main/docs/CATEGORIZING_TIL_NOTES_WITH_EMBEDDINGS.md</link>
+<title>TIL: Categorizing TIL Notes with Embeddings</title>
+<pubDate>Mon, 16 Feb 2026 05:45:28 GMT</pubDate>
+<content:encoded>&lt;p&gt;This document explains the approach used in this repository to automatically group &lt;code&gt;til.md&lt;/code&gt; notes into meaningful categories.&lt;/p&gt;
+&lt;h2&gt;Goals&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Organize many short TIL entries into navigable themes.&lt;/li&gt;
+&lt;li&gt;Keep categorization mostly automatic (minimal manual tagging).&lt;/li&gt;
+&lt;li&gt;Preserve note content and markdown formatting in the generated output.&lt;/li&gt;
+&lt;li&gt;Make the workflow reproducible and easy to rerun as new notes are added.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Input Format&lt;/h2&gt;
+&lt;p&gt;The pipeline reads &lt;code&gt;til.md&lt;/code&gt; and parses entries using the existing date-based bullet structure. Each top-level dated item is treated as one note, and its nested bullets/sub-content are kept as part of that note.&lt;/p&gt;
+&lt;p&gt;At a high level:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Parse markdown into note records.&lt;/li&gt;
+&lt;li&gt;Build an embedding for each note.&lt;/li&gt;
+&lt;li&gt;Cluster similar embeddings.&lt;/li&gt;
+&lt;li&gt;Label clusters into human-readable categories.&lt;/li&gt;
+&lt;li&gt;Merge tiny categories into nearby larger ones.&lt;/li&gt;
+&lt;li&gt;Write categorized output to &lt;code&gt;CATEGORIES.md&lt;/code&gt; (and JSON metadata when needed).&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2&gt;Embeddings&lt;/h2&gt;
+&lt;p&gt;Semantic embeddings are generated locally with Ollama using:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Model: &lt;code&gt;nomic-embed-text&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Why embeddings:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;They capture semantic similarity better than keyword-only grouping.&lt;/li&gt;
+&lt;li&gt;Similar topics with different wording still end up close in vector space.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Operationally, each note is converted to text and embedded into a fixed-size vector (commonly 768 dimensions for this model).&lt;/p&gt;
+&lt;h2&gt;Clustering Strategy&lt;/h2&gt;
+&lt;p&gt;The grouping step uses k-means over note embeddings with cosine-style similarity behavior.&lt;/p&gt;
+&lt;h3&gt;Choosing the number of clusters&lt;/h3&gt;
+&lt;p&gt;Instead of hardcoding one cluster count, the script evaluates a candidate range and selects a good &lt;code&gt;k&lt;/code&gt; using silhouette score.&lt;/p&gt;
+&lt;p&gt;Benefits:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Better adapts as the dataset grows.&lt;/li&gt;
+&lt;li&gt;Reduces over- or under-grouping compared with fixed &lt;code&gt;k&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Category Labeling&lt;/h2&gt;
+&lt;p&gt;Clusters are converted into readable category names using a hybrid approach:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;TF-IDF keywords&lt;/strong&gt; to identify salient terms in each cluster.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Rule-based patterns&lt;/strong&gt; to normalize/override labels for known themes.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;This keeps labels stable and understandable while still adapting to new content.&lt;/p&gt;
+&lt;h2&gt;Merging Small Categories&lt;/h2&gt;
+&lt;p&gt;After initial clustering, very small categories (especially singletons) are merged into semantically related larger categories.&lt;/p&gt;
+&lt;p&gt;Merge behavior combines:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;predefined related-category groups,&lt;/li&gt;
+&lt;li&gt;embedding similarity,&lt;/li&gt;
+&lt;li&gt;and size-aware tie-breaking (smallest merges into largest suitable target).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;This improves final readability by avoiding noisy one-off buckets.&lt;/p&gt;
+&lt;h2&gt;Output&lt;/h2&gt;
+&lt;p&gt;Primary generated artifacts:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;CATEGORIES.md&lt;/code&gt;: human-readable grouped notes with full note content (including sub-bullets/links).&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;categories.json&lt;/code&gt;: machine-friendly category metadata.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The markdown output is designed for browsing and can be used directly in docs/README workflows.&lt;/p&gt;
+&lt;h2&gt;Implementations in This Repo&lt;/h2&gt;
+&lt;p&gt;Two implementations exist:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;categorize.js&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;categorize.py&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;JavaScript version&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Pros: fast cold start, fewer dependencies, lightweight runtime.&lt;/li&gt;
+&lt;li&gt;Cons: more custom math/algorithm code to maintain.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Python version&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Pros: shorter code and easier maintenance; leverages mature libraries (&lt;code&gt;numpy&lt;/code&gt;, &lt;code&gt;scikit-learn&lt;/code&gt;, &lt;code&gt;httpx&lt;/code&gt;).&lt;/li&gt;
+&lt;li&gt;Cons: slightly higher startup/memory overhead in some environments.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Both produce equivalent category outcomes when run with similar settings.&lt;/p&gt;
+&lt;h2&gt;Typical Workflow&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;Add/update notes in &lt;code&gt;til.md&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Run categorization script (&lt;code&gt;categorize.js&lt;/code&gt; or &lt;code&gt;categorize.py&lt;/code&gt;).&lt;/li&gt;
+&lt;li&gt;Review &lt;code&gt;CATEGORIES.md&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Optionally refresh README sections to reference/use categorized output.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2&gt;Tuning and Extensions&lt;/h2&gt;
+&lt;p&gt;As note volume increases, you can improve quality by:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;tuning candidate &lt;code&gt;k&lt;/code&gt; ranges,&lt;/li&gt;
+&lt;li&gt;adjusting merge groups,&lt;/li&gt;
+&lt;li&gt;refining labeling rules,&lt;/li&gt;
+&lt;li&gt;adding clustering alternatives (for example, density-based methods like HDBSCAN in Python).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Summary&lt;/h2&gt;
+&lt;p&gt;This approach combines semantic embeddings, unsupervised clustering, and light rule-based post-processing to keep TIL notes organized automatically while preserving high-quality, readable output.&lt;/p&gt;
+</content:encoded>
+</item>
+<item>
+<guid>https://github.com/theskumar/til/blob/main/weekly/2026-02-15.md</guid>
+<link>https://github.com/theskumar/til/blob/main/weekly/2026-02-15.md</link>
+<title>TIL: Week of February 15, 2026</title>
+<pubDate>Sun, 15 Feb 2026 01:46:13 GMT</pubDate>
+<content:encoded>&lt;p&gt;Things I learned during the week ending February 15, 2026.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&quot;https://github.com/albertobadia/zoocache&quot;&gt;zoocache&lt;/a&gt; is a sematic dependency based cache manager, that support in-memory, LMDB or redis backends. Integration with &lt;a href=&quot;https://github.com/albertobadia/zoocache/blob/main/docs/django_user_guide.md&quot;&gt;Django&lt;/a&gt; looks interesting.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&quot;https://handy.computer/&quot;&gt;Handy&lt;/a&gt; Looks like a promising tool for to replace WisperFlow and VoiceInk for speech to text conversion. &lt;a href=&quot;https://dannysmith.notion.site/Danny-s-Software-313c769fa9c04819a37d813da0485c78&quot;&gt;via&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&quot;https://hono.dev/&quot;&gt;Hono&lt;/a&gt; based on web standards is a great option for js runtimes esp. if you plan to deploy your code to cloudflare workers, bun or deno. You get faster startup time and cross-platform compatibility.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+</content:encoded>
+</item>
+<item>
 <guid>https://github.com/theskumar/til/blob/main/weekly/2026-02-08.md</guid>
 <link>https://github.com/theskumar/til/blob/main/weekly/2026-02-08.md</link>
 <title>TIL: Week of February 8, 2026</title>
@@ -294,78 +413,6 @@ workflows for potential credential leaks.&lt;/p&gt;
 &lt;li&gt;&lt;a href=&quot;https://unit42.paloaltonetworks.com/github-repo-artifacts-leak-tokens/&quot;&gt;Palo Alto Networks Blog Post&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&quot;https://blog.yossarian.net/2024/12/06/zizmor-ultralytics-injection&quot;&gt;zizmor would have caught the Ultralytics workflow vulnerability&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
-</content:encoded>
-</item>
-<item>
-<guid>https://github.com/theskumar/til/blob/main/react/setstate-is-async.md</guid>
-<link>https://github.com/theskumar/til/blob/main/react/setstate-is-async.md</link>
-<title>TIL: &#x60;setState&#x60; is Asynchronous</title>
-<pubDate>Wed, 08 Nov 2023 04:55:04 GMT</pubDate>
-<content:encoded>&lt;p&gt;When beginning with React, I didn&amp;#39;t initially realize that the &lt;code&gt;setState&lt;/code&gt;
-function is asynchronous.&lt;/p&gt;
-&lt;p&gt;If you call &lt;code&gt;setState&lt;/code&gt; and then immediately refer to &lt;code&gt;this.state&lt;/code&gt;, it&amp;#39;s likely
-that it won&amp;#39;t be updated yet.&lt;/p&gt;
-&lt;p&gt;If you need to set the state and immediately act on that change, you can pass in
-a callback function like this:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-js&quot;&gt;this.setState({name: &amp;#39;Jon&amp;#39;}, function() {
-    // called after state has been updated
-    // and the component has been re-rendered
-});
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Another option is to use the &lt;code&gt;componentWillUpdate&lt;/code&gt; or &lt;code&gt;componentDidUpdate&lt;/code&gt;
-lifecycle methods. These methods are called immediately before and after
-rendering due to a state change. They&amp;#39;re also invoked when props change. If you
-want to respond only to state changes, consider using the callback approach.&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;https://daveceddia.com/react-gotchas/&quot;&gt;source&lt;/a&gt;&lt;/p&gt;
-</content:encoded>
-</item>
-<item>
-<guid>https://github.com/theskumar/til/blob/main/vscode/navigating-between-terminals.md</guid>
-<link>https://github.com/theskumar/til/blob/main/vscode/navigating-between-terminals.md</link>
-<title>TIL: Navigating between terminals</title>
-<pubDate>Thu, 05 Oct 2023 07:34:58 GMT</pubDate>
-<content:encoded>&lt;p&gt;I use iTerm as my primarily navigation and had a time using the vscode in-built
-terminals because of the fact that it was very hard to navigate around with
-keyboard shortcuts.&lt;/p&gt;
-&lt;p&gt;I&amp;#39;ve updated by keybindings to make it more intuitive. Add the following to your
-&lt;code&gt;keybindings.json&lt;/code&gt;&lt;/p&gt;
-&lt;p&gt;Use &lt;code&gt;cmd+[&lt;/code&gt; and &lt;code&gt;cmd+]&lt;/code&gt; to focus on previous and next terminal.&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-json&quot;&gt;{ &amp;quot;key&amp;quot;: &amp;quot;cmd+]&amp;quot;, &amp;quot;command&amp;quot;: &amp;quot;workbench.action.terminal.focusNext&amp;quot;, &amp;quot;when&amp;quot;: &amp;quot;terminalFocus&amp;quot;},
-{ &amp;quot;key&amp;quot;: &amp;quot;cmd+[&amp;quot;, &amp;quot;command&amp;quot;: &amp;quot;workbench.action.terminal.focusPrevious&amp;quot;, &amp;quot;when&amp;quot;: &amp;quot;terminalFocus&amp;quot;},
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;To use &lt;code&gt;cmd+&amp;lt;num&amp;gt;&lt;/code&gt; to focus on different terminals:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-json&quot;&gt;{ &amp;quot;key&amp;quot;: &amp;quot;cmd+1&amp;quot;, &amp;quot;command&amp;quot;: &amp;quot;workbench.action.terminal.focusAtIndex1&amp;quot;, &amp;quot;when&amp;quot;: &amp;quot;terminalFocus&amp;quot;},
-{ &amp;quot;key&amp;quot;: &amp;quot;cmd+2&amp;quot;, &amp;quot;command&amp;quot;: &amp;quot;workbench.action.terminal.focusAtIndex2&amp;quot;, &amp;quot;when&amp;quot;: &amp;quot;terminalFocus&amp;quot;},
-{ &amp;quot;key&amp;quot;: &amp;quot;cmd+3&amp;quot;, &amp;quot;command&amp;quot;: &amp;quot;workbench.action.terminal.focusAtIndex3&amp;quot;, &amp;quot;when&amp;quot;: &amp;quot;terminalFocus&amp;quot;},
-{ &amp;quot;key&amp;quot;: &amp;quot;cmd+4&amp;quot;, &amp;quot;command&amp;quot;: &amp;quot;workbench.action.terminal.focusAtIndex4&amp;quot;, &amp;quot;when&amp;quot;: &amp;quot;terminalFocus&amp;quot;},
-{ &amp;quot;key&amp;quot;: &amp;quot;cmd+5&amp;quot;, &amp;quot;command&amp;quot;: &amp;quot;workbench.action.terminal.focusAtIndex5&amp;quot;, &amp;quot;when&amp;quot;: &amp;quot;terminalFocus&amp;quot;},
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;To create new terminal using &lt;code&gt;cmd+n&lt;/code&gt;, the default was hard to remember.&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-json&quot;&gt;{
-    &amp;quot;key&amp;quot;: &amp;quot;cmd+n&amp;quot;,
-    &amp;quot;command&amp;quot;: &amp;quot;workbench.action.terminal.new&amp;quot;,
-    &amp;quot;when&amp;quot;: &amp;quot;terminalFocus &amp;amp;&amp;amp; terminalHasBeenCreated || terminalFocus &amp;amp;&amp;amp; terminalProcessSupported&amp;quot;
-}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;To kill the terminal using &lt;code&gt;cmd+w&lt;/code&gt;:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-json&quot;&gt;{
-    &amp;quot;key&amp;quot;: &amp;quot;cmd+w&amp;quot;,
-    &amp;quot;command&amp;quot;: &amp;quot;workbench.action.terminal.kill&amp;quot;,
-    &amp;quot;when&amp;quot;: &amp;quot;terminalFocus&amp;quot;
-}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;strong&gt;Bonus:&lt;/strong&gt; I&amp;#39;ve configured &lt;code&gt;cmd+t&lt;/code&gt; to quickly toggle between terminal and code editor.&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-json&quot;&gt;{
-    &amp;quot;key&amp;quot;: &amp;quot;cmd+t&amp;quot;,
-    &amp;quot;command&amp;quot;: &amp;quot;workbench.action.terminal.focus&amp;quot;,
-    &amp;quot;when&amp;quot;: &amp;quot;!terminalFocus&amp;quot;
-},
-{
-    &amp;quot;key&amp;quot;: &amp;quot;cmd+t&amp;quot;,
-    &amp;quot;command&amp;quot;: &amp;quot;workbench.action.terminal.toggleTerminal&amp;quot;
-},
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;a href=&quot;https://github.com/jbranchaud/til/blob/master/vscode/toggle-between-terminals.md&quot;&gt;source&lt;/a&gt;&lt;/p&gt;
 </content:encoded>
 </item>
 </channel>

@@ -6,7 +6,11 @@ Subscribe via [RSS](https://saurabh-kumar.com/til/rss.xml)!
 
 ---
 
-11 TILs so far:
+12 TILs so far:
+
+## docs
+
+- [Categorizing TIL Notes with Embeddings](/docs/CATEGORIZING_TIL_NOTES_WITH_EMBEDDINGS.md)
 
 ## fts
 
