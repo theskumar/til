@@ -1,5 +1,6 @@
 # Feb 2025
 
+- 16 Feb 2026. https://modern-css.com/ has a really nice collection of CSS replacements for older hacks.
 - 16 Feb 2026. [panphora/overtype](https://github.com/panphora/overtype): The markdown editor that's just a textarea with a small size footprint and a minimum looking UI https://overtype.dev (⭐3431) #markdown
 - 15 Feb 2026. For generating embedding locally, [nomic-embed-text](https://ollama.com/library/nomic-embed-text) is a large context length text encoder that [surpasses](https://www.nomic.ai/news/nomic-embed-text-v1) OpenAI text-embedding-ada-002 and text-embedding-3-small performance on short and long context tasks. It has a balance of speed, 8k context, and accuracy for English-centric apps. BGE-M3, Qwen3-Embedding and E5-Small are other alternatives. #embeddings
 - 15 Feb 2026. [alibaba/zvec](https://github.com/alibaba/zvec) by alibaba is an embedded vector database supports both spare and dense vectors, along with structured data. It can be considered the sqlite of vector databases.
