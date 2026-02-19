@@ -1,5 +1,6 @@
 # Feb 2025
 
+- 19 Feb 2026. [slingdata-io/sling-cli](https://github.com/slingdata-io/sling-cli) is a promising tool move/sync data between databases and files, esp. helpful for local testing, ci/cd while able to do stage/sql based transformations.
 - 16 Feb 2026. https://modern-css.com/ has a really nice collection of CSS replacements for older hacks.
 - 16 Feb 2026. [panphora/overtype](https://github.com/panphora/overtype): The markdown editor that's just a textarea with a small size footprint and a minimum looking UI https://overtype.dev (⭐3431) #markdown
 - 15 Feb 2026. For generating embedding locally, [nomic-embed-text](https://ollama.com/library/nomic-embed-text) is a large context length text encoder that [surpasses](https://www.nomic.ai/news/nomic-embed-text-v1) OpenAI text-embedding-ada-002 and text-embedding-3-small performance on short and long context tasks. It has a balance of speed, 8k context, and accuracy for English-centric apps. BGE-M3, Qwen3-Embedding and E5-Small are other alternatives. #embeddings
