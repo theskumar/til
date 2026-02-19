@@ -5,6 +5,48 @@
 <description>A collection of useful things I've learned.</description>
 <link>https://github.com/theskumar/til</link>
 <item>
+<guid>https://github.com/theskumar/til/blob/main/weekly/2026-02-07.md</guid>
+<link>https://github.com/theskumar/til/blob/main/weekly/2026-02-07.md</link>
+<title>TIL: Week of February 7, 2026</title>
+<pubDate>Thu, 19 Feb 2026 09:05:48 GMT</pubDate>
+<content:encoded>&lt;p&gt;Things I learned during the week ending February 7, 2026.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;Opus 4.6 launch.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;context compaction (beta) and 1M context window, enables longer agentic tasks without loosing context.&lt;/li&gt;
+&lt;li&gt;they claim it has found 500 Zero-Day Flaws in open-source projects (yet to see the proofs though)&lt;/li&gt;
+&lt;li&gt;agent teams, multiple agent coordinates with a leader agent. &lt;a href=&quot;https://code.claude.com/docs/en/agent-teams&quot;&gt;https://code.claude.com/docs/en/agent-teams&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;On blockchain, UIPC (Universal IPC) and SIPC (Secure IPC) are frameworks that allows different network to talk to each other using a standard protocol. While UIPC acts as the universal courier, SIPC acts as the security guard. Together, they create &amp;quot;Internet of Blockchains&amp;quot;. &lt;a href=&quot;https://gemini.google.com/app/b8339d20bf7f33cf&quot;&gt;Gemini&lt;/a&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://docs.cosmos.network/ibc/v10.1.x/intro&quot;&gt;Cosmos IBC&lt;/a&gt; &amp;amp; &lt;a href=&quot;https://wiki.polkadot.network/docs/learn-xcm&quot;&gt;Polkadot - XCM&lt;/a&gt; are two industry leading protocols for UIPC&lt;/li&gt;
+&lt;li&gt;For the SIPC, &lt;strong&gt;Zero-Knowledge Proofs&lt;/strong&gt; and &lt;strong&gt;Rollup architecture&lt;/strong&gt; also &amp;quot;Trustless bridges&amp;quot; or &amp;quot;Cross-rollup communication&amp;quot; are often more frequently used terms in blockchain literatures.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&quot;https://vortex.dev/&quot;&gt;Vortex&lt;/a&gt; a newer format is supported by &lt;a href=&quot;https://duckdb.org/2026/01/23/duckdb-vortex-extension&quot;&gt;duckdb&lt;/a&gt; promises to be faster for random access and has zero-copy metadata, with better compression. While the support across the board is limited but worth considering for LLM/RAG based uses over parquet.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;Designing Data-Intensive Applications: The Big Ideas Behind Reliable, Scalable, and Maintainable Systems&lt;/strong&gt; by Martin Kleppmann manages to be both rigorous technical manual and something approaching a philosophical treatise on the nature of truth, consistency, and trust in distributed systems. [Claude][&lt;a href=&quot;https://claude.ai/chat/0f58f2f6-bd56-41a1-a785-8267afa5a3d1%5D&quot;&gt;https://claude.ai/chat/0f58f2f6-bd56-41a1-a785-8267afa5a3d1]&lt;/a&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Foundation. He starts by asking the questions &lt;em&gt;&amp;quot;What do we actually want in our data systems&amp;quot;&lt;/em&gt;, answers them as - reliability, scalability and maintainability.&lt;ul&gt;
+&lt;li&gt;Reliability. The question isn&amp;#39;t whether failure will happen, it will, but the whether the systems can survive them.&lt;/li&gt;
+&lt;li&gt;Scalability. It&amp;#39;s not a binary question of whether a system is &amp;quot;scalable&amp;quot; or &amp;quot;not scalable&amp;quot;. Ask - &amp;quot;What happens when specific load parameter increase?&amp;quot;&lt;/li&gt;
+&lt;li&gt;Maintainability - most underappreciated of the three, he argues the majority of cost isn&amp;#39;t in initial development but in ongoing maintainence.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;The data model wars - the skill isn&amp;#39;t in choosing the &amp;quot;best&amp;quot; database but in understanding which tradeoffs matter for your specific problem.&lt;/li&gt;
+&lt;li&gt;Storage engines. Two major approaches to read &amp;amp; write data from disk, neither is universally better.&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Log-structured storage&lt;/strong&gt; (like LSM-trees) optimizes for writes, every write is appended and the merged/compacted later.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Page-oriented storage&lt;/strong&gt; (like B-trees) optimizes for reads, data is stored in fixed-sized block, which then get updated in-place, more like filing cabinet with each document has a designated slot.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Instead of asking &amp;quot;how do I build this?&amp;quot; ask &amp;quot;what does it mean for this to work correctly?&amp;quot;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+</content:encoded>
+</item>
+<item>
 <guid>https://github.com/theskumar/til/blob/main/docs/CATEGORIZING_TIL_NOTES_WITH_EMBEDDINGS.md</guid>
 <link>https://github.com/theskumar/til/blob/main/docs/CATEGORIZING_TIL_NOTES_WITH_EMBEDDINGS.md</link>
 <title>TIL: Categorizing TIL Notes with Embeddings</title>
@@ -108,6 +150,22 @@
 </content:encoded>
 </item>
 <item>
+<guid>https://github.com/theskumar/til/blob/main/weekly/2026-02-14.md</guid>
+<link>https://github.com/theskumar/til/blob/main/weekly/2026-02-14.md</link>
+<title>TIL: Week of February 14, 2026</title>
+<pubDate>Sun, 15 Feb 2026 01:46:13 GMT</pubDate>
+<content:encoded>&lt;p&gt;Things I learned during the week ending February 14, 2026.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&quot;https://github.com/albertobadia/zoocache&quot;&gt;zoocache&lt;/a&gt; is a sematic dependency based cache manager, that support in-memory, LMDB or redis backends. Integration with &lt;a href=&quot;https://github.com/albertobadia/zoocache/blob/main/docs/django_user_guide.md&quot;&gt;Django&lt;/a&gt; looks interesting.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&quot;https://handy.computer/&quot;&gt;Handy&lt;/a&gt; Looks like a promising tool for to replace WisperFlow and VoiceInk for speech to text conversion. &lt;a href=&quot;https://dannysmith.notion.site/Danny-s-Software-313c769fa9c04819a37d813da0485c78&quot;&gt;via&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&quot;https://hono.dev/&quot;&gt;Hono&lt;/a&gt; based on web standards is a great option for js runtimes esp. if you plan to deploy your code to cloudflare workers, bun or deno. You get faster startup time and cross-platform compatibility.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+</content:encoded>
+</item>
+<item>
 <guid>https://github.com/theskumar/til/blob/main/weekly/2026-02-15.md</guid>
 <link>https://github.com/theskumar/til/blob/main/weekly/2026-02-15.md</link>
 <title>TIL: Week of February 15, 2026</title>
@@ -147,6 +205,31 @@
 </content:encoded>
 </item>
 <item>
+<guid>https://github.com/theskumar/til/blob/main/weekly/2026-01-31.md</guid>
+<link>https://github.com/theskumar/til/blob/main/weekly/2026-01-31.md</link>
+<title>TIL: Week of January 31, 2026</title>
+<pubDate>Thu, 05 Feb 2026 06:37:55 GMT</pubDate>
+<content:encoded>&lt;p&gt;Things I learned during the week ending January 31, 2026.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Notes on &amp;quot;How AI assistance impacts the formation of coding skills&amp;quot; &lt;a href=&quot;https://www.anthropic.com/research/AI-assistance-coding-skills&quot;&gt;Article&lt;/a&gt; &lt;a href=&quot;https://news.ycombinator.com/item?id=46820924&quot;&gt;HN&lt;/a&gt;&lt;ul&gt;
+&lt;li&gt;AI speeds up coding but reduces deep understanding and mastery&lt;/li&gt;
+&lt;li&gt;Juniors (1-3 years experience) showed speed improvements with AI, but 4+ year developers showed no difference&lt;/li&gt;
+&lt;li&gt;Modern software work is more about requirements, specs, documentation, and communication than raw coding skill&lt;/li&gt;
+&lt;li&gt;Small sample size (n&amp;lt;8) and study design limitations make results questionable&lt;/li&gt;
+&lt;li&gt;Takeaways:&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;Use AI for high-scoring interaction patterns&lt;/strong&gt;: Ask conceptual questions and request explanations rather than just code generation&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Adopt AI for documentation and specs&lt;/strong&gt;: Multiple developers report dramatic improvements in tickets, PRs, and documentation quality&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Be deliberate about learning&lt;/strong&gt;: If using AI, actively practice explaining concepts and avoid pure copy-paste workflows&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Use AI to reduce grunt work&lt;/strong&gt;: Let it handle boilerplate, test writing, and repetitive tasks while focusing on architecture and requirements&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;The research confirms what many suspected: AI coding assistants create a real trade-off between speed and skill development, but the practical significance is hotly contested.&lt;/strong&gt; The critical question isn&amp;#39;t whether AI reduces learning (it does), but whether deep coding skill remains as valuable as expressing requirements clearly—and whether we&amp;#39;re comfortable with a generation of developers who can&amp;#39;t function without AI assistance.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+</content:encoded>
+</item>
+<item>
 <guid>https://github.com/theskumar/til/blob/main/weekly/2026-02-01.md</guid>
 <link>https://github.com/theskumar/til/blob/main/weekly/2026-02-01.md</link>
 <title>TIL: Week of February 1, 2026</title>
@@ -166,6 +249,31 @@
 &lt;/ol&gt;
 &lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;The research confirms what many suspected: AI coding assistants create a real trade-off between speed and skill development, but the practical significance is hotly contested.&lt;/strong&gt; The critical question isn&amp;#39;t whether AI reduces learning (it does), but whether deep coding skill remains as valuable as expressing requirements clearly—and whether we&amp;#39;re comfortable with a generation of developers who can&amp;#39;t function without AI assistance.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+</content:encoded>
+</item>
+<item>
+<guid>https://github.com/theskumar/til/blob/main/weekly/2026-01-17.md</guid>
+<link>https://github.com/theskumar/til/blob/main/weekly/2026-01-17.md</link>
+<title>TIL: Week of January 17, 2026</title>
+<pubDate>Sun, 18 Jan 2026 01:19:56 GMT</pubDate>
+<content:encoded>&lt;p&gt;Things I learned during the week ending January 17, 2026.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;Distributed Key-value store -- &lt;a href=&quot;https://etcd.io/&quot;&gt;https://etcd.io/&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Learnt about &lt;a href=&quot;https://tryvoiceink.com/&quot;&gt;VoiceLink&lt;/a&gt;, an alternative to [Wispr Flow] that have been using as my STT software, with it&amp;#39;s pricing model VoiceLink might be better replacement if it performs as good as WisprFlow&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;The free-threaded version of python can be added to uv and github actions with &lt;code&gt;t&lt;/code&gt; suffix. e.g. &lt;code&gt;3.14t&lt;/code&gt; and &lt;code&gt;3.13t&lt;/code&gt; &lt;a href=&quot;https://github.com/actions/setup-python?tab=readme-ov-file#basic-usage&quot;&gt;source&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Puzer published a &lt;a href=&quot;https://puzer.github.io/github_recommender/&quot;&gt;github recommendor&lt;/a&gt; that uses semantic embedding from user&amp;#39;s github stars all client side, I found some great recommendations which I plan to use:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/pamburus/hl&quot;&gt;pamburus/hl&lt;/a&gt;: A fast and powerful log viewer and processor that converts JSON logs or logfmt logs into a clear human-readable format. (⭐2657)&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/samwho/spacer&quot;&gt;samwho/spacer&lt;/a&gt;: CLI tool to insert spacers when command output stops (⭐1663)&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/darrenburns/posting&quot;&gt;darrenburns/posting&lt;/a&gt;: The modern API client that lives in your terminal. (⭐11134)&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/plutov/oq&quot;&gt;plutov/oq&lt;/a&gt;: Terminal OpenAPI Spec viewer (⭐943)&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/wey-gu/py-pglite&quot;&gt;wey-gu/py-pglite&lt;/a&gt;: PGlite wrapper in Python for testing. Test your app with Postgres just as lite as SQLite. (⭐577)&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
@@ -195,223 +303,20 @@
 </content:encoded>
 </item>
 <item>
-<guid>https://github.com/theskumar/til/blob/main/weekly/2026-01-11.md</guid>
-<link>https://github.com/theskumar/til/blob/main/weekly/2026-01-11.md</link>
-<title>TIL: Week of January 11, 2026</title>
+<guid>https://github.com/theskumar/til/blob/main/weekly/2026-01-10.md</guid>
+<link>https://github.com/theskumar/til/blob/main/weekly/2026-01-10.md</link>
+<title>TIL: Week of January 10, 2026</title>
 <pubDate>Sun, 11 Jan 2026 01:21:03 GMT</pubDate>
-<content:encoded>&lt;p&gt;Things I learned during the week ending January 11, 2026.&lt;/p&gt;
+<content:encoded>&lt;p&gt;Things I learned during the week ending January 10, 2026.&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;p&gt;Text based diagramming tools:&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;https://github.com/yuzutech/kroki&quot;&gt;Kroki&lt;/a&gt; self-hosted solution for unified interface to buch of diagramming tools, including mermaid, d2, etc.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/yuzutech/kroki&quot;&gt;yuzutech/kroki&lt;/a&gt;: self-hosted solution for unified interface to buch of diagramming tools, including mermaid, d2, etc.! (⭐3875)&lt;/li&gt;
 &lt;li&gt;&lt;a href=&quot;https://github.com/terrastruct/d2&quot;&gt;d2&lt;/a&gt; provides a clean syntax and output as well.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;li&gt;&lt;p&gt;&amp;quot;&lt;a href=&quot;https://github.com/kraken-tech/django-pg-migration-tools?tab=readme-ov-file&quot;&gt;Django Postgres Migration Tools&lt;/a&gt; - add-on for safer and more scalable migrations in django.&lt;/p&gt;
 &lt;/li&gt;
-&lt;/ul&gt;
-</content:encoded>
-</item>
-<item>
-<guid>https://github.com/theskumar/til/blob/main/weekly/2025-12-28.md</guid>
-<link>https://github.com/theskumar/til/blob/main/weekly/2025-12-28.md</link>
-<title>TIL: Week of December 28, 2025</title>
-<pubDate>Sun, 28 Dec 2025 01:20:30 GMT</pubDate>
-<content:encoded>&lt;p&gt;Things I learned during the week ending December 28, 2025.&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;&lt;a href=&quot;https://nesbitt.io/2025/12/26/how-uv-got-so-fast.html&quot;&gt;how uv got so fast&lt;/a&gt;. UV performance is because of design decisions while rust contributes to micro optimizations. &lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Notes from &lt;a href=&quot;https://www.thoughtworks.com/content/dam/thoughtworks/documents/radar/2025/11/tr_technology_radar_vol_33_en.pdf&quot;&gt;Thoughtworks - Technology Radar vol 33&lt;/a&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;text-to-sql solutions aren&amp;#39;t working as expected&lt;/li&gt;
-&lt;li&gt;pnpm, langGraph, and pydantic recommended for adoption&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;&lt;a href=&quot;https://github.com/raineorshine/npm-check-updates&quot;&gt;&lt;code&gt;npx -y npm-check-updates&lt;/code&gt;&lt;/a&gt; tells you the latest versions of your &lt;code&gt;package.json&lt;/code&gt;, ignoring pinned versions.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;&lt;a href=&quot;https://en.wikipedia.org/wiki/Inversion_of_control&quot;&gt;Inversion of Control&lt;/a&gt; principle -- &amp;quot;Don&amp;#39;t call us, we&amp;#39;ll call you&amp;quot;.&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;This design principle is used widely in Web Frameworks, GUI programs, etc in the form of event listeners, dependency injections, callbacks to avoid boilerplate code, resuability and testability.&lt;/li&gt;
-&lt;li&gt;Some popular examples are DOM, Flask, &lt;a href=&quot;https://docs.nestjs.com/providers&quot;&gt;NestJS&lt;/a&gt;, Angular, etc.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-</content:encoded>
-</item>
-<item>
-<guid>https://github.com/theskumar/til/blob/main/weekly/2025-12-21.md</guid>
-<link>https://github.com/theskumar/til/blob/main/weekly/2025-12-21.md</link>
-<title>TIL: Week of December 21, 2025</title>
-<pubDate>Fri, 19 Dec 2025 15:58:02 GMT</pubDate>
-<content:encoded>&lt;p&gt;Things I learned during the week ending December 21, 2025.&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;New tools:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;https://github.com/gjtorikian/gh-actions-lockfile&quot;&gt;gh-actions-lockfile&lt;/a&gt; to generate and verify lockfiles for gh-actions&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;https://proxyman.com/&quot;&gt;Proxyman&lt;/a&gt; is more user-friendly http debugging proxy than Charles Proxy on MacOS&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;&amp;quot;Choose Boring Tech&amp;quot; by &lt;a href=&quot;https://boringtechnology.club/&quot;&gt;Dan McKinley&lt;/a&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&amp;quot;The failure mode of boring tech are well-understood&amp;quot;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Notes from &lt;a href=&quot;https://www.django-rapid-architecture.org/&quot;&gt;&amp;quot;Django rapid architecture&amp;quot;&lt;/a&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Recommends organizing the codebase with interfaces at the top layer followed by readers and &amp;quot;actions&amp;quot;, Finally, &amp;#39;data&amp;#39; as the bottom layer to organize Django codebase to allow for a simple code structure that allows for scaling&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;&lt;a href=&quot;https://github.com/tensorchord/VectorChord/&quot;&gt;VectorChord&lt;/a&gt; is a faster pgvector alternative.&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-</content:encoded>
-</item>
-<item>
-<guid>https://github.com/theskumar/til/blob/main/fts/pg_textsearch.md</guid>
-<link>https://github.com/theskumar/til/blob/main/fts/pg_textsearch.md</link>
-<title>TIL: BM25 Ranking in PostgreSQL with pg_textsearch</title>
-<pubDate>Fri, 19 Dec 2025 10:39:33 GMT</pubDate>
-<content:encoded>&lt;p&gt;Today I learned about &lt;strong&gt;pg_textsearch&lt;/strong&gt;, a new PostgreSQL extension by Timescale that brings BM25 relevance-ranked full-text search to Postgres.&lt;/p&gt;
-&lt;h2&gt;What is BM25?&lt;/h2&gt;
-&lt;p&gt;BM25 (Best Matching 25) is the industry-standard ranking algorithm used by search engines like Elasticsearch and Lucene. Unlike simple term frequency counting, BM25 provides smarter relevance scoring through:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;Term Frequency Saturation&lt;/strong&gt;: Mentioning a word 10 times isn&amp;#39;t 10x better than once—diminishing returns kick in&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Inverse Document Frequency (IDF)&lt;/strong&gt;: Rare terms get higher weight than common ones&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Document Length Normalization&lt;/strong&gt;: Short and long documents are compared fairly&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;The formula uses two tunable parameters:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;code&gt;k1&lt;/code&gt; (default 1.2): Controls term frequency saturation&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;b&lt;/code&gt; (default 0.75): Controls length normalization (0 = none, 1 = full)&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2&gt;Basic Usage&lt;/h2&gt;
-&lt;pre&gt;&lt;code class=&quot;language-sql&quot;&gt;-- Create a BM25 index
-CREATE INDEX docs_idx ON documents USING bm25(content)
-  WITH (text_config=&amp;#39;english&amp;#39;);
-
--- Search with the &amp;lt;@&amp;gt; operator (returns negative scores—lower is better)
-SELECT title, content &amp;lt;@&amp;gt; &amp;#39;database search&amp;#39; as score
-FROM documents
-ORDER BY content &amp;lt;@&amp;gt; &amp;#39;database search&amp;#39;
-LIMIT 10;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;h2&gt;pg_textsearch vs PostgreSQL Built-in FTS&lt;/h2&gt;
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;Aspect&lt;/th&gt;
-&lt;th&gt;PostgreSQL FTS&lt;/th&gt;
-&lt;th&gt;pg_textsearch (BM25)&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;&lt;tr&gt;
-&lt;td&gt;&lt;strong&gt;Ranking&lt;/strong&gt;&lt;/td&gt;
-&lt;td&gt;Basic term frequency&lt;/td&gt;
-&lt;td&gt;Probabilistic with IDF&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;&lt;strong&gt;Operator&lt;/strong&gt;&lt;/td&gt;
-&lt;td&gt;&lt;code&gt;@@&lt;/code&gt; with &lt;code&gt;tsquery&lt;/code&gt;&lt;/td&gt;
-&lt;td&gt;&lt;code&gt;&amp;lt;@&amp;gt;&lt;/code&gt;&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;&lt;strong&gt;Boolean queries&lt;/strong&gt;&lt;/td&gt;
-&lt;td&gt;Rich (&lt;code&gt;&amp;amp;&lt;/code&gt;, &lt;code&gt;|&lt;/code&gt;, &lt;code&gt;!&lt;/code&gt;, &lt;code&gt;&amp;lt;-&amp;gt;&lt;/code&gt;)&lt;/td&gt;
-&lt;td&gt;Simple (implicit AND)&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;&lt;strong&gt;Phrase search&lt;/strong&gt;&lt;/td&gt;
-&lt;td&gt;Yes&lt;/td&gt;
-&lt;td&gt;No&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;&lt;strong&gt;Highlighting&lt;/strong&gt;&lt;/td&gt;
-&lt;td&gt;&lt;code&gt;ts_headline()&lt;/code&gt;&lt;/td&gt;
-&lt;td&gt;No&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;&lt;strong&gt;Relevance quality&lt;/strong&gt;&lt;/td&gt;
-&lt;td&gt;Basic&lt;/td&gt;
-&lt;td&gt;Industry-standard&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;&lt;strong&gt;Maturity&lt;/strong&gt;&lt;/td&gt;
-&lt;td&gt;Battle-tested&lt;/td&gt;
-&lt;td&gt;Prerelease (v0.1.x)&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;&lt;/table&gt;
-&lt;h2&gt;When to Use Each&lt;/h2&gt;
-&lt;p&gt;&lt;strong&gt;Use PostgreSQL FTS when you need:&lt;/strong&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Complex boolean queries (&lt;code&gt;(postgresql | mysql) &amp;amp; !oracle&lt;/code&gt;)&lt;/li&gt;
-&lt;li&gt;Phrase search (&lt;code&gt;&amp;#39;full text search&amp;#39;&lt;/code&gt;)&lt;/li&gt;
-&lt;li&gt;Highlighting/snippets&lt;/li&gt;
-&lt;li&gt;Prefix matching (&lt;code&gt;data:*&lt;/code&gt;)&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;strong&gt;Use pg_textsearch when you need:&lt;/strong&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;High-quality relevance ranking (like Google/Elasticsearch)&lt;/li&gt;
-&lt;li&gt;Simple search box UX (type words, get ranked results)&lt;/li&gt;
-&lt;li&gt;Fair comparison across varying document lengths&lt;/li&gt;
-&lt;li&gt;Proper rare-term weighting&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2&gt;Hybrid Approach&lt;/h2&gt;
-&lt;p&gt;You can combine both—use FTS for filtering and BM25 for ranking:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-sql&quot;&gt;SELECT title, body &amp;lt;@&amp;gt; &amp;#39;database performance&amp;#39; as score
-FROM articles
-WHERE body_tsv @@ to_tsquery(&amp;#39;english&amp;#39;, &amp;#39;database &amp;amp; !mysql&amp;#39;)  -- FTS filter
-ORDER BY body &amp;lt;@&amp;gt; &amp;#39;database performance&amp;#39;  -- BM25 ranking
-LIMIT 10;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;h2&gt;Taking step further with Semantic Search&lt;/h2&gt;
-&lt;p&gt;Pure vector search might miss exact matches; pure keyword search misses synonyms. Hybrid gets the best of both — a search for &amp;quot;ML algorithms&amp;quot; would find documents about &amp;quot;machine learning techniques&amp;quot; (semantic) and those with the exact phrase (keyword).&lt;/p&gt;
-&lt;p&gt;This &lt;a href=&quot;https://www.tigerdata.com/blog/you-dont-need-elasticsearch-bm25-is-now-in-postgres&quot;&gt;article&lt;/a&gt; outlines with code sample how to combine BM25 with Vector Search in PostgreSQL.&lt;/p&gt;
-&lt;h2&gt;Key Takeaways&lt;/h2&gt;
-&lt;ol&gt;
-&lt;li&gt;BM25 is what makes modern search engines feel &amp;quot;smart&amp;quot;—it&amp;#39;s not just counting words&lt;/li&gt;
-&lt;li&gt;pg_textsearch brings this to Postgres without needing Elasticsearch&lt;/li&gt;
-&lt;li&gt;The &lt;code&gt;&amp;lt;@&amp;gt;&lt;/code&gt; operator returns negative scores (more negative = more relevant)&lt;/li&gt;
-&lt;li&gt;For production search, consider the hybrid approach: FTS for filtering, BM25 for ranking&lt;/li&gt;
-&lt;li&gt;The extension is still prerelease—not yet recommended for production&lt;/li&gt;
-&lt;/ol&gt;
-&lt;h2&gt;Resources&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;https://github.com/timescale/pg_textsearch&quot;&gt;pg_textsearch on GitHub&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;https://www.postgresql.org/docs/current/textsearch.html&quot;&gt;PostgreSQL Full Text Search Docs&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;https://www.tigerdata.com/blog/you-dont-need-elasticsearch-bm25-is-now-in-postgres&quot;&gt;Hybrid search using BM25 and pgVector&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</content:encoded>
-</item>
-<item>
-<guid>https://github.com/theskumar/til/blob/main/github/checkout-can-leak-github-creds.md</guid>
-<link>https://github.com/theskumar/til/blob/main/github/checkout-can-leak-github-creds.md</link>
-<title>TIL: actions/checkout may leak GitHub credentials</title>
-<pubDate>Tue, 10 Dec 2024 07:29:08 GMT</pubDate>
-<content:encoded>&lt;p&gt;The popular &lt;a href=&quot;https://github.com/actions/checkout&quot;&gt;&lt;code&gt;actions/checkout&lt;/code&gt;&lt;/a&gt; GitHub
-Action can unintentionally expose workflow credentials by saving them in the
-&lt;code&gt;.git/config&lt;/code&gt; file.&lt;/p&gt;
-&lt;p&gt;By default, it stores a copy of the workflow&amp;#39;s credential (either the default
-&lt;code&gt;secrets.GITHUB_TOKEN&lt;/code&gt; or a custom one) in the checked-out repository&amp;#39;s
-&lt;code&gt;.git/config&lt;/code&gt;.&lt;/p&gt;
-&lt;p&gt;This is problematic because CI workflows often archive and upload the repository
-as a workflow artifact. A team at Palo Alto Networks discovered that many
-projects inadvertently leak credentials this way.&lt;/p&gt;
-&lt;p&gt;GitHub is aware of this and considers it intentional behavior, which is
-concerning. To prevent credentials from being added to your &lt;code&gt;.git/config&lt;/code&gt;,
-GitHub suggests running actions/checkout with the following configuration:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-yml&quot;&gt;uses: actions/checkout@v4
-  with:
-    persist-credentials: false
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Mitigate this risk by explicitly setting &lt;code&gt;persist-credentials: false&lt;/code&gt; when using
-the action. This ensures sensitive information isn&amp;#39;t accidentally leaked through
-artifact uploads.&lt;/p&gt;
-&lt;p&gt;Also, consider using &lt;a href=&quot;https://github.com/woodruffw/zizmor&quot;&gt;zizmor&lt;/a&gt; to scan your GitHub Actions
-workflows for potential credential leaks.&lt;/p&gt;
-&lt;h2&gt;References&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;https://unit42.paloaltonetworks.com/github-repo-artifacts-leak-tokens/&quot;&gt;Palo Alto Networks Blog Post&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;https://blog.yossarian.net/2024/12/06/zizmor-ultralytics-injection&quot;&gt;zizmor would have caught the Ultralytics workflow vulnerability&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 </content:encoded>
 </item>
