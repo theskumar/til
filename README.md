@@ -4,6 +4,25 @@ A collection of useful things I've learned. Inspired by [jakelazaroff/til/](http
 
 Subscribe via [RSS](https://saurabh-kumar.com/til/rss.xml)!
 
+## Contributing
+
+**Quick note** — append a dated bullet to [`til.md`](./til.md):
+
+```
+- DD Mon YYYY. Your note here.
+  Optional continuation line (indent with exactly 2 spaces).
+```
+
+**Standalone article** — create `<category>/<slug>.md` starting with a `# Title` heading:
+
+```
+react/use-memo-pitfalls.md
+vscode/multi-cursor-tricks.md
+```
+
+Push to `main` and CI automatically updates this index and the RSS feed.
+For local preview of weekly digests: `npm install && node extract-weekly.js`
+
 ---
 
 20 TILs so far:
