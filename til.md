@@ -1,3 +1,8 @@
+# Mar 2025
+
+- 17 Mar 2026. Every layer of review makes you 10x slower via [apenwarr](https://apenwarr.ca/log/20260316)
+
+
 # Feb 2025
 
 - 20 Feb 2026. `brew install git-trim` [git-trim](https://github.com/foriequal0/git-trim) - A dedicated binary for safely deleting merged branches. Handles edge cases better than bash one-liners, including squash-merged branches. [#](https://news.ycombinator.com/item?id=47089533)
