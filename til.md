@@ -1,7 +1,7 @@
 # Mar 2025
 
+- 21 Mar 2026. [`moor`](https://github.com/walles/moor) is a better replacement for less and bat as PAGER.
 - 17 Mar 2026. Every layer of review makes you 10x slower via [apenwarr](https://apenwarr.ca/log/20260316)
-
 
 # Feb 2025
 
