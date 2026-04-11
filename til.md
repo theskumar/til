@@ -1,16 +1,37 @@
-# Mar 2025
+# Apr 2026
 
-- 21 Mar 2026. [`moor`](https://github.com/walles/moor) is a better replacement for less and bat as PAGER.
-- 17 Mar 2026. Every layer of review makes you 10x slower via [apenwarr](https://apenwarr.ca/log/20260316)
+- 12 Apr 2026. [FluidVoice](https://github.com/altic-dev/FluidVoice) with paraquet v2 is soemthing i've been using now as my default speech-to-text on Mac, after evaluating WisperFlow, Handy and VoiceInk.
+- 12 Apr 2026. [thaw](https://github.com/stonerl/Thaw) a fork of Ice. I'm switching to it, as Ice seems to the inactive now. #mac
+- 04 Apr 2026. [mise](https://github.com/jdx/mise) let's you manage dependencies at OS level and project level. Thinking to manage my dev machine. The hard part is documenting what I have installed.
+- 02 Apr 2026. [Django Modern REST](https://django-modern-rest.readthedocs.io) seems to be an emerging REST API library with focus on performance, scalability and pluggable serializers. Supporting msgpack, CBV and less of sync_to_async. Might evaluate it against the my current preferred `django-ninja`. [gemini](https://gemini.google.com/app/1aa113e0b21dd18f)
 
-# Feb 2025
+# Mar 2026
 
-- 20 Feb 2026. `brew install git-trim` [git-trim](https://github.com/foriequal0/git-trim) - A dedicated binary for safely deleting merged branches. Handles edge cases better than bash one-liners, including squash-merged branches. [#](https://news.ycombinator.com/item?id=47089533)
+- 24 Mar 2026. [pageindex](https://github.com/VectifyAI/PageIndex/) generates a semantic tree-like json index of a lengthy document to allow for reasoning based RAG without the need for vectordb.
+- 21 Mar 2026. [`moor`](https://github.com/walles/moor) is a better replacement for less and bat as PAGER. - 17 Mar 2026. Every layer of review makes you 10x slower via [apenwarr](https://apenwarr.ca/log/20260316)
+
+# Feb 2026
+
+- 20 Feb 2026. `brew install git-trim` [git-trim](https://github.com/foriequal0/git-trim) - A dedicated binary for
+  safely deleting merged branches. Handles edge cases better than bash one-liners, including squash-merged branches. [#](https://news.ycombinator.com/item?id=47089533)
 - 19 Feb 2026. [slingdata-io/sling-cli](https://github.com/slingdata-io/sling-cli) is a promising tool move/sync data between databases and files, esp. helpful for local testing, ci/cd while able to do stage/sql based transformations.
 - 16 Feb 2026. https://modern-css.com/ has a really nice collection of CSS replacements for older hacks.
+
 - 16 Feb 2026. [panphora/overtype](https://github.com/panphora/overtype): The markdown editor that's just a textarea with a small size footprint and a minimum looking UI https://overtype.dev (⭐3431) #markdown
-- 15 Feb 2026. For generating embedding locally, [nomic-embed-text](https://ollama.com/library/nomic-embed-text) is a large context length text encoder that [surpasses](https://www.nomic.ai/news/nomic-embed-text-v1) OpenAI text-embedding-ada-002 and text-embedding-3-small performance on short and long context tasks. It has a balance of speed, 8k context, and accuracy for English-centric apps. BGE-M3, Qwen3-Embedding and E5-Small are other alternatives. #embeddings
-- 15 Feb 2026. [alibaba/zvec](https://github.com/alibaba/zvec) by alibaba is an embedded vector database supports both spare and dense vectors, along with structured data. It can be considered the sqlite of vector databases.
+
+- 15 Feb 2026. For generating embedding locally,
+  [nomic-embed-text](https://ollama.com/library/nomic-embed-text) is a large
+  context length text encoder that
+  [surpasses](https://www.nomic.ai/news/nomic-embed-text-v1) OpenAI
+  text-embedding-ada-002 and text-embedding-3-small performance on short and
+  long context tasks. It has a balance of speed, 8k context, and accuracy for
+  English-centric apps. BGE-M3, Qwen3-Embedding and E5-Small are other
+  alternatives. #embeddings
+
+- 15 Feb 2026. [alibaba/zvec](https://github.com/alibaba/zvec) by alibaba is an
+  embedded vector database supports both spare and dense vectors, along with
+  structured data. It can be considered the sqlite of vector databases.
+
 - 15 Feb 2026. [yichuan-w/LEANN](https://github.com/yichuan-w/LEANN) is a RAG focused framework focused on efficient storage with built-in chunking strategies embedding model management and MCP server. [gemini](https://gemini.google.com/app/c627885d0bf34a2d)
 - 15 Feb 2026. [K-dense](https://www.k-dense.ai/) known for using skills to enable deep research has published [140+ skills](ttps://github.com/K-Dense-AI/claude-scientific-skills) related to scientic research including literature review, data analysis, etc.
 - 13 Feb 2026. [zoocache](https://github.com/albertobadia/zoocache) is a sematic dependency based cache manager, that support in-memory, LMDB or redis backends. Integration with [Django](https://github.com/albertobadia/zoocache/blob/main/docs/django_user_guide.md) looks interesting.
@@ -35,7 +56,7 @@
     - **Page-oriented storage** (like B-trees) optimizes for reads, data is stored in fixed-sized block, which then get updated in-place, more like filing cabinet with each document has a designated slot.
   - Instead of asking "how do I build this?" ask "what does it mean for this to work correctly?"
 
-# Jan 2025
+# Jan 2026
 
 - 31 Jan 2026. Notes on "How AI assistance impacts the formation of coding skills" [Article](https://www.anthropic.com/research/AI-assistance-coding-skills) [HN](https://news.ycombinator.com/item?id=46820924)
   - AI speeds up coding but reduces deep understanding and mastery
