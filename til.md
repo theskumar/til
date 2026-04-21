@@ -1,5 +1,10 @@
 # Apr 2026
 
+- 22 Apr 2026. A good collection of practices on automated AI code reviews by [Ankit Jain](https://www.latent.space/p/reviews-dead)
+  - The Scalability Crisis: Manual post-PR review is no longer viable. AI agents have nearly doubled code output, causing human review time to spike by 91%, creating a bottleneck that traditional workflows cannot solve.
+  - The Upstream Pivot: Human value must shift from reviewing implementation to defining intent. Instead of checking syntax, humans spend their energy writing rigorous specs and acceptance criteria before the code is written, which the machine then uses to self-verify.
+  - The Swiss-Cheese Defense: Rather than one "perfect" human gate, the model uses a stack of imperfect automated layers. By layering signals like agent competition, deterministic guardrails, and adversarial "red-team" agents, the system catches errors where their individual failure modes don't overlap.
+- 12 Apr 2026. [codespelunker](https://github.com/boyter/cs?tab=readme-ov-file) is a CLI code search tool that understands code structure and ranks results by relevance. No indexing required with CLI, TUI, MCP and HTTP support.
 - 12 Apr 2026. [FluidVoice](https://github.com/altic-dev/FluidVoice) with paraquet v2 is soemthing i've been using now as my default speech-to-text on Mac, after evaluating WisperFlow, Handy and VoiceInk.
 - 12 Apr 2026. [thaw](https://github.com/stonerl/Thaw) a fork of Ice. I'm switching to it, as Ice seems to the inactive now. #mac
 - 04 Apr 2026. [mise](https://github.com/jdx/mise) let's you manage dependencies at OS level and project level. Thinking to manage my dev machine. The hard part is documenting what I have installed.
