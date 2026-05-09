@@ -1,3 +1,8 @@
+# May 2026
+
+- 09 May 2026. Use HTML instead of markdown to effectively plan and review. [Claude Code: The Unreasonable Effectiveness of HTML" / X](https://x.com/trq212/status/2052809885763747935)
+- 09 May 2026. [colbymchenry/codegraph](https://github.com/colbymchenry/codegraph): Pre-indexed code knowledge graph for Claude Code — fewer tokens, fewer tool calls, 100% local
+
 # Apr 2026
 
 - 22 Apr 2026. A good collection of practices on automated AI code reviews by [Ankit Jain](https://www.latent.space/p/reviews-dead)
