@@ -1,5 +1,6 @@
 # May 2026
 
+- 29 May 2026. [Dynamic workflows](https://claude.com/blog/introducing-dynamic-workflows-in-claude-code) in Claude Code. Claude dynamically writes orchestration scripts that spawn tens to hundreds of parallel subagents. It plans, decomposes into subtasks, fans out agents, and checks results before returning a coordinated answer. Adversarial agents try to refute findings, iterating until convergence. Enable via `ultracode` setting or ask Claude to "create a workflow". Notable: Jarred Sumner used it to port Bun from Zig to Rust (~750K lines, 11 days). Available on Max, Team, Enterprise plans. Consumes significantly more tokens than typical sessions.
 - 09 May 2026. Use HTML instead of markdown to effectively plan and review. [Claude Code: The Unreasonable Effectiveness of HTML" / X](https://x.com/trq212/status/2052809885763747935)
 - 09 May 2026. [colbymchenry/codegraph](https://github.com/colbymchenry/codegraph): Pre-indexed code knowledge graph for Claude Code — fewer tokens, fewer tool calls, 100% local
 
