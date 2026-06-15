@@ -1,3 +1,9 @@
+# Jun 2026
+
+- 15 Jun 2026. [Moshi](https://getmoshi.app/) is the best SSH client I've found for iPhone — connects to your laptop's tmux sessions over [Mosh](https://mosh.org/), making it rock-solid on mobile networks with roaming support. Perfect for an agent view on the go; I use it to monitor and interact with running pi/Claude sessions from my iPhone without losing the session on network switches.
+- 08 Jun 2026. [faberic](https://github.com/danielmiessler/fabric) is a crowd-sourced collection of prompts bundeled with a cli to use them via piped interfaces. 
+- 08 Jun 2026. [karpathy/autoresearch] is a concept/framework that allows one to leverage LLM to run an optimization loops based on a criteria. [davebcn87/pi-autoresearch](https://github.com/davebcn87/pi-autoresearch) takes this further has built a generic optimization long run loop method on top of pi agent. [gemini](https://gemini.google.com/app/7dcee9714f7955ce)
+
 # May 2026
 
 - 29 May 2026. [Dynamic workflows](https://claude.com/blog/introducing-dynamic-workflows-in-claude-code) in Claude Code. Claude dynamically writes orchestration scripts that spawn tens to hundreds of parallel subagents. It plans, decomposes into subtasks, fans out agents, and checks results before returning a coordinated answer. Adversarial agents try to refute findings, iterating until convergence. Enable via `ultracode` setting or ask Claude to "create a workflow". Notable: Jarred Sumner used it to port Bun from Zig to Rust (~750K lines, 11 days). Available on Max, Team, Enterprise plans. Consumes significantly more tokens than typical sessions.
