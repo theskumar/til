@@ -120,6 +120,7 @@ function layout(title, body, { activeNav = "", canonical = "" } = {}) {
     ["Home", `${BASE_URL}/`],
     ["Articles", `${BASE_URL}/articles/`],
     ["Weekly", `${BASE_URL}/weekly/`],
+    ["Tags", `${BASE_URL}/tags/`],
   ];
 
   const navHTML = nav
@@ -510,20 +511,23 @@ html.theme-anim *::after {
   border-top: 1px solid var(--border);
 }
 .week-list li:first-child { border-top: 0; }
-.week-list a {
+.week-row {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
+  gap: 12px;
+}
+.week-link {
   text-decoration: none;
   color: var(--heading);
   font-size: 1rem;
 }
-.week-list a:hover { color: var(--accent); }
+.week-link:hover { color: var(--accent); }
 .week-list .week-title { font-weight: 450; }
 .week-list .week-meta {
   display: flex;
-  align-items: baseline;
-  gap: 10px;
+  align-items: center;
+  gap: 8px;
   flex-shrink: 0;
 }
 .week-list .week-count {
@@ -531,7 +535,9 @@ html.theme-anim *::after {
   font-size: 0.78rem;
   color: var(--muted);
   flex-shrink: 0;
+  text-decoration: none;
 }
+.week-list .week-count:hover { color: var(--heading); }
 .week-tags {
   display: flex;
   flex-wrap: wrap;
@@ -545,6 +551,34 @@ html.theme-anim *::after {
   padding: 1px 7px;
   border-radius: 3px;
   letter-spacing: 0.02em;
+  text-decoration: none;
+}
+a.tag:hover {
+  background: var(--border-strong);
+  color: var(--heading);
+}
+
+/* Tag index */
+.tag-cloud {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 1.5rem 0;
+}
+.tag-cloud .tag {
+  font-size: 0.82rem;
+  padding: 4px 12px;
+}
+.tag-count {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--faint);
+  margin-left: 4px;
+}
+.note-tags {
+  display: inline-flex;
+  gap: 4px;
+  margin-left: 6px;
 }
 
 /* Article list */
@@ -668,9 +702,9 @@ function buildHomePage(weeks, articles) {
       const title = formatWeekTitle(weekEnd);
       const weekTags = [...new Set(notes.flatMap(n => n.tags))].sort();
       const tagsHTML = weekTags.length
-        ? `<span class="week-tags">${weekTags.map(t => `<span class="tag">${escapeHTML(t)}</span>`).join("")}</span>`
+        ? `<span class="week-tags">${weekTags.map(t => `<a href="${BASE_URL}/tags/${t}.html" class="tag" onclick="event.stopPropagation()">${escapeHTML(t)}</a>`).join("")}</span>`
         : "";
-      return `<li><a href="${BASE_URL}/weekly/${weekEnd}.html"><span class="week-title">${title}</span><span class="week-meta">${tagsHTML}<span class="week-count">${notes.length} note${notes.length !== 1 ? "s" : ""}</span></span></a></li>`;
+      return `<li><div class="week-row"><a href="${BASE_URL}/weekly/${weekEnd}.html" class="week-link"><span class="week-title">${title}</span></a><span class="week-meta">${tagsHTML}<a href="${BASE_URL}/weekly/${weekEnd}.html" class="week-count">${notes.length} note${notes.length !== 1 ? "s" : ""}</a></span></div></li>`;
     })
     .join("\n");
 
@@ -819,6 +853,67 @@ function buildArticlePage(article) {
 }
 
 // ---------------------------------------------------------------------------
+// Tag pages
+// ---------------------------------------------------------------------------
+
+function groupByTag(notes) {
+  const tags = new Map();
+  for (const note of notes) {
+    for (const tag of note.tags) {
+      if (!tags.has(tag)) tags.set(tag, []);
+      tags.get(tag).push(note);
+    }
+  }
+  return new Map([...tags].sort((a, b) => a[0].localeCompare(b[0])));
+}
+
+function buildTagsIndexPage(tagMap) {
+  const tagsHTML = [...tagMap.entries()]
+    .map(([tag, notes]) =>
+      `<a href="${BASE_URL}/tags/${tag}.html" class="tag">${escapeHTML(tag)}<span class="tag-count">${notes.length}</span></a>`
+    )
+    .join("\n");
+
+  const body = `
+<div class="page-head">
+  <h1>Tags</h1>
+  <p class="sub">${tagMap.size} tags across all notes.</p>
+</div>
+<div class="tag-cloud">
+  ${tagsHTML}
+</div>`;
+
+  return layout("Tags", body, { activeNav: "Tags", canonical: `${BASE_URL}/tags/` });
+}
+
+function buildTagPage(tag, notes) {
+  const sorted = [...notes].sort((a, b) => b.date - a.date);
+  const notesHTML = sorted
+    .map((note) => {
+      const dateStr = formatDate(note.date);
+      const html = renderNoteHTML(note);
+      const otherTags = note.tags.filter(t => t !== tag);
+      const otherTagsHTML = otherTags.length
+        ? `<span class="note-tags">${otherTags.map(t => `<a href="${BASE_URL}/tags/${t}.html" class="tag">${escapeHTML(t)}</a>`).join("")}</span>`
+        : "";
+      return `<li><span class="note-date">${dateStr}${otherTagsHTML}</span>${html}</li>`;
+    })
+    .join("\n");
+
+  const body = `
+<div class="page-head">
+  <h1>#${escapeHTML(tag)}</h1>
+  <p class="sub">${notes.length} note${notes.length !== 1 ? "s" : ""}</p>
+</div>
+<ul class="notes-list">
+  ${notesHTML}
+</ul>
+<a class="view-all" href="${BASE_URL}/tags/">&larr; All tags</a>`;
+
+  return layout(`#${tag}`, body, { activeNav: "Tags", canonical: `${BASE_URL}/tags/${tag}.html` });
+}
+
+// ---------------------------------------------------------------------------
 // RSS
 // ---------------------------------------------------------------------------
 
@@ -924,6 +1019,15 @@ async function build() {
 
   // Articles index
   await fs.writeFile(path.join(SITE_DIR, "articles", "index.html"), buildArticlesIndexPage(articles));
+
+  // Tag pages
+  const tagMap = groupByTag(allNotes);
+  await fs.mkdir(path.join(SITE_DIR, "tags"), { recursive: true });
+  await fs.writeFile(path.join(SITE_DIR, "tags", "index.html"), buildTagsIndexPage(tagMap));
+  for (const [tag, tagNotes] of tagMap) {
+    await fs.writeFile(path.join(SITE_DIR, "tags", `${tag}.html`), buildTagPage(tag, tagNotes));
+  }
+  console.log(`  ${tagMap.size} tags`);
 
   // RSS
   await fs.writeFile(path.join(SITE_DIR, "rss.xml"), buildRSS(weeks, articles));
