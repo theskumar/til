@@ -63,6 +63,7 @@ jobs:
             // collect entries
             const files = await glob.create("./**/*.md").then(globber => globber.glob());
             const entries = files
+              .filter(name => !name.includes("/node_modules/"))
               .filter(name => !name.endsWith("/README.md"))
               .filter(name => !name.endsWith("/til.md"))
               .filter(name => !name.endsWith("/CLAUDE.md"))
