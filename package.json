@@ -1,4 +1,8 @@
 {
+  "scripts": {
+    "build": "node build-site.js",
+    "preview": "node build-site.js && npx -y http-server _site -p 8787 -c-1"
+  },
   "dependencies": {
     "he": "^1.2.0",
     "marked": "^17.0.6"

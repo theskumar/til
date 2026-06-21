@@ -1,23 +1,27 @@
-# This script:
-# 1. Extracts weekly notes from til.md into weekly/*.md files (runs weekly)
+# This workflow:
+# 1. Extracts weekly notes from til.md into weekly/*.md files
 # 2. Creates a README.md with an index of all TIL files
 # 3. Generates an RSS feed
-#
-# The readme is split into two sections: the "header" and the "index",
-# separated by three hyphens on their own line.
-# Anything above the three hyphens is the "header" and will be kept as is.
-# Anything below will be replaced by the "index".
+# 4. Builds static HTML site and deploys to GitHub Pages
 
-name: Build README
+name: Build & Deploy
 
 on:
   push:
     branches:
       - main
   schedule:
-    # Run every Sunday at midnight UTC to generate the completed week
     - cron: "0 0 * * 0"
-  workflow_dispatch: # Allow manual triggering
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
 
 jobs:
   build:
@@ -26,7 +30,15 @@ jobs:
       - name: Check out repo
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0 # get full history or else it'll be overwritten
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm install
 
       - name: Extract weekly notes
         run: node extract-weekly.js
@@ -51,10 +63,10 @@ jobs:
             // collect entries
             const files = await glob.create("./**/*.md").then(globber => globber.glob());
             const entries = files
-              .filter(name => !name.endsWith("/README.md")) // exclude README.md
-              .filter(name => !name.endsWith("/til.md")) // exclude til.md
-              .filter(name => !name.endsWith("/CLAUDE.md")) // exclude CLAUDE.md
-              .filter(name => name.split("/").length > 1) // exclude top-level markdown files
+              .filter(name => !name.endsWith("/README.md"))
+              .filter(name => !name.endsWith("/til.md"))
+              .filter(name => !name.endsWith("/CLAUDE.md"))
+              .filter(name => name.split("/").length > 1)
               .sort()
               .map(name => name.split("/").slice(-2));
 
@@ -70,10 +82,7 @@ jobs:
 
             // create a section for each category
             for (const [category, entries] of categories.entries()) {
-              // write category header
               readme += `\n## ${category}\n\n`;
-
-              // write link for each file
               for (const file of entries) {
                 const filepath = [category, file].join("/");
                 const contents = await readFile(filepath).then(file => file.toString());
@@ -86,93 +95,29 @@ jobs:
             // write readme
             await writeFile("README.md", readme);
 
-      - name: Install NPM libraries
-        run: npm install marked he
-
-      - name: Generate RSS
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const { readFile, writeFile, stat } = require("node:fs/promises");
-            const { promisify } = require("node:util");
-            const run = promisify(require("node:child_process").exec);
-
-            const marked = require("marked").marked;
-            const he = require("he");
-
-            console.log("Building feed…");
-
-            // collect entries
-            const files = await glob.create("./**/*.md").then(globber => globber.glob());
-            const modified = files
-              .filter(name => !name.includes("/node_modules/")) // exclude node_modules
-              .filter(name => !name.endsWith("/README.md")) // exclude README.md
-              .filter(name => !name.endsWith("/til.md")) // exclude til.md
-              .filter(name => !name.endsWith("/CLAUDE.md")) // exclude CLAUDE.md
-              .filter(name => name.split("/").length > 1) // exclude top-level markdown files
-              .map(name => name.split("/").slice(-2).join("/"))
-              .map(async file => [file, await run("git log --follow --format=%ad --date=unix " + file)]);
-
-            const entries = await Promise.all(modified);
-            const sorted = entries
-              .map(([name, created]) => [name, created.stdout.trim().split("\n").at(-1)])
-              .sort(([, a], [, b]) => b.localeCompare(a))
-              .slice(0, 10)
-              .map(async ([name, date]) => ({
-                name,
-                date: new Date(Number(date) * 1000),
-                content: await readFile(name).then(buf => buf.toString())
-              }));
-            const feed = await Promise.all(sorted);
-
-            const user = context.repo.owner;
-            const repo = context.repo.repo;
-            const branch = context.payload.repository.default_branch;
-
-            const link = `https://github.com/${user}/${repo}`;
-
-            const rss = [];
-            rss.push(`<?xml version="1.0" encoding="UTF-8"?>`);
-            rss.push(`<rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/">`);
-            rss.push(`<channel>`);
-            rss.push(`<title>${user} TIL</title>`);
-            rss.push(`<description>A collection of useful things I've learned.</description>`);
-            rss.push(`<link>${link}</link>`);
-
-            const dateOptions = { year: "numeric", month: "short", day: "numeric", hour: "2-digit", minute: "2-digit", second: "2-digit", timeZoneName: "short" };
-            for (const item of feed) {
-              rss.push(`<item>`);
-              const itemLink = `${link}/blob/${branch}/${item.name}`;
-              rss.push(`<guid>${itemLink}</guid>`);
-              rss.push(`<link>${itemLink}</link>`);
-
-              const match = item.content.match(/^# (.+)$/m);
-              const title = match ? match[1] : item.name;
-              rss.push(`<title>TIL: ${he.escape(title)}</title>`);
-
-              const pubDate = new Intl.DateTimeFormat("en-US", dateOptions).format(item.date);
-              rss.push(`<pubDate>${item.date.toUTCString()}</pubDate>`);
-
-              const content = item.content.split("\n").slice(1).join("\n").trim();
-              const encoded = he.escape(marked(content));
-              rss.push(`<content:encoded>${encoded}</content:encoded>`);
-
-              rss.push(`</item>`);
-            }
-
-            rss.push(`</channel>`);
-            rss.push(`</rss>`);
-
-
-            // write feed
-            await writeFile("rss.xml", rss.join("\n"));
-            console.log(rss.join("\n"));
-            console.log("Done.")
-
-      - name: Commit and push if changed
+      - name: Commit repo changes
         run: |-
           git config --global user.email "actions@users.noreply.github.com"
           git config --global user.name "TIL Bot"
           git add -A
           git diff --staged --quiet || git commit --message "Update weekly notes, README.md, and rss.xml"
           git push
+
+      - name: Build static site
+        run: node build-site.js
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
