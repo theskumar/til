@@ -784,7 +784,11 @@ function buildWeeklyIndexPage(weeks) {
   const listHTML = [...weeks.entries()]
     .map(([weekEnd, notes]) => {
       const title = formatWeekTitle(weekEnd);
-      return `<li><a href="${BASE_URL}/weekly/${weekEnd}.html"><span class="week-title">${title}</span><span class="week-count">${notes.length} note${notes.length !== 1 ? "s" : ""}</span></a></li>`;
+      const weekTags = [...new Set(notes.flatMap(n => n.tags))].sort();
+      const tagsHTML = weekTags.length
+        ? `<span class="week-tags">${weekTags.map(t => `<a href="${BASE_URL}/tags/${t}.html" class="tag" onclick="event.stopPropagation()">${escapeHTML(t)}</a>`).join("")}</span>`
+        : "";
+      return `<li><div class="week-row"><a href="${BASE_URL}/weekly/${weekEnd}.html" class="week-link"><span class="week-title">${title}</span></a><span class="week-meta">${tagsHTML}<a href="${BASE_URL}/weekly/${weekEnd}.html" class="week-count">${notes.length} note${notes.length !== 1 ? "s" : ""}</a></span></div></li>`;
     })
     .join("\n");
 
