@@ -28,6 +28,7 @@ function extractNotes(markdown) {
       current = {
         date: new Date(`${month} ${day}, ${year}`),
         lines: [text],
+        tags: [],
       };
     } else if (current && line.startsWith("  ")) {
       current.lines.push(line.slice(2));
@@ -37,6 +38,11 @@ function extractNotes(markdown) {
     }
   }
   if (current) notes.push(current);
+  for (const note of notes) {
+    const text = note.lines.join(" ");
+    const tagMatches = text.match(/#([a-zA-Z][a-zA-Z0-9_-]*)/g);
+    note.tags = tagMatches ? [...new Set(tagMatches.map(t => t.slice(1).toLowerCase()))] : [];
+  }
   return notes;
 }
 
@@ -514,10 +520,31 @@ html.theme-anim *::after {
 }
 .week-list a:hover { color: var(--accent); }
 .week-list .week-title { font-weight: 450; }
+.week-list .week-meta {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  flex-shrink: 0;
+}
 .week-list .week-count {
   font-family: var(--font-mono);
   font-size: 0.78rem;
   color: var(--muted);
+  flex-shrink: 0;
+}
+.week-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+.tag {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  background: var(--tag-bg);
+  color: var(--tag-text);
+  padding: 1px 7px;
+  border-radius: 3px;
+  letter-spacing: 0.02em;
 }
 
 /* Article list */
@@ -639,7 +666,11 @@ function buildHomePage(weeks, articles) {
   const weekListHTML = recentWeeks
     .map(([weekEnd, notes]) => {
       const title = formatWeekTitle(weekEnd);
-      return `<li><a href="${BASE_URL}/weekly/${weekEnd}.html"><span class="week-title">${title}</span><span class="week-count">${notes.length} note${notes.length !== 1 ? "s" : ""}</span></a></li>`;
+      const weekTags = [...new Set(notes.flatMap(n => n.tags))].sort();
+      const tagsHTML = weekTags.length
+        ? `<span class="week-tags">${weekTags.map(t => `<span class="tag">${escapeHTML(t)}</span>`).join("")}</span>`
+        : "";
+      return `<li><a href="${BASE_URL}/weekly/${weekEnd}.html"><span class="week-title">${title}</span><span class="week-meta">${tagsHTML}<span class="week-count">${notes.length} note${notes.length !== 1 ? "s" : ""}</span></span></a></li>`;
     })
     .join("\n");
 
