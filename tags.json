@@ -1,0 +1,113 @@
+{
+  "python": {
+    "description": "Python ecosystem, packaging, runtime",
+    "keywords": ["python", "uv ", "pydantic", "pypi", "pip ", "venv", "pytest", "mypy", "ruff", "pyright", "python-ty"],
+    "patterns": ["free-threaded", "cpython", "\\.py\\b"]
+  },
+  "django": {
+    "description": "Django framework, libraries, patterns",
+    "keywords": ["django"],
+    "patterns": ["django-", "drf", "django_"]
+  },
+  "ai": {
+    "description": "LLMs, agents, AI coding, prompt engineering",
+    "keywords": ["llm", "claude", "openai", "gpt", "ollama", "anthropic", "langchain", "langgraph", "autoresearch", "subagent"],
+    "excludeUrls": ["gemini.google.com"],
+    "patterns": ["ai\\b", "\\bml\\b", "model\\b.*\\b(launch|release)", "coding skill", "code review.*ai", "dynamic workflow"]
+  },
+  "tools": {
+    "description": "CLI tools, dev utilities, productivity",
+    "keywords": ["cli", "brew install", "npx", "cargo install"],
+    "patterns": ["\\bcli\\b", "command.line", "terminal tool"]
+  },
+  "devops": {
+    "description": "CI/CD, infrastructure, deployment, containers",
+    "keywords": ["nginx", "docker", "kubernetes", "ci/cd", "github actions", "workflow", "lockfile"],
+    "patterns": ["deploy", "gh-actions", "\\.ya?ml\\b.*workflow"]
+  },
+  "databases": {
+    "description": "Databases, key-value stores, data storage",
+    "keywords": ["postgres", "postgresql", "sqlite", "redis", "valkey", "etcd", "duckdb", "database", "sql", "migration"],
+    "patterns": ["\\bdb\\b", "key.value store", "vector.?db", "data.intensive"]
+  },
+  "performance": {
+    "description": "Optimization, benchmarks, speed",
+    "keywords": ["benchmark", "latency", "throughput", "optimization"],
+    "patterns": ["got so fast", "startup time", "zero.copy"]
+  },
+  "javascript": {
+    "description": "JavaScript, Node.js, TypeScript, JS runtimes",
+    "keywords": ["javascript", "node.js", "nodejs", "typescript", "npm", "pnpm", "deno", "hono"],
+    "patterns": ["\\bjs\\b.*runtime", "package\\.json", "cloudflare worker"]
+  },
+  "macos": {
+    "description": "macOS apps, utilities, system tools",
+    "keywords": ["macos", "mac ", "macbook", "proxyman", "moshi", "ice ", "thaw"],
+    "patterns": ["\\bmac\\b", "menu.?bar", "iphone", "speech.to.text", "\\bstt\\b"]
+  },
+  "architecture": {
+    "description": "Design principles, system design, patterns",
+    "keywords": ["architecture", "inversion of control", "ioc", "scalability", "reliability", "maintainability", "design principle"],
+    "patterns": ["boring tech", "design.intensive", "tradeoff", "how (to|do i) build"]
+  },
+  "rag": {
+    "description": "RAG, embeddings, vector search, semantic retrieval",
+    "keywords": ["rag", "embedding", "vector", "semantic", "chunking", "nomic-embed", "retrieval"],
+    "patterns": ["vector.?(db|database|search|store)", "text.encoder"]
+  },
+  "blockchain": {
+    "description": "Web3, cross-chain, crypto protocols",
+    "keywords": ["blockchain", "cosmos", "polkadot", "rollup", "cross-chain", "ibc"],
+    "patterns": ["zero.knowledge proof", "\\bweb3\\b"]
+  },
+  "css": {
+    "description": "CSS, frontend styling, web design",
+    "keywords": ["css", "tailwind", "styling"],
+    "patterns": ["modern.css"]
+  },
+  "shell": {
+    "description": "Shell scripting, zsh, terminal configuration",
+    "keywords": ["zsh", "bash", "shell", "dotfiles", "pager"],
+    "patterns": ["startup time.*zsh", "\\bless\\b.*\\bbat\\b"]
+  },
+  "security": {
+    "description": "Authentication, credentials, vulnerabilities",
+    "keywords": ["security", "authentication", "credentials", "vulnerability", "zero-day"],
+    "patterns": ["leak.*cred", "auth\\b", "compliance"]
+  },
+  "editor": {
+    "description": "Code editors, IDE tools, vim motions",
+    "keywords": ["vscode", "vs code", "zed", "vim", "neovim", "cursor"],
+    "patterns": ["editor", "multi.cursor"]
+  },
+  "open-source": {
+    "description": "OSS projects, licensing, community",
+    "keywords": ["open-source", "open source", "fork", "license"],
+    "patterns": ["crowd.sourced"]
+  },
+  "react": {
+    "description": "React ecosystem, hooks, patterns",
+    "keywords": ["react", "jsx", "tsx", "hooks", "useState", "useEffect"],
+    "patterns": []
+  },
+  "search": {
+    "description": "Full-text search, code search, indexing",
+    "keywords": ["full-text search", "fts", "textsearch", "code search", "indexing"],
+    "patterns": ["codespelunker", "search tool"]
+  },
+  "book": {
+    "description": "Book notes, reviews, reading",
+    "keywords": ["book", "martin kleppmann"],
+    "patterns": ["notes (on|from).*\\b(book|chapter)", "designing data"]
+  },
+  "markdown": {
+    "description": "Markdown tools, editors, rendering",
+    "keywords": ["markdown", "overtype"],
+    "patterns": ["markdown editor", "\\.md\\b.*editor"]
+  },
+  "data": {
+    "description": "Data formats, pipelines, ETL, sync",
+    "keywords": ["parquet", "vortex", "sling", "etl", "data sync"],
+    "patterns": ["move.*data", "sync.*data", "data.*format"]
+  }
+}

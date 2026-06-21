@@ -1,8 +1,6 @@
 # This workflow:
 # 1. Extracts weekly notes from til.md into weekly/*.md files
-# 2. Creates a README.md with an index of all TIL files
-# 3. Generates an RSS feed
-# 4. Builds static HTML site and deploys to GitHub Pages
+# 2. Builds static HTML site and deploys to GitHub Pages
 
 name: Build & Deploy
 
@@ -43,65 +41,12 @@ jobs:
       - name: Extract weekly notes
         run: node extract-weekly.js
 
-      - name: Regenerate README
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const { readFile, writeFile } = require("node:fs/promises");
-
-            console.log("Building index…");
-
-            // load readme
-            let readme = await readFile("README.md").then(file => file.toString());
-
-            // add header separator
-            const separator = "\n---\n";
-            const index = readme.indexOf(separator);
-            if (index === -1) readme += separator;
-            else readme = readme.substring(0, index + separator.length);
-
-            // collect entries
-            const files = await glob.create("./**/*.md").then(globber => globber.glob());
-            const entries = files
-              .filter(name => !name.includes("/node_modules/"))
-              .filter(name => !name.endsWith("/README.md"))
-              .filter(name => !name.endsWith("/til.md"))
-              .filter(name => !name.endsWith("/CLAUDE.md"))
-              .filter(name => name.split("/").length > 1)
-              .sort()
-              .map(name => name.split("/").slice(-2));
-
-            // add summary
-            readme += `\n${entries.length} TILs so far:\n`;
-
-            // create category map
-            const categories = new Map();
-            for (const [category, file] of entries) {
-              const list = categories.get(category) || [];
-              categories.set(category, [...list, file]);
-            }
-
-            // create a section for each category
-            for (const [category, entries] of categories.entries()) {
-              readme += `\n## ${category}\n\n`;
-              for (const file of entries) {
-                const filepath = [category, file].join("/");
-                const contents = await readFile(filepath).then(file => file.toString());
-                const match = contents.match(/^# (.+)$/m);
-                const title = match ? match[1] : file.replace(".md", "");
-                readme += `- [${title}](/${filepath})\n`;
-              }
-            }
-
-            // write readme
-            await writeFile("README.md", readme);
-
       - name: Commit repo changes
         run: |-
           git config --global user.email "actions@users.noreply.github.com"
           git config --global user.name "TIL Bot"
           git add -A
-          git diff --staged --quiet || git commit --message "Update weekly notes, README.md, and rss.xml"
+          git diff --staged --quiet || git commit --message "Update weekly notes and rss.xml"
           git push
 
       - name: Build static site
