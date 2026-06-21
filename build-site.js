@@ -576,9 +576,10 @@ a.tag:hover {
   margin-left: 4px;
 }
 .note-tags {
-  display: inline-flex;
+  display: flex;
+  flex-wrap: wrap;
   gap: 4px;
-  margin-left: 6px;
+  margin-top: 0.5rem;
 }
 
 /* Article list */
@@ -690,9 +691,18 @@ footer.site-footer a:hover { color: var(--accent); }
 // Page generators
 // ---------------------------------------------------------------------------
 
+function stripTags(text) {
+  return text.replace(/\s*#[a-zA-Z][a-zA-Z0-9_-]*/g, "").trim();
+}
+
 function renderNoteHTML(note) {
-  const md = note.lines.join("\n");
+  const md = note.lines.map(stripTags).join("\n");
   return marked.parse(md);
+}
+
+function renderNoteTags(note) {
+  if (!note.tags.length) return "";
+  return `<div class="note-tags">${note.tags.map(t => `<a href="${BASE_URL}/tags/${t}.html" class="tag">${escapeHTML(t)}</a>`).join("")}</div>`;
 }
 
 function buildHomePage(weeks, articles) {
@@ -772,7 +782,8 @@ function buildWeekPage(weekEnd, notes, prevWeek, nextWeek) {
     .map((note) => {
       const dateStr = formatDate(note.date);
       const html = renderNoteHTML(note);
-      return `<li><span class="note-date">${dateStr}</span>${html}</li>`;
+      const tags = renderNoteTags(note);
+      return `<li><span class="note-date">${dateStr}</span>${html}${tags}</li>`;
     })
     .join("\n");
 
@@ -894,9 +905,9 @@ function buildTagPage(tag, notes) {
       const html = renderNoteHTML(note);
       const otherTags = note.tags.filter(t => t !== tag);
       const otherTagsHTML = otherTags.length
-        ? `<span class="note-tags">${otherTags.map(t => `<a href="${BASE_URL}/tags/${t}.html" class="tag">${escapeHTML(t)}</a>`).join("")}</span>`
+        ? `<div class="note-tags">${otherTags.map(t => `<a href="${BASE_URL}/tags/${t}.html" class="tag">${escapeHTML(t)}</a>`).join("")}</div>`
         : "";
-      return `<li><span class="note-date">${dateStr}${otherTagsHTML}</span>${html}</li>`;
+      return `<li><span class="note-date">${dateStr}</span>${html}${otherTagsHTML}</li>`;
     })
     .join("\n");
 
