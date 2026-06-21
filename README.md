@@ -6,7 +6,7 @@ Subscribe via [RSS](https://saurabh-kumar.com/til/rss.xml)!
 
 ---
 
-29 TILs so far:
+31 TILs so far:
 
 ## fts
 
@@ -54,3 +54,8 @@ Subscribe via [RSS](https://saurabh-kumar.com/til/rss.xml)!
 - [Week of May 31, 2026](/weekly/2026-05-31.md)
 - [Week of June 14, 2026](/weekly/2026-06-14.md)
 - [Week of June 21, 2026](/weekly/2026-06-21.md)
+
+## zed
+
+- [Hidden Gems: Community Edition](/zed/hidden-gems-discussion.md)
+- [vim-motion-tips](/zed/vim-motion-tips.md)
