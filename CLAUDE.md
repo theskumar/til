@@ -45,9 +45,26 @@ Individual, polished TIL articles live in topic subfolders. Each file:
 
 ## Content Conventions
 
-See [README.md § Contributing](./README.md#contributing) for the contribution format and workflow.
+### Adding content
 
-Technical details the parser enforces:
+**Quick note** — append a dated bullet to `til.md`:
+
+```
+- DD Mon YYYY. Your note here.
+  Optional continuation line (indent with exactly 2 spaces).
+```
+
+**Standalone article** — create `<category>/<slug>.md` starting with a `# Title` heading:
+
+```
+react/use-memo-pitfalls.md
+vscode/multi-cursor-tricks.md
+```
+
+Push to `main` and CI automatically updates the README index and RSS feed.
+For local preview of weekly digests: `npm install && node extract-weekly.js`
+
+### Parser details
 - Date regex: `/^- (?<day>\d{1,2}) (?<month>[A-Za-z]{3}) (?<year>\d{4})/`
 - Continuation lines must use exactly **2 spaces** — anything else terminates the note.
 - `# Month YYYY` section headers in `til.md` are cosmetic; they are not parsed.
@@ -95,8 +112,6 @@ Steps:
 ---
 
 ## Development Workflows
-
-Contribution steps are in [README.md § Contributing](./README.md#contributing).
 
 ### Branch conventions
 
