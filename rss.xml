@@ -5,326 +5,253 @@
 <description>A collection of useful things I've learned.</description>
 <link>https://github.com/theskumar/til</link>
 <item>
-<guid>https://github.com/theskumar/til/blob/main/weekly/2026-02-22.md</guid>
-<link>https://github.com/theskumar/til/blob/main/weekly/2026-02-22.md</link>
-<title>TIL: Week of February 22, 2026</title>
-<pubDate>Sun, 22 Feb 2026 01:41:49 GMT</pubDate>
-<content:encoded>&lt;p&gt;Things I learned during the week ending February 22, 2026.&lt;/p&gt;
+<guid>https://github.com/theskumar/til/blob/main/llm/prompt-caching.md</guid>
+<link>https://github.com/theskumar/til/blob/main/llm/prompt-caching.md</link>
+<title>TIL: How Prompt Caching Works</title>
+<pubDate>Sun, 21 Jun 2026 04:46:02 GMT</pubDate>
+<content:encoded>&lt;p&gt;Today I learned how prompt caching actually works under the hood in LLM APIs
+(Anthropic, OpenAI, Bedrock, etc.), and why it makes long agent loops 5–10×
+cheaper and noticeably faster.&lt;/p&gt;
+&lt;h2&gt;The problem it solves&lt;/h2&gt;
+&lt;p&gt;In an agent / chat loop, every request to the model looks almost identical to
+the previous one:&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;p&gt;&lt;code&gt;brew install git-trim&lt;/code&gt; &lt;a href=&quot;https://github.com/foriequal0/git-trim&quot;&gt;git-trim&lt;/a&gt; - A dedicated binary for safely deleting merged branches. Handles edge cases better than bash one-liners, including squash-merged branches. &lt;a href=&quot;https://news.ycombinator.com/item?id=47089533&quot;&gt;#&lt;/a&gt;&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;&lt;a href=&quot;https://github.com/slingdata-io/sling-cli&quot;&gt;slingdata-io/sling-cli&lt;/a&gt; is a promising tool move/sync data between databases and files, esp. helpful for local testing, ci/cd while able to do stage/sql based transformations.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;&lt;a href=&quot;https://modern-css.com/&quot;&gt;https://modern-css.com/&lt;/a&gt; has a really nice collection of CSS replacements for older hacks.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;&lt;a href=&quot;https://github.com/panphora/overtype&quot;&gt;panphora/overtype&lt;/a&gt;: The markdown editor that&amp;#39;s just a textarea with a small size footprint and a minimum looking UI &lt;a href=&quot;https://overtype.dev&quot;&gt;https://overtype.dev&lt;/a&gt; (⭐3431) #markdown&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;For generating embedding locally, &lt;a href=&quot;https://ollama.com/library/nomic-embed-text&quot;&gt;nomic-embed-text&lt;/a&gt; is a large context length text encoder that &lt;a href=&quot;https://www.nomic.ai/news/nomic-embed-text-v1&quot;&gt;surpasses&lt;/a&gt; OpenAI text-embedding-ada-002 and text-embedding-3-small performance on short and long context tasks. It has a balance of speed, 8k context, and accuracy for English-centric apps. BGE-M3, Qwen3-Embedding and E5-Small are other alternatives. #embeddings&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;&lt;a href=&quot;https://github.com/alibaba/zvec&quot;&gt;alibaba/zvec&lt;/a&gt; by alibaba is an embedded vector database supports both spare and dense vectors, along with structured data. It can be considered the sqlite of vector databases.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;&lt;a href=&quot;https://github.com/yichuan-w/LEANN&quot;&gt;yichuan-w/LEANN&lt;/a&gt; is a RAG focused framework focused on efficient storage with built-in chunking strategies embedding model management and MCP server. &lt;a href=&quot;https://gemini.google.com/app/c627885d0bf34a2d&quot;&gt;gemini&lt;/a&gt;&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;&lt;a href=&quot;https://www.k-dense.ai/&quot;&gt;K-dense&lt;/a&gt; known for using skills to enable deep research has published &lt;a href=&quot;ttps://github.com/K-Dense-AI/claude-scientific-skills&quot;&gt;140+ skills&lt;/a&gt; related to scientic research including literature review, data analysis, etc.&lt;/p&gt;
-&lt;/li&gt;
+&lt;li&gt;The same big &lt;strong&gt;system prompt&lt;/strong&gt; (rules, tool descriptions, skills…)&lt;/li&gt;
+&lt;li&gt;The same set of &lt;strong&gt;tool definitions&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;The same &lt;strong&gt;history&lt;/strong&gt; of past user/assistant/tool messages, with only a few
+new tokens appended at the end&lt;/li&gt;
 &lt;/ul&gt;
-</content:encoded>
-</item>
-<item>
-<guid>https://github.com/theskumar/til/blob/main/weekly/2026-02-07.md</guid>
-<link>https://github.com/theskumar/til/blob/main/weekly/2026-02-07.md</link>
-<title>TIL: Week of February 7, 2026</title>
-<pubDate>Thu, 19 Feb 2026 09:05:48 GMT</pubDate>
-<content:encoded>&lt;p&gt;Things I learned during the week ending February 7, 2026.&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;Opus 4.6 launch.&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;context compaction (beta) and 1M context window, enables longer agentic tasks without loosing context.&lt;/li&gt;
-&lt;li&gt;they claim it has found 500 Zero-Day Flaws in open-source projects (yet to see the proofs though)&lt;/li&gt;
-&lt;li&gt;agent teams, multiple agent coordinates with a leader agent. &lt;a href=&quot;https://code.claude.com/docs/en/agent-teams&quot;&gt;https://code.claude.com/docs/en/agent-teams&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;On blockchain, UIPC (Universal IPC) and SIPC (Secure IPC) are frameworks that allows different network to talk to each other using a standard protocol. While UIPC acts as the universal courier, SIPC acts as the security guard. Together, they create &amp;quot;Internet of Blockchains&amp;quot;. &lt;a href=&quot;https://gemini.google.com/app/b8339d20bf7f33cf&quot;&gt;Gemini&lt;/a&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;https://docs.cosmos.network/ibc/v10.1.x/intro&quot;&gt;Cosmos IBC&lt;/a&gt; &amp;amp; &lt;a href=&quot;https://wiki.polkadot.network/docs/learn-xcm&quot;&gt;Polkadot - XCM&lt;/a&gt; are two industry leading protocols for UIPC&lt;/li&gt;
-&lt;li&gt;For the SIPC, &lt;strong&gt;Zero-Knowledge Proofs&lt;/strong&gt; and &lt;strong&gt;Rollup architecture&lt;/strong&gt; also &amp;quot;Trustless bridges&amp;quot; or &amp;quot;Cross-rollup communication&amp;quot; are often more frequently used terms in blockchain literatures.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;&lt;a href=&quot;https://vortex.dev/&quot;&gt;Vortex&lt;/a&gt; a newer format is supported by &lt;a href=&quot;https://duckdb.org/2026/01/23/duckdb-vortex-extension&quot;&gt;duckdb&lt;/a&gt; promises to be faster for random access and has zero-copy metadata, with better compression. While the support across the board is limited but worth considering for LLM/RAG based uses over parquet.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;&lt;strong&gt;Designing Data-Intensive Applications: The Big Ideas Behind Reliable, Scalable, and Maintainable Systems&lt;/strong&gt; by Martin Kleppmann manages to be both rigorous technical manual and something approaching a philosophical treatise on the nature of truth, consistency, and trust in distributed systems. [Claude][&lt;a href=&quot;https://claude.ai/chat/0f58f2f6-bd56-41a1-a785-8267afa5a3d1%5D&quot;&gt;https://claude.ai/chat/0f58f2f6-bd56-41a1-a785-8267afa5a3d1]&lt;/a&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Foundation. He starts by asking the questions &lt;em&gt;&amp;quot;What do we actually want in our data systems&amp;quot;&lt;/em&gt;, answers them as - reliability, scalability and maintainability.&lt;ul&gt;
-&lt;li&gt;Reliability. The question isn&amp;#39;t whether failure will happen, it will, but the whether the systems can survive them.&lt;/li&gt;
-&lt;li&gt;Scalability. It&amp;#39;s not a binary question of whether a system is &amp;quot;scalable&amp;quot; or &amp;quot;not scalable&amp;quot;. Ask - &amp;quot;What happens when specific load parameter increase?&amp;quot;&lt;/li&gt;
-&lt;li&gt;Maintainability - most underappreciated of the three, he argues the majority of cost isn&amp;#39;t in initial development but in ongoing maintainence.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;The data model wars - the skill isn&amp;#39;t in choosing the &amp;quot;best&amp;quot; database but in understanding which tradeoffs matter for your specific problem.&lt;/li&gt;
-&lt;li&gt;Storage engines. Two major approaches to read &amp;amp; write data from disk, neither is universally better.&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;Log-structured storage&lt;/strong&gt; (like LSM-trees) optimizes for writes, every write is appended and the merged/compacted later.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Page-oriented storage&lt;/strong&gt; (like B-trees) optimizes for reads, data is stored in fixed-sized block, which then get updated in-place, more like filing cabinet with each document has a designated slot.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;Instead of asking &amp;quot;how do I build this?&amp;quot; ask &amp;quot;what does it mean for this to work correctly?&amp;quot;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-</content:encoded>
-</item>
-<item>
-<guid>https://github.com/theskumar/til/blob/main/docs/CATEGORIZING_TIL_NOTES_WITH_EMBEDDINGS.md</guid>
-<link>https://github.com/theskumar/til/blob/main/docs/CATEGORIZING_TIL_NOTES_WITH_EMBEDDINGS.md</link>
-<title>TIL: Categorizing TIL Notes with Embeddings</title>
-<pubDate>Mon, 16 Feb 2026 05:45:28 GMT</pubDate>
-<content:encoded>&lt;p&gt;This document explains the approach used in this repository to automatically group &lt;code&gt;til.md&lt;/code&gt; notes into meaningful categories.&lt;/p&gt;
-&lt;h2&gt;Goals&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;Organize many short TIL entries into navigable themes.&lt;/li&gt;
-&lt;li&gt;Keep categorization mostly automatic (minimal manual tagging).&lt;/li&gt;
-&lt;li&gt;Preserve note content and markdown formatting in the generated output.&lt;/li&gt;
-&lt;li&gt;Make the workflow reproducible and easy to rerun as new notes are added.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2&gt;Input Format&lt;/h2&gt;
-&lt;p&gt;The pipeline reads &lt;code&gt;til.md&lt;/code&gt; and parses entries using the existing date-based bullet structure. Each top-level dated item is treated as one note, and its nested bullets/sub-content are kept as part of that note.&lt;/p&gt;
-&lt;p&gt;At a high level:&lt;/p&gt;
+&lt;p&gt;Without caching, the provider has to re-tokenize and run a full attention
+pre-fill over all of that prefix on every turn. For a 100k-token context, that
+prefill dominates both cost and latency.&lt;/p&gt;
+&lt;h2&gt;What gets cached: the KV state&lt;/h2&gt;
+&lt;p&gt;When a transformer processes a prompt, it computes a &lt;strong&gt;key/value tensor pair
+for every token in every attention layer&lt;/strong&gt;. That KV state is what attention
+queries against on the next decoded token.&lt;/p&gt;
+&lt;p&gt;Prompt caching is, mechanically, &amp;quot;save those KV tensors for a prefix on the
+server, and reuse them next time the same prefix shows up.&amp;quot; Output tokens are
+never cached — only the prompt-side KV state.&lt;/p&gt;
+&lt;h2&gt;The lifecycle&lt;/h2&gt;
 &lt;ol&gt;
-&lt;li&gt;Parse markdown into note records.&lt;/li&gt;
-&lt;li&gt;Build an embedding for each note.&lt;/li&gt;
-&lt;li&gt;Cluster similar embeddings.&lt;/li&gt;
-&lt;li&gt;Label clusters into human-readable categories.&lt;/li&gt;
-&lt;li&gt;Merge tiny categories into nearby larger ones.&lt;/li&gt;
-&lt;li&gt;Write categorized output to &lt;code&gt;CATEGORIES.md&lt;/code&gt; (and JSON metadata when needed).&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Mark a cache breakpoint.&lt;/strong&gt; The client places a &lt;code&gt;cache_control&lt;/code&gt; marker
+(Anthropic) or relies on automatic prefix detection (OpenAI). Everything
+&lt;em&gt;before&lt;/em&gt; the marker is the cacheable prefix.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;First request → cache write.&lt;/strong&gt; The provider hashes the cacheable prefix
+(model id + tools + messages + cache key, byte-exact), runs the prefill,
+and stores the resulting KV tensors keyed by that hash. You&amp;#39;re billed
+&lt;code&gt;cache_write&lt;/code&gt; tokens, usually a bit &lt;em&gt;more&lt;/em&gt; than normal input
+(~1.25× for Anthropic 5-minute cache, ~2× for the 1-hour &amp;quot;extended&amp;quot;
+cache).&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Next request → cache read.&lt;/strong&gt; If the new request starts with exactly the
+same prefix, the provider looks up the hash, loads the stored KV state,
+and only runs fresh compute for the suffix after the last hit. You&amp;#39;re
+billed &lt;code&gt;cache_read&lt;/code&gt; tokens — often &lt;strong&gt;~10% of the normal input price&lt;/strong&gt;.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;TTL.&lt;/strong&gt; Entries expire after a TTL (Anthropic: 5 min default, 1 hour
+opt-in; OpenAI: a few minutes, automatic). Each hit typically refreshes
+the TTL, so an active session keeps the cache warm.&lt;/li&gt;
 &lt;/ol&gt;
-&lt;h2&gt;Embeddings&lt;/h2&gt;
-&lt;p&gt;Semantic embeddings are generated locally with Ollama using:&lt;/p&gt;
+&lt;h2&gt;What invalidates the cache&lt;/h2&gt;
+&lt;p&gt;The hash is over the &lt;strong&gt;exact bytes&lt;/strong&gt; of the prefix. Anything that changes
+those bytes forces a fresh &lt;code&gt;cache_write&lt;/code&gt;:&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;Model: &lt;code&gt;nomic-embed-text&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Editing the system prompt (even reordering sentences or adjusting
+whitespace)&lt;/li&gt;
+&lt;li&gt;Adding, removing, or reordering a tool definition&lt;/li&gt;
+&lt;li&gt;Inserting/editing/reordering an earlier message in the history&lt;/li&gt;
+&lt;li&gt;Switching model id or provider&lt;/li&gt;
+&lt;li&gt;Changing the cache key (some providers expose one for tenant isolation)&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;Why embeddings:&lt;/p&gt;
+&lt;p&gt;The corollary: to maximize hit rate, agents should &lt;strong&gt;only append at the end&lt;/strong&gt;
+and keep system prompt and tools byte-stable across turns.&lt;/p&gt;
+&lt;h2&gt;Reading the usage block&lt;/h2&gt;
+&lt;p&gt;Most providers return a usage object on every response with at least these
+fields:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-json&quot;&gt;{
+  &amp;quot;input&amp;quot;: 312,          // fresh, non-cached prompt tokens this turn
+  &amp;quot;output&amp;quot;: 845,         // generated tokens
+  &amp;quot;cacheRead&amp;quot;: 47210,    // prompt tokens served from cache
+  &amp;quot;cacheWrite&amp;quot;: 0        // prompt tokens written to cache this turn
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;A useful per-turn metric is the &lt;strong&gt;cache hit ratio&lt;/strong&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;cacheHitRate = cacheRead / (input + cacheRead + cacheWrite)
+&lt;/code&gt;&lt;/pre&gt;
 &lt;ul&gt;
-&lt;li&gt;They capture semantic similarity better than keyword-only grouping.&lt;/li&gt;
-&lt;li&gt;Similar topics with different wording still end up close in vector space.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;0%&lt;/code&gt; → nothing reused. Normal on the very first turn, or right after the
+prefix changed (tool list updated, history compacted, model swapped).&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;70–95%&lt;/code&gt; → healthy steady state for a long agent loop.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;cacheWrite &amp;gt; 0, cacheRead = 0&lt;/code&gt; → you just primed the cache; the next turn
+should be cheap if you don&amp;#39;t break the prefix.&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;Operationally, each note is converted to text and embedded into a fixed-size vector (commonly 768 dimensions for this model).&lt;/p&gt;
-&lt;h2&gt;Clustering Strategy&lt;/h2&gt;
-&lt;p&gt;The grouping step uses k-means over note embeddings with cosine-style similarity behavior.&lt;/p&gt;
-&lt;h3&gt;Choosing the number of clusters&lt;/h3&gt;
-&lt;p&gt;Instead of hardcoding one cluster count, the script evaluates a candidate range and selects a good &lt;code&gt;k&lt;/code&gt; using silhouette score.&lt;/p&gt;
-&lt;p&gt;Benefits:&lt;/p&gt;
+&lt;h2&gt;Pricing back-of-the-envelope&lt;/h2&gt;
+&lt;p&gt;Rough Anthropic numbers (Claude Sonnet, illustrative):&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Token type&lt;/th&gt;
+&lt;th&gt;Price multiplier vs. input&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;input&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;1×&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;cache_write&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;~1.25× (5 min) / ~2× (1h)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;cache_read&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;~0.1×&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;output&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;~5×&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;&lt;/table&gt;
+&lt;p&gt;So a 100k-token prefix that&amp;#39;s hit 20 times across a session costs roughly:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;1 × 1.25 × 100k   (one write)
++ 19 × 0.1 × 100k (nineteen reads)
+= 1.25 × 100k + 1.9 × 100k
+≈ 3.15 × 100k input-equivalent
+
+vs. uncached:
+20 × 1 × 100k = 20 × 100k
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;A ~6× saving on the prompt side, plus a big latency win because the server
+skips the prefill.&lt;/p&gt;
+&lt;h2&gt;Gotchas&lt;/h2&gt;
 &lt;ul&gt;
-&lt;li&gt;Better adapts as the dataset grows.&lt;/li&gt;
-&lt;li&gt;Reduces over- or under-grouping compared with fixed &lt;code&gt;k&lt;/code&gt;.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2&gt;Category Labeling&lt;/h2&gt;
-&lt;p&gt;Clusters are converted into readable category names using a hybrid approach:&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;&lt;strong&gt;TF-IDF keywords&lt;/strong&gt; to identify salient terms in each cluster.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Rule-based patterns&lt;/strong&gt; to normalize/override labels for known themes.&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;This keeps labels stable and understandable while still adapting to new content.&lt;/p&gt;
-&lt;h2&gt;Merging Small Categories&lt;/h2&gt;
-&lt;p&gt;After initial clustering, very small categories (especially singletons) are merged into semantically related larger categories.&lt;/p&gt;
-&lt;p&gt;Merge behavior combines:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;predefined related-category groups,&lt;/li&gt;
-&lt;li&gt;embedding similarity,&lt;/li&gt;
-&lt;li&gt;and size-aware tie-breaking (smallest merges into largest suitable target).&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;This improves final readability by avoiding noisy one-off buckets.&lt;/p&gt;
-&lt;h2&gt;Output&lt;/h2&gt;
-&lt;p&gt;Primary generated artifacts:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;code&gt;CATEGORIES.md&lt;/code&gt;: human-readable grouped notes with full note content (including sub-bullets/links).&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;categories.json&lt;/code&gt;: machine-friendly category metadata.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;The markdown output is designed for browsing and can be used directly in docs/README workflows.&lt;/p&gt;
-&lt;h2&gt;Implementations in This Repo&lt;/h2&gt;
-&lt;p&gt;Two implementations exist:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;code&gt;categorize.js&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;categorize.py&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3&gt;JavaScript version&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;Pros: fast cold start, fewer dependencies, lightweight runtime.&lt;/li&gt;
-&lt;li&gt;Cons: more custom math/algorithm code to maintain.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3&gt;Python version&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;Pros: shorter code and easier maintenance; leverages mature libraries (&lt;code&gt;numpy&lt;/code&gt;, &lt;code&gt;scikit-learn&lt;/code&gt;, &lt;code&gt;httpx&lt;/code&gt;).&lt;/li&gt;
-&lt;li&gt;Cons: slightly higher startup/memory overhead in some environments.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;Both produce equivalent category outcomes when run with similar settings.&lt;/p&gt;
-&lt;h2&gt;Typical Workflow&lt;/h2&gt;
-&lt;ol&gt;
-&lt;li&gt;Add/update notes in &lt;code&gt;til.md&lt;/code&gt;.&lt;/li&gt;
-&lt;li&gt;Run categorization script (&lt;code&gt;categorize.js&lt;/code&gt; or &lt;code&gt;categorize.py&lt;/code&gt;).&lt;/li&gt;
-&lt;li&gt;Review &lt;code&gt;CATEGORIES.md&lt;/code&gt;.&lt;/li&gt;
-&lt;li&gt;Optionally refresh README sections to reference/use categorized output.&lt;/li&gt;
-&lt;/ol&gt;
-&lt;h2&gt;Tuning and Extensions&lt;/h2&gt;
-&lt;p&gt;As note volume increases, you can improve quality by:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;tuning candidate &lt;code&gt;k&lt;/code&gt; ranges,&lt;/li&gt;
-&lt;li&gt;adjusting merge groups,&lt;/li&gt;
-&lt;li&gt;refining labeling rules,&lt;/li&gt;
-&lt;li&gt;adding clustering alternatives (for example, density-based methods like HDBSCAN in Python).&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2&gt;Summary&lt;/h2&gt;
-&lt;p&gt;This approach combines semantic embeddings, unsupervised clustering, and light rule-based post-processing to keep TIL notes organized automatically while preserving high-quality, readable output.&lt;/p&gt;
-</content:encoded>
-</item>
-<item>
-<guid>https://github.com/theskumar/til/blob/main/weekly/2026-02-14.md</guid>
-<link>https://github.com/theskumar/til/blob/main/weekly/2026-02-14.md</link>
-<title>TIL: Week of February 14, 2026</title>
-<pubDate>Sun, 15 Feb 2026 01:46:13 GMT</pubDate>
-<content:encoded>&lt;p&gt;Things I learned during the week ending February 14, 2026.&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;&lt;a href=&quot;https://github.com/albertobadia/zoocache&quot;&gt;zoocache&lt;/a&gt; is a sematic dependency based cache manager, that support in-memory, LMDB or redis backends. Integration with &lt;a href=&quot;https://github.com/albertobadia/zoocache/blob/main/docs/django_user_guide.md&quot;&gt;Django&lt;/a&gt; looks interesting.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;&lt;a href=&quot;https://handy.computer/&quot;&gt;Handy&lt;/a&gt; Looks like a promising tool for to replace WisperFlow and VoiceInk for speech to text conversion. &lt;a href=&quot;https://dannysmith.notion.site/Danny-s-Software-313c769fa9c04819a37d813da0485c78&quot;&gt;via&lt;/a&gt;&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;&lt;a href=&quot;https://hono.dev/&quot;&gt;Hono&lt;/a&gt; based on web standards is a great option for js runtimes esp. if you plan to deploy your code to cloudflare workers, bun or deno. You get faster startup time and cross-platform compatibility.&lt;/p&gt;
-&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Minimum prefix size.&lt;/strong&gt; Most providers require the cacheable prefix to be
+above some threshold (e.g. 1024 tokens for Anthropic) before caching kicks
+in at all.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Position of the breakpoint matters.&lt;/strong&gt; Putting it after volatile content
+(like the latest user message) means nothing ever gets reused.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Tool definitions are part of the prefix.&lt;/strong&gt; Dynamically generated tool
+lists with shuffled order will silently destroy your hit rate.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Streaming vs. non-streaming&lt;/strong&gt; use the same cache; cache fields show up
+in the final usage event.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Cost accounting:&lt;/strong&gt; &lt;code&gt;cache_write&lt;/code&gt; is more expensive than &lt;code&gt;input&lt;/code&gt;, so a
+flaky prefix that constantly re-writes can be &lt;em&gt;worse&lt;/em&gt; than no caching at
+all.&lt;/li&gt;
 &lt;/ul&gt;
 </content:encoded>
 </item>
 <item>
-<guid>https://github.com/theskumar/til/blob/main/weekly/2026-02-15.md</guid>
-<link>https://github.com/theskumar/til/blob/main/weekly/2026-02-15.md</link>
-<title>TIL: Week of February 15, 2026</title>
-<pubDate>Sun, 15 Feb 2026 01:46:13 GMT</pubDate>
-<content:encoded>&lt;p&gt;Things I learned during the week ending February 15, 2026.&lt;/p&gt;
+<guid>https://github.com/theskumar/til/blob/main/weekly/2026-03-22.md</guid>
+<link>https://github.com/theskumar/til/blob/main/weekly/2026-03-22.md</link>
+<title>TIL: Week of March 22, 2026</title>
+<pubDate>Sun, 21 Jun 2026 04:45:20 GMT</pubDate>
+<content:encoded>&lt;p&gt;Things I learned during the week ending March 22, 2026.&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;p&gt;&lt;a href=&quot;https://github.com/albertobadia/zoocache&quot;&gt;zoocache&lt;/a&gt; is a sematic dependency based cache manager, that support in-memory, LMDB or redis backends. Integration with &lt;a href=&quot;https://github.com/albertobadia/zoocache/blob/main/docs/django_user_guide.md&quot;&gt;Django&lt;/a&gt; looks interesting.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;&lt;a href=&quot;https://handy.computer/&quot;&gt;Handy&lt;/a&gt; Looks like a promising tool for to replace WisperFlow and VoiceInk for speech to text conversion. &lt;a href=&quot;https://dannysmith.notion.site/Danny-s-Software-313c769fa9c04819a37d813da0485c78&quot;&gt;via&lt;/a&gt;&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;&lt;a href=&quot;https://hono.dev/&quot;&gt;Hono&lt;/a&gt; based on web standards is a great option for js runtimes esp. if you plan to deploy your code to cloudflare workers, bun or deno. You get faster startup time and cross-platform compatibility.&lt;/p&gt;
-&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/walles/moor&quot;&gt;&lt;code&gt;moor&lt;/code&gt;&lt;/a&gt; is a better replacement for less and bat as PAGER. - 17 Mar 2026. Every layer of review makes you 10x slower via &lt;a href=&quot;https://apenwarr.ca/log/20260316&quot;&gt;apenwarr&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 </content:encoded>
 </item>
 <item>
-<guid>https://github.com/theskumar/til/blob/main/weekly/2026-02-08.md</guid>
-<link>https://github.com/theskumar/til/blob/main/weekly/2026-02-08.md</link>
-<title>TIL: Week of February 8, 2026</title>
-<pubDate>Sun, 08 Feb 2026 02:01:32 GMT</pubDate>
-<content:encoded>&lt;p&gt;Things I learned during the week ending February 8, 2026.&lt;/p&gt;
+<guid>https://github.com/theskumar/til/blob/main/weekly/2026-03-29.md</guid>
+<link>https://github.com/theskumar/til/blob/main/weekly/2026-03-29.md</link>
+<title>TIL: Week of March 29, 2026</title>
+<pubDate>Sun, 21 Jun 2026 04:45:20 GMT</pubDate>
+<content:encoded>&lt;p&gt;Things I learned during the week ending March 29, 2026.&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;p&gt;Opus 4.6 launch. &lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;context compaction (beta) and 1M context window, enables longer agentic tasks without loosing context. &lt;/li&gt;
-&lt;li&gt;they claim it has found 500 Zero-Day Flaws in open-source projects (yet to see the proofs though) &lt;/li&gt;
-&lt;li&gt;agent teams, multiple agent coordinates with a  leader agent.  &lt;a href=&quot;https://code.claude.com/docs/en/agent-teams&quot;&gt;https://code.claude.com/docs/en/agent-teams&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/VectifyAI/PageIndex/&quot;&gt;pageindex&lt;/a&gt; generates a semantic tree-like json index of a lengthy document to allow for reasoning based RAG without the need for vectordb.&lt;/li&gt;
 &lt;/ul&gt;
+</content:encoded>
+</item>
+<item>
+<guid>https://github.com/theskumar/til/blob/main/weekly/2026-04-05.md</guid>
+<link>https://github.com/theskumar/til/blob/main/weekly/2026-04-05.md</link>
+<title>TIL: Week of April 5, 2026</title>
+<pubDate>Sun, 21 Jun 2026 04:45:20 GMT</pubDate>
+<content:encoded>&lt;p&gt;Things I learned during the week ending April 5, 2026.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&quot;https://github.com/jdx/mise&quot;&gt;mise&lt;/a&gt; let&amp;#39;s you manage dependencies at OS level and project level. Thinking to manage my dev machine. The hard part is documenting what I have installed.&lt;/p&gt;
 &lt;/li&gt;
-&lt;li&gt;&lt;p&gt;On blockchain, UIPC (Universal IPC) and SIPC (Secure IPC) are frameworks that allows different network to talk to each other using a standard protocol. While UIPC acts as the universal courier, SIPC acts as the security guard. Together, they create &amp;quot;Internet of Blockchains&amp;quot;. &lt;a href=&quot;https://gemini.google.com/app/b8339d20bf7f33cf&quot;&gt;Gemini&lt;/a&gt; &lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;&lt;a href=&quot;https://vortex.dev/&quot;&gt;Vortex&lt;/a&gt; a newer format is supported by &lt;a href=&quot;https://duckdb.org/2026/01/23/duckdb-vortex-extension&quot;&gt;duckdb&lt;/a&gt; promises to be faster for random access and has zero-copy metadata, with better compression. While the support across the board is limited but worth considering for LLM/RAG based uses over parquet. &lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;&lt;strong&gt;Designing Data-Intensive Applications: The Big Ideas Behind Reliable, Scalable, and Maintainable Systems&lt;/strong&gt; by Martin Kleppmann manages to be both rigorous technical manual and something approaching a philosophical treatise on the nature of truth, consistency, and trust in distributed systems. [Claude][&lt;a href=&quot;https://claude.ai/chat/0f58f2f6-bd56-41a1-a785-8267afa5a3d1%5D&quot;&gt;https://claude.ai/chat/0f58f2f6-bd56-41a1-a785-8267afa5a3d1]&lt;/a&gt;&lt;/p&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&quot;https://django-modern-rest.readthedocs.io&quot;&gt;Django Modern REST&lt;/a&gt; seems to be an emerging REST API library with focus on performance, scalability and pluggable serializers. Supporting msgpack, CBV and less of sync_to_async. Might evaluate it against the my current preferred &lt;code&gt;django-ninja&lt;/code&gt;. &lt;a href=&quot;https://gemini.google.com/app/1aa113e0b21dd18f&quot;&gt;gemini&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
 </content:encoded>
 </item>
 <item>
-<guid>https://github.com/theskumar/til/blob/main/weekly/2026-01-31.md</guid>
-<link>https://github.com/theskumar/til/blob/main/weekly/2026-01-31.md</link>
-<title>TIL: Week of January 31, 2026</title>
-<pubDate>Thu, 05 Feb 2026 06:37:55 GMT</pubDate>
-<content:encoded>&lt;p&gt;Things I learned during the week ending January 31, 2026.&lt;/p&gt;
+<guid>https://github.com/theskumar/til/blob/main/weekly/2026-04-19.md</guid>
+<link>https://github.com/theskumar/til/blob/main/weekly/2026-04-19.md</link>
+<title>TIL: Week of April 19, 2026</title>
+<pubDate>Sun, 21 Jun 2026 04:45:20 GMT</pubDate>
+<content:encoded>&lt;p&gt;Things I learned during the week ending April 19, 2026.&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;Notes on &amp;quot;How AI assistance impacts the formation of coding skills&amp;quot; &lt;a href=&quot;https://www.anthropic.com/research/AI-assistance-coding-skills&quot;&gt;Article&lt;/a&gt; &lt;a href=&quot;https://news.ycombinator.com/item?id=46820924&quot;&gt;HN&lt;/a&gt;&lt;ul&gt;
-&lt;li&gt;AI speeds up coding but reduces deep understanding and mastery&lt;/li&gt;
-&lt;li&gt;Juniors (1-3 years experience) showed speed improvements with AI, but 4+ year developers showed no difference&lt;/li&gt;
-&lt;li&gt;Modern software work is more about requirements, specs, documentation, and communication than raw coding skill&lt;/li&gt;
-&lt;li&gt;Small sample size (n&amp;lt;8) and study design limitations make results questionable&lt;/li&gt;
-&lt;li&gt;Takeaways:&lt;ol&gt;
-&lt;li&gt;&lt;strong&gt;Use AI for high-scoring interaction patterns&lt;/strong&gt;: Ask conceptual questions and request explanations rather than just code generation&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Adopt AI for documentation and specs&lt;/strong&gt;: Multiple developers report dramatic improvements in tickets, PRs, and documentation quality&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Be deliberate about learning&lt;/strong&gt;: If using AI, actively practice explaining concepts and avoid pure copy-paste workflows&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Use AI to reduce grunt work&lt;/strong&gt;: Let it handle boilerplate, test writing, and repetitive tasks while focusing on architecture and requirements&lt;/li&gt;
-&lt;/ol&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&quot;https://github.com/boyter/cs?tab=readme-ov-file&quot;&gt;codespelunker&lt;/a&gt; is a CLI code search tool that understands code structure and ranks results by relevance. No indexing required with CLI, TUI, MCP and HTTP support.&lt;/p&gt;
 &lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;The research confirms what many suspected: AI coding assistants create a real trade-off between speed and skill development, but the practical significance is hotly contested.&lt;/strong&gt; The critical question isn&amp;#39;t whether AI reduces learning (it does), but whether deep coding skill remains as valuable as expressing requirements clearly—and whether we&amp;#39;re comfortable with a generation of developers who can&amp;#39;t function without AI assistance.&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&quot;https://github.com/altic-dev/FluidVoice&quot;&gt;FluidVoice&lt;/a&gt; with paraquet v2 is soemthing i&amp;#39;ve been using now as my default speech-to-text on Mac, after evaluating WisperFlow, Handy and VoiceInk.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&quot;https://github.com/stonerl/Thaw&quot;&gt;thaw&lt;/a&gt; a fork of Ice. I&amp;#39;m switching to it, as Ice seems to the inactive now. #mac&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+</content:encoded>
+</item>
+<item>
+<guid>https://github.com/theskumar/til/blob/main/weekly/2026-04-26.md</guid>
+<link>https://github.com/theskumar/til/blob/main/weekly/2026-04-26.md</link>
+<title>TIL: Week of April 26, 2026</title>
+<pubDate>Sun, 21 Jun 2026 04:45:20 GMT</pubDate>
+<content:encoded>&lt;p&gt;Things I learned during the week ending April 26, 2026.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;A good collection of practices on automated AI code reviews by &lt;a href=&quot;https://www.latent.space/p/reviews-dead&quot;&gt;Ankit Jain&lt;/a&gt;&lt;ul&gt;
+&lt;li&gt;The Scalability Crisis: Manual post-PR review is no longer viable. AI agents have nearly doubled code output, causing human review time to spike by 91%, creating a bottleneck that traditional workflows cannot solve.&lt;/li&gt;
+&lt;li&gt;The Upstream Pivot: Human value must shift from reviewing implementation to defining intent. Instead of checking syntax, humans spend their energy writing rigorous specs and acceptance criteria before the code is written, which the machine then uses to self-verify.&lt;/li&gt;
+&lt;li&gt;The Swiss-Cheese Defense: Rather than one &amp;quot;perfect&amp;quot; human gate, the model uses a stack of imperfect automated layers. By layering signals like agent competition, deterministic guardrails, and adversarial &amp;quot;red-team&amp;quot; agents, the system catches errors where their individual failure modes don&amp;#39;t overlap.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
 </content:encoded>
 </item>
 <item>
-<guid>https://github.com/theskumar/til/blob/main/weekly/2026-02-01.md</guid>
-<link>https://github.com/theskumar/til/blob/main/weekly/2026-02-01.md</link>
-<title>TIL: Week of February 1, 2026</title>
-<pubDate>Thu, 05 Feb 2026 06:37:55 GMT</pubDate>
-<content:encoded>&lt;p&gt;Things I learned during the week ending February 1, 2026.&lt;/p&gt;
+<guid>https://github.com/theskumar/til/blob/main/weekly/2026-05-10.md</guid>
+<link>https://github.com/theskumar/til/blob/main/weekly/2026-05-10.md</link>
+<title>TIL: Week of May 10, 2026</title>
+<pubDate>Sun, 21 Jun 2026 04:45:20 GMT</pubDate>
+<content:encoded>&lt;p&gt;Things I learned during the week ending May 10, 2026.&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;Notes on &amp;quot;How AI assistance impacts the formation of coding skills&amp;quot; &lt;a href=&quot;https://www.anthropic.com/research/AI-assistance-coding-skills&quot;&gt;Article&lt;/a&gt; &lt;a href=&quot;https://news.ycombinator.com/item?id=46820924&quot;&gt;HN&lt;/a&gt;&lt;ul&gt;
-&lt;li&gt;AI speeds up coding but reduces deep understanding and mastery&lt;/li&gt;
-&lt;li&gt;Juniors (1-3 years experience) showed speed improvements with AI, but 4+ year developers showed no difference&lt;/li&gt;
-&lt;li&gt;Modern software work is more about requirements, specs, documentation, and communication than raw coding skill&lt;/li&gt;
-&lt;li&gt;Small sample size (n&amp;lt;8) and study design limitations make results questionable&lt;/li&gt;
-&lt;li&gt;Takeaways:&lt;ol&gt;
-&lt;li&gt;&lt;strong&gt;Use AI for high-scoring interaction patterns&lt;/strong&gt;: Ask conceptual questions and request explanations rather than just code generation&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Adopt AI for documentation and specs&lt;/strong&gt;: Multiple developers report dramatic improvements in tickets, PRs, and documentation quality&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Be deliberate about learning&lt;/strong&gt;: If using AI, actively practice explaining concepts and avoid pure copy-paste workflows&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Use AI to reduce grunt work&lt;/strong&gt;: Let it handle boilerplate, test writing, and repetitive tasks while focusing on architecture and requirements&lt;/li&gt;
-&lt;/ol&gt;
+&lt;li&gt;&lt;p&gt;Use HTML instead of markdown to effectively plan and review. &lt;a href=&quot;https://x.com/trq212/status/2052809885763747935&quot;&gt;Claude Code: The Unreasonable Effectiveness of HTML&amp;quot; / X&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;The research confirms what many suspected: AI coding assistants create a real trade-off between speed and skill development, but the practical significance is hotly contested.&lt;/strong&gt; The critical question isn&amp;#39;t whether AI reduces learning (it does), but whether deep coding skill remains as valuable as expressing requirements clearly—and whether we&amp;#39;re comfortable with a generation of developers who can&amp;#39;t function without AI assistance.&lt;/li&gt;
-&lt;/ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&quot;https://github.com/colbymchenry/codegraph&quot;&gt;colbymchenry/codegraph&lt;/a&gt;: Pre-indexed code knowledge graph for Claude Code — fewer tokens, fewer tool calls, 100% local&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
 </content:encoded>
 </item>
 <item>
-<guid>https://github.com/theskumar/til/blob/main/weekly/2026-01-17.md</guid>
-<link>https://github.com/theskumar/til/blob/main/weekly/2026-01-17.md</link>
-<title>TIL: Week of January 17, 2026</title>
-<pubDate>Sun, 18 Jan 2026 01:19:56 GMT</pubDate>
-<content:encoded>&lt;p&gt;Things I learned during the week ending January 17, 2026.&lt;/p&gt;
+<guid>https://github.com/theskumar/til/blob/main/weekly/2026-05-31.md</guid>
+<link>https://github.com/theskumar/til/blob/main/weekly/2026-05-31.md</link>
+<title>TIL: Week of May 31, 2026</title>
+<pubDate>Sun, 21 Jun 2026 04:45:20 GMT</pubDate>
+<content:encoded>&lt;p&gt;Things I learned during the week ending May 31, 2026.&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;p&gt;Distributed Key-value store -- &lt;a href=&quot;https://etcd.io/&quot;&gt;https://etcd.io/&lt;/a&gt;&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Learnt about &lt;a href=&quot;https://tryvoiceink.com/&quot;&gt;VoiceLink&lt;/a&gt;, an alternative to [Wispr Flow] that have been using as my STT software, with it&amp;#39;s pricing model VoiceLink might be better replacement if it performs as good as WisprFlow&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;The free-threaded version of python can be added to uv and github actions with &lt;code&gt;t&lt;/code&gt; suffix. e.g. &lt;code&gt;3.14t&lt;/code&gt; and &lt;code&gt;3.13t&lt;/code&gt; &lt;a href=&quot;https://github.com/actions/setup-python?tab=readme-ov-file#basic-usage&quot;&gt;source&lt;/a&gt;&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Puzer published a &lt;a href=&quot;https://puzer.github.io/github_recommender/&quot;&gt;github recommendor&lt;/a&gt; that uses semantic embedding from user&amp;#39;s github stars all client side, I found some great recommendations which I plan to use:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;https://github.com/pamburus/hl&quot;&gt;pamburus/hl&lt;/a&gt;: A fast and powerful log viewer and processor that converts JSON logs or logfmt logs into a clear human-readable format. (⭐2657)&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;https://github.com/samwho/spacer&quot;&gt;samwho/spacer&lt;/a&gt;: CLI tool to insert spacers when command output stops (⭐1663)&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;https://github.com/darrenburns/posting&quot;&gt;darrenburns/posting&lt;/a&gt;: The modern API client that lives in your terminal. (⭐11134)&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;https://github.com/plutov/oq&quot;&gt;plutov/oq&lt;/a&gt;: Terminal OpenAPI Spec viewer (⭐943)&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;https://github.com/wey-gu/py-pglite&quot;&gt;wey-gu/py-pglite&lt;/a&gt;: PGlite wrapper in Python for testing. Test your app with Postgres just as lite as SQLite. (⭐577)&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://claude.com/blog/introducing-dynamic-workflows-in-claude-code&quot;&gt;Dynamic workflows&lt;/a&gt; in Claude Code. Claude dynamically writes orchestration scripts that spawn tens to hundreds of parallel subagents. It plans, decomposes into subtasks, fans out agents, and checks results before returning a coordinated answer. Adversarial agents try to refute findings, iterating until convergence. Enable via &lt;code&gt;ultracode&lt;/code&gt; setting or ask Claude to &amp;quot;create a workflow&amp;quot;. Notable: Jarred Sumner used it to port Bun from Zig to Rust (~750K lines, 11 days). Available on Max, Team, Enterprise plans. Consumes significantly more tokens than typical sessions.&lt;/li&gt;
 &lt;/ul&gt;
+</content:encoded>
+</item>
+<item>
+<guid>https://github.com/theskumar/til/blob/main/weekly/2026-06-14.md</guid>
+<link>https://github.com/theskumar/til/blob/main/weekly/2026-06-14.md</link>
+<title>TIL: Week of June 14, 2026</title>
+<pubDate>Sun, 21 Jun 2026 04:45:20 GMT</pubDate>
+<content:encoded>&lt;p&gt;Things I learned during the week ending June 14, 2026.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&quot;https://github.com/danielmiessler/fabric&quot;&gt;faberic&lt;/a&gt; is a crowd-sourced collection of prompts bundeled with a cli to use them via piped interfaces. &lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;[karpathy/autoresearch] is a concept/framework that allows one to leverage LLM to run an optimization loops based on a criteria. &lt;a href=&quot;https://github.com/davebcn87/pi-autoresearch&quot;&gt;davebcn87/pi-autoresearch&lt;/a&gt; takes this further has built a generic optimization long run loop method on top of pi agent. &lt;a href=&quot;https://gemini.google.com/app/7dcee9714f7955ce&quot;&gt;gemini&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
 </content:encoded>
 </item>
 <item>
-<guid>https://github.com/theskumar/til/blob/main/weekly/2026-01-18.md</guid>
-<link>https://github.com/theskumar/til/blob/main/weekly/2026-01-18.md</link>
-<title>TIL: Week of January 18, 2026</title>
-<pubDate>Sun, 18 Jan 2026 01:19:56 GMT</pubDate>
-<content:encoded>&lt;p&gt;Things I learned during the week ending January 18, 2026.&lt;/p&gt;
+<guid>https://github.com/theskumar/til/blob/main/weekly/2026-06-21.md</guid>
+<link>https://github.com/theskumar/til/blob/main/weekly/2026-06-21.md</link>
+<title>TIL: Week of June 21, 2026</title>
+<pubDate>Sun, 21 Jun 2026 04:45:20 GMT</pubDate>
+<content:encoded>&lt;p&gt;Things I learned during the week ending June 21, 2026.&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;p&gt;Learnt about &lt;a href=&quot;https://tryvoiceink.com/&quot;&gt;VoiceLink&lt;/a&gt;, an alternative to [Wispr Flow] that have been using as my STT software, with it&amp;#39;s pricing model VoiceLink might be better replacement if it performs as good as WisprFlow&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;The free-threaded version of python can be added to uv and github actions with &lt;code&gt;t&lt;/code&gt; suffix. e.g. &lt;code&gt;3.14t&lt;/code&gt; and &lt;code&gt;3.13t&lt;/code&gt; &lt;a href=&quot;https://github.com/actions/setup-python?tab=readme-ov-file#basic-usage&quot;&gt;source&lt;/a&gt;&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Puzer published a &lt;a href=&quot;https://puzer.github.io/github_recommender/&quot;&gt;github recommendor&lt;/a&gt; that uses semantic embedding from user&amp;#39;s github stars all client side, I found some great recommendations which I plan to use:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;https://github.com/pamburus/hl&quot;&gt;pamburus/hl&lt;/a&gt;: A fast and powerful log viewer and processor that converts JSON logs or logfmt logs into a clear human-readable format. (⭐2657)&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;https://github.com/samwho/spacer&quot;&gt;samwho/spacer&lt;/a&gt;: CLI tool to insert spacers when command output stops (⭐1663)&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;https://github.com/darrenburns/posting&quot;&gt;darrenburns/posting&lt;/a&gt;: The modern API client that lives in your terminal. (⭐11134)&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;https://github.com/plutov/oq&quot;&gt;plutov/oq&lt;/a&gt;: Terminal OpenAPI Spec viewer (⭐943)&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;https://github.com/wey-gu/py-pglite&quot;&gt;wey-gu/py-pglite&lt;/a&gt;: PGlite wrapper in Python for testing. Test your app with Postgres just as lite as SQLite. (⭐577)&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://getmoshi.app/&quot;&gt;Moshi&lt;/a&gt; is the best SSH client I&amp;#39;ve found for iPhone — connects to your laptop&amp;#39;s tmux sessions over &lt;a href=&quot;https://mosh.org/&quot;&gt;Mosh&lt;/a&gt;, making it rock-solid on mobile networks with roaming support. Perfect for an agent view on the go; I use it to monitor and interact with running pi/Claude sessions from my iPhone without losing the session on network switches.&lt;/li&gt;
 &lt;/ul&gt;
 </content:encoded>
 </item>

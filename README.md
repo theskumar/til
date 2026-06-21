@@ -25,7 +25,7 @@ For local preview of weekly digests: `npm install && node extract-weekly.js`
 
 ---
 
-29 TILs so far:
+30 TILs so far:
 
 ## docs
 
@@ -38,6 +38,10 @@ For local preview of weekly digests: `npm install && node extract-weekly.js`
 ## github
 
 - [actions/checkout may leak GitHub credentials](/github/checkout-can-leak-github-creds.md)
+
+## llm
+
+- [How Prompt Caching Works](/llm/prompt-caching.md)
 
 ## react
 
