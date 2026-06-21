@@ -676,6 +676,21 @@ footer.site-footer a:hover { color: var(--accent); }
   body { padding: 22px 18px 0; }
   footer.site-footer { flex-direction: column; align-items: center; text-align: center; }
   nav.site-nav { flex-wrap: wrap; gap: 14px; }
+  .week-row {
+    flex-wrap: wrap;
+  }
+  .week-link {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+  .week-list .week-meta {
+    width: 100%;
+    justify-content: flex-start;
+    margin-top: 4px;
+  }
+  .week-list .week-count { margin-left: auto; }
 }
 
 @media (prefers-reduced-motion: reduce) {
