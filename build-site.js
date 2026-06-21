@@ -120,7 +120,7 @@ function layout(title, body, { activeNav = "", canonical = "" } = {}) {
     ["Home", `${BASE_URL}/`],
     ["Articles", `${BASE_URL}/articles/`],
     ["Weekly", `${BASE_URL}/weekly/`],
-    ["Tags", `${BASE_URL}/tags/`],
+
   ];
 
   const navHTML = nav
@@ -163,10 +163,10 @@ function layout(title, body, { activeNav = "", canonical = "" } = {}) {
 <body>
   <header>
     <div class="header-wrap">
-      <a href="${BASE_URL}/" class="title">
-        <span class="brand">TIL</span>
-        <span class="brand-sub">Saurabh Kumar</span>
-      </a>
+      <div class="title">
+        <a href="${BASE_URL}/" class="brand">TIL</a>
+        <a href="${MAIN_SITE}" class="brand-sub">Saurabh Kumar</a>
+      </div>
       <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode" title="Toggle dark mode">
         <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
@@ -178,7 +178,7 @@ function layout(title, body, { activeNav = "", canonical = "" } = {}) {
     </div>
     <nav class="site-nav">
       ${navHTML}
-      <a href="${MAIN_SITE}" class="nav-back">← saurabh-kumar.com</a>
+
     </nav>
   </header>
   <main>
@@ -400,7 +400,7 @@ header { margin-bottom: 2.5rem; }
   justify-content: space-between;
   gap: 12px;
 }
-.title { text-decoration: none; display: flex; align-items: baseline; gap: 8px; }
+.title { display: flex; align-items: baseline; gap: 8px; }
 .title .brand {
   font-family: var(--font-serif);
   font-size: 1.35rem;
@@ -408,13 +408,17 @@ header { margin-bottom: 2.5rem; }
   color: var(--heading);
   letter-spacing: -0.02em;
   line-height: 1;
+  text-decoration: none;
 }
+.title .brand:hover { color: var(--accent); }
 .title .brand-sub {
   font-family: var(--font-mono);
   font-size: 0.72rem;
   color: var(--muted);
   letter-spacing: 0;
+  text-decoration: none;
 }
+.title .brand-sub:hover { color: var(--heading); }
 
 nav.site-nav {
   display: flex;
@@ -434,7 +438,7 @@ nav.site-nav a {
 }
 nav.site-nav a:hover { color: var(--heading); }
 nav.site-nav a.active { color: var(--heading); }
-nav.site-nav .nav-back { margin-left: auto; }
+
 
 .theme-toggle {
   position: relative;
@@ -720,7 +724,7 @@ function renderNoteTags(note) {
   return `<div class="note-tags">${note.tags.map(t => `<a href="${BASE_URL}/tags/${t}.html" class="tag">${escapeHTML(t)}</a>`).join("")}</div>`;
 }
 
-function buildHomePage(weeks, articles) {
+function buildHomePage(weeks, articles, tagMap) {
   const recentWeeks = [...weeks.entries()].slice(0, 8);
   const weekListHTML = recentWeeks
     .map(([weekEnd, notes]) => {
@@ -764,7 +768,14 @@ ${
   <a class="view-all" href="${BASE_URL}/articles/">All articles &rarr;</a>
 </section>`
     : ""
-}`;
+}
+
+${tagMap && tagMap.size ? `<section class="home-section">
+  <h2>Tags</h2>
+  <div class="tag-cloud">
+    ${[...tagMap.entries()].map(([tag, notes]) => `<a href="${BASE_URL}/tags/${tag}.html" class="tag">${escapeHTML(tag)}<span class="tag-count">${notes.length}</span></a>`).join("\n    ")}
+  </div>
+</section>` : ""}`;
 
   return layout("Home", body, { activeNav: "Home", canonical: `${BASE_URL}/` });
 }
@@ -1020,8 +1031,11 @@ async function build() {
   await fs.mkdir(path.join(SITE_DIR, "weekly"), { recursive: true });
   await fs.mkdir(path.join(SITE_DIR, "articles"), { recursive: true });
 
+  // Tag map
+  const tagMap = groupByTag(allNotes);
+
   // Home page
-  await fs.writeFile(path.join(SITE_DIR, "index.html"), buildHomePage(weeks, articles));
+  await fs.writeFile(path.join(SITE_DIR, "index.html"), buildHomePage(weeks, articles, tagMap));
 
   // Weekly index
   await fs.writeFile(path.join(SITE_DIR, "weekly", "index.html"), buildWeeklyIndexPage(weeks));
@@ -1047,7 +1061,6 @@ async function build() {
   await fs.writeFile(path.join(SITE_DIR, "articles", "index.html"), buildArticlesIndexPage(articles));
 
   // Tag pages
-  const tagMap = groupByTag(allNotes);
   await fs.mkdir(path.join(SITE_DIR, "tags"), { recursive: true });
   await fs.writeFile(path.join(SITE_DIR, "tags", "index.html"), buildTagsIndexPage(tagMap));
   for (const [tag, tagNotes] of tagMap) {
