@@ -25,7 +25,7 @@ For local preview of weekly digests: `npm install && node extract-weekly.js`
 
 ---
 
-20 TILs so far:
+29 TILs so far:
 
 ## docs
 
@@ -64,3 +64,12 @@ For local preview of weekly digests: `npm install && node extract-weekly.js`
 - [Week of February 14, 2026](/weekly/2026-02-14.md)
 - [Week of February 15, 2026](/weekly/2026-02-15.md)
 - [Week of February 22, 2026](/weekly/2026-02-22.md)
+- [Week of March 22, 2026](/weekly/2026-03-22.md)
+- [Week of March 29, 2026](/weekly/2026-03-29.md)
+- [Week of April 5, 2026](/weekly/2026-04-05.md)
+- [Week of April 19, 2026](/weekly/2026-04-19.md)
+- [Week of April 26, 2026](/weekly/2026-04-26.md)
+- [Week of May 10, 2026](/weekly/2026-05-10.md)
+- [Week of May 31, 2026](/weekly/2026-05-31.md)
+- [Week of June 14, 2026](/weekly/2026-06-14.md)
+- [Week of June 21, 2026](/weekly/2026-06-21.md)
