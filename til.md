@@ -2,13 +2,13 @@
 
 - 23 Jun 2026. Many asymmetric embedding models need task prefixes on inputs, and skipping them quietly degrades relevance. Each model has its own scheme: nomic (`search_query:`/`search_document:`), E5 (`query:`/`passage:`), BGE (a query instruction sentence, bare docs) — not interchangeable. OpenAI `text-embedding-3-*` and `all-MiniLM-L6-v2` need none. Whether you add the prefix depends on the serving layer, not the model: raw endpoints (llama.cpp `/v1/embeddings`, HF TEI, Ollama) send bare text so it's on you, while sentence-transformers (`prompt_name="query"`) and vendor SDKs inject it for you. Adding `search_query:`/`search_document:` to a nomic-v1.5 call lifted cosine similarity on a real query/doc pair from 0.54 to 0.60 at zero cost. #rag #ai
 - 15 Jun 2026. [Moshi](https://getmoshi.app/) is the best SSH client I've found for iPhone — connects to your laptop's tmux sessions over [Mosh](https://mosh.org/), making it rock-solid on mobile networks with roaming support. Perfect for an agent view on the go; I use it to monitor and interact with running pi/Claude sessions from my iPhone without losing the session on network switches. #macos #tools #ai
-- 08 Jun 2026. [faberic](https://github.com/danielmiessler/fabric) is a crowd-sourced collection of prompts bundeled with a cli to use them via piped interfaces. #ai #tools
-- 08 Jun 2026. [karpathy/autoresearch] is a concept/framework that allows one to leverage LLM to run an optimization loops based on a criteria. [davebcn87/pi-autoresearch](https://github.com/davebcn87/pi-autoresearch) takes this further has built a generic optimization long run loop method on top of pi agent. [gemini](https://gemini.google.com/app/7dcee9714f7955ce) #ai
+- 08 Jun 2026. [faberic](https://github.com/danielmiessler/fabric) is a crowd-sourced collection of prompts bundeled with a cli to use them via piped interfaces. #ai #tools #open-source
+- 08 Jun 2026. [karpathy/autoresearch] is a concept/framework that allows one to leverage LLM to run an optimization loops based on a criteria. [davebcn87/pi-autoresearch](https://github.com/davebcn87/pi-autoresearch) takes this further has built a generic optimization long run loop method on top of pi agent. [gemini](https://gemini.google.com/app/7dcee9714f7955ce) #ai #performance
 
 # May 2026
 
-- 29 May 2026. [Dynamic workflows](https://claude.com/blog/introducing-dynamic-workflows-in-claude-code) in Claude Code. Claude dynamically writes orchestration scripts that spawn tens to hundreds of parallel subagents. It plans, decomposes into subtasks, fans out agents, and checks results before returning a coordinated answer. Adversarial agents try to refute findings, iterating until convergence. Enable via `ultracode` setting or ask Claude to "create a workflow". Notable: Jarred Sumner used it to port Bun from Zig to Rust (~750K lines, 11 days). Available on Max, Team, Enterprise plans. Consumes significantly more tokens than typical sessions. #ai
-- 09 May 2026. Use HTML instead of markdown to effectively plan and review. [Claude Code: The Unreasonable Effectiveness of HTML" / X](https://x.com/trq212/status/2052809885763747935) #ai
+- 29 May 2026. [Dynamic workflows](https://claude.com/blog/introducing-dynamic-workflows-in-claude-code) in Claude Code. Claude dynamically writes orchestration scripts that spawn tens to hundreds of parallel subagents. It plans, decomposes into subtasks, fans out agents, and checks results before returning a coordinated answer. Adversarial agents try to refute findings, iterating until convergence. Enable via `ultracode` setting or ask Claude to "create a workflow". Notable: Jarred Sumner used it to port Bun from Zig to Rust (~750K lines, 11 days). Available on Max, Team, Enterprise plans. Consumes significantly more tokens than typical sessions. #ai #devops
+- 09 May 2026. Use HTML instead of markdown to effectively plan and review. [Claude Code: The Unreasonable Effectiveness of HTML" / X](https://x.com/trq212/status/2052809885763747935) #ai #markdown
 - 09 May 2026. [colbymchenry/codegraph](https://github.com/colbymchenry/codegraph): Pre-indexed code knowledge graph for Claude Code — fewer tokens, fewer tool calls, 100% local #ai #tools
 
 # Apr 2026
@@ -19,26 +19,26 @@
   - The Swiss-Cheese Defense: Rather than one "perfect" human gate, the model uses a stack of imperfect automated layers. By layering signals like agent competition, deterministic guardrails, and adversarial "red-team" agents, the system catches errors where their individual failure modes don't overlap.
 - 12 Apr 2026. [codespelunker](https://github.com/boyter/cs?tab=readme-ov-file) is a CLI code search tool that understands code structure and ranks results by relevance. No indexing required with CLI, TUI, MCP and HTTP support. #tools #search
 - 12 Apr 2026. [FluidVoice](https://github.com/altic-dev/FluidVoice) with paraquet v2 is soemthing i've been using now as my default speech-to-text on Mac, after evaluating WisperFlow, Handy and VoiceInk. #macos
-- 12 Apr 2026. [thaw](https://github.com/stonerl/Thaw) a fork of Ice. I'm switching to it, as Ice seems to the inactive now. #macos
+- 12 Apr 2026. [thaw](https://github.com/stonerl/Thaw) a fork of Ice. I'm switching to it, as Ice seems to the inactive now. #macos #open-source
 - 04 Apr 2026. [mise](https://github.com/jdx/mise) let's you manage dependencies at OS level and project level. Thinking to manage my dev machine. The hard part is documenting what I have installed. #tools #devops
-- 02 Apr 2026. [Django Modern REST](https://django-modern-rest.readthedocs.io) seems to be an emerging REST API library with focus on performance, scalability and pluggable serializers. Supporting msgpack, CBV and less of sync_to_async. Might evaluate it against the my current preferred `django-ninja`. [gemini](https://gemini.google.com/app/1aa113e0b21dd18f) #django #python
+- 02 Apr 2026. [Django Modern REST](https://django-modern-rest.readthedocs.io) seems to be an emerging REST API library with focus on performance, scalability and pluggable serializers. Supporting msgpack, CBV and less of sync_to_async. Might evaluate it against the my current preferred `django-ninja`. [gemini](https://gemini.google.com/app/1aa113e0b21dd18f) #django #python #architecture
 
 # Mar 2026
 
-- 24 Mar 2026. [pageindex](https://github.com/VectifyAI/PageIndex/) generates a semantic tree-like json index of a lengthy document to allow for reasoning based RAG without the need for vectordb. #rag #ai
+- 24 Mar 2026. [pageindex](https://github.com/VectifyAI/PageIndex/) generates a semantic tree-like json index of a lengthy document to allow for reasoning based RAG without the need for vectordb. #rag #ai #databases
 - 21 Mar 2026. [`moor`](https://github.com/walles/moor) is a better replacement for less and bat as PAGER. #tools #shell
 - 17 Mar 2026. Every layer of review makes you 10x slower via [apenwarr](https://apenwarr.ca/log/20260316) #architecture
 
 # Feb 2026
 
-- 20 Feb 2026. `brew install git-trim` [git-trim](https://github.com/foriequal0/git-trim) - A dedicated binary for
+- 20 Feb 2026. `brew install git-trim` [git-trim](https://github.com/foriequal0/git-trim) - A dedicated binary for #tools #shell
   safely deleting merged branches. Handles edge cases better than bash one-liners, including squash-merged branches. [#](https://news.ycombinator.com/item?id=47089533) #tools
-- 19 Feb 2026. [slingdata-io/sling-cli](https://github.com/slingdata-io/sling-cli) is a promising tool move/sync data between databases and files, esp. helpful for local testing, ci/cd while able to do stage/sql based transformations. #data #tools
+- 19 Feb 2026. [slingdata-io/sling-cli](https://github.com/slingdata-io/sling-cli) is a promising tool move/sync data between databases and files, esp. helpful for local testing, ci/cd while able to do stage/sql based transformations. #data #tools #databases
 - 16 Feb 2026. https://modern-css.com/ has a really nice collection of CSS replacements for older hacks. #css
 
-- 16 Feb 2026. [panphora/overtype](https://github.com/panphora/overtype): The markdown editor that's just a textarea with a small size footprint and a minimum looking UI https://overtype.dev (⭐3431) #markdown
+- 16 Feb 2026. [panphora/overtype](https://github.com/panphora/overtype): The markdown editor that's just a textarea with a small size footprint and a minimum looking UI https://overtype.dev (⭐3431) #markdown #editor
 
-- 15 Feb 2026. For generating embedding locally,
+- 15 Feb 2026. For generating embedding locally, #rag #ai
   [nomic-embed-text](https://ollama.com/library/nomic-embed-text) is a large
   context length text encoder that
   [surpasses](https://www.nomic.ai/news/nomic-embed-text-v1) OpenAI
@@ -47,23 +47,23 @@
   English-centric apps. BGE-M3, Qwen3-Embedding and E5-Small are other
   alternatives. #rag
 
-- 15 Feb 2026. [alibaba/zvec](https://github.com/alibaba/zvec) by alibaba is an
+- 15 Feb 2026. [alibaba/zvec](https://github.com/alibaba/zvec) by alibaba is an #rag #databases
   embedded vector database supports both spare and dense vectors, along with
   structured data. It can be considered the sqlite of vector databases. #databases #rag
 
 - 15 Feb 2026. [yichuan-w/LEANN](https://github.com/yichuan-w/LEANN) is a RAG focused framework focused on efficient storage with built-in chunking strategies embedding model management and MCP server. [gemini](https://gemini.google.com/app/c627885d0bf34a2d) #rag #ai
 - 15 Feb 2026. [K-dense](https://www.k-dense.ai/) known for using skills to enable deep research has published [140+ skills](ttps://github.com/K-Dense-AI/claude-scientific-skills) related to scientic research including literature review, data analysis, etc. #ai
-- 13 Feb 2026. [zoocache](https://github.com/albertobadia/zoocache) is a sematic dependency based cache manager, that support in-memory, LMDB or redis backends. Integration with [Django](https://github.com/albertobadia/zoocache/blob/main/docs/django_user_guide.md) looks interesting. #django #python
+- 13 Feb 2026. [zoocache](https://github.com/albertobadia/zoocache) is a sematic dependency based cache manager, that support in-memory, LMDB or redis backends. Integration with [Django](https://github.com/albertobadia/zoocache/blob/main/docs/django_user_guide.md) looks interesting. #django #python #databases
 - 12 Feb 2026. [Handy](https://handy.computer/) Looks like a promising tool for to replace WisperFlow and VoiceInk for speech to text conversion. [via](https://dannysmith.notion.site/Danny-s-Software-313c769fa9c04819a37d813da0485c78) #macos
-- 10 Feb 2026. [Hono](https://hono.dev/) based on web standards is a great option for js runtimes esp. if you plan to deploy your code to cloudflare workers, bun or deno. You get faster startup time and cross-platform compatibility. #javascript
-- 06 Feb 2026. Opus 4.6 launch. #ai
+- 10 Feb 2026. [Hono](https://hono.dev/) based on web standards is a great option for js runtimes esp. if you plan to deploy your code to cloudflare workers, bun or deno. You get faster startup time and cross-platform compatibility. #javascript #devops #performance
+- 06 Feb 2026. Opus 4.6 launch. #ai #open-source #security
   - context compaction (beta) and 1M context window, enables longer agentic tasks without loosing context.
   - they claim it has found 500 Zero-Day Flaws in open-source projects (yet to see the proofs though)
   - agent teams, multiple agent coordinates with a leader agent. https://code.claude.com/docs/en/agent-teams
-- 05 Feb 2026. On blockchain, UIPC (Universal IPC) and SIPC (Secure IPC) are frameworks that allows different network to talk to each other using a standard protocol. While UIPC acts as the universal courier, SIPC acts as the security guard. Together, they create "Internet of Blockchains". [Gemini](https://gemini.google.com/app/b8339d20bf7f33cf) #blockchain
+- 05 Feb 2026. On blockchain, UIPC (Universal IPC) and SIPC (Secure IPC) are frameworks that allows different network to talk to each other using a standard protocol. While UIPC acts as the universal courier, SIPC acts as the security guard. Together, they create "Internet of Blockchains". [Gemini](https://gemini.google.com/app/b8339d20bf7f33cf) #blockchain #architecture #security
   - [Cosmos IBC](https://docs.cosmos.network/ibc/v10.1.x/intro) & [Polkadot - XCM](https://wiki.polkadot.network/docs/learn-xcm) are two industry leading protocols for UIPC
   - For the SIPC, **Zero-Knowledge Proofs** and **Rollup architecture** also "Trustless bridges" or "Cross-rollup communication" are often more frequently used terms in blockchain literatures.
-- 05 Feb 2026. [Vortex](https://vortex.dev/) a newer format is supported by [duckdb](https://duckdb.org/2026/01/23/duckdb-vortex-extension) promises to be faster for random access and has zero-copy metadata, with better compression. While the support across the board is limited but worth considering for LLM/RAG based uses over parquet. #data #databases
+- 05 Feb 2026. [Vortex](https://vortex.dev/) a newer format is supported by [duckdb](https://duckdb.org/2026/01/23/duckdb-vortex-extension) promises to be faster for random access and has zero-copy metadata, with better compression. While the support across the board is limited but worth considering for LLM/RAG based uses over parquet. #data #databases #rag
 - 05 Feb 2026. **Designing Data-Intensive Applications: The Big Ideas Behind Reliable, Scalable, and Maintainable Systems** by Martin Kleppmann manages to be both rigorous technical manual and something approaching a philosophical treatise on the nature of truth, consistency, and trust in distributed systems. [Claude][https://claude.ai/chat/0f58f2f6-bd56-41a1-a785-8267afa5a3d1] #book #architecture #databases
   - Foundation. He starts by asking the questions _"What do we actually want in our data systems"_, answers them as - reliability, scalability and maintainability.
     - Reliability. The question isn't whether failure will happen, it will, but the whether the systems can survive them.
@@ -77,7 +77,7 @@
 
 # Jan 2026
 
-- 31 Jan 2026. Notes on "How AI assistance impacts the formation of coding skills" [Article](https://www.anthropic.com/research/AI-assistance-coding-skills) [HN](https://news.ycombinator.com/item?id=46820924) #ai
+- 31 Jan 2026. Notes on "How AI assistance impacts the formation of coding skills" [Article](https://www.anthropic.com/research/AI-assistance-coding-skills) [HN](https://news.ycombinator.com/item?id=46820924) #ai #architecture
   - AI speeds up coding but reduces deep understanding and mastery
   - Juniors (1-3 years experience) showed speed improvements with AI, but 4+ year developers showed no difference
   - Modern software work is more about requirements, specs, documentation, and communication than raw coding skill
@@ -91,7 +91,7 @@
 - 12 Jan 2026. Distributed Key-value store -- https://etcd.io/ #databases
 - 12 Jan 2026. Learnt about [VoiceLink](https://tryvoiceink.com/), an alternative to [Wispr Flow] that have been using as my STT software, with it's pricing model VoiceLink might be better replacement if it performs as good as WisprFlow #macos
 - 12 Jan 2026. The free-threaded version of python can be added to uv and github actions with `t` suffix. e.g. `3.14t` and `3.13t` [source](https://github.com/actions/setup-python?tab=readme-ov-file#basic-usage) #python #devops
-- 11 Jan 2026. Puzer published a [github recommendor](https://puzer.github.io/github_recommender/) that uses semantic embedding from user's github stars all client side, I found some great recommendations which I plan to use: #tools
+- 11 Jan 2026. Puzer published a [github recommendor](https://puzer.github.io/github_recommender/) that uses semantic embedding from user's github stars all client side, I found some great recommendations which I plan to use: #tools #databases #rag
   - [pamburus/hl](https://github.com/pamburus/hl): A fast and powerful log viewer and processor that converts JSON logs or logfmt logs into a clear human-readable format. (⭐2657)
   - [samwho/spacer](https://github.com/samwho/spacer): CLI tool to insert spacers when command output stops (⭐1663)
   - [darrenburns/posting](https://github.com/darrenburns/posting): The modern API client that lives in your terminal. (⭐11134)
@@ -106,7 +106,7 @@
 
 - 27 Dec 2025. [how uv got so fast](https://nesbitt.io/2025/12/26/how-uv-got-so-fast.html). UV performance is because of design decisions while rust contributes to micro optimizations. #python #performance
 - 24 Dec 2025. "[LangGraph](https://docs.langchain.com/oss/python/langgraph/overview) is an orchestration framework for building stateful multi-agent applications using LLMs. It provides low-level primitives such as nodes and edges, along with built-in features that give developers granular control over agent workflows, memory management and state persistence. This means developers can start with a simple pre-built graph and scale to complex, evolving agent architectures. With support for streaming, advanced context management and resilience patterns like model fallbacks and tool error handling, LangGraph enables you to build robust, production-grade agentic applications. Its graph-based approach ensures predictable, customizable workflows and simplifies debugging and scaling." #ai #python
-- 22 Dec 2025. Notes from [Thoughtworks - Technology Radar vol 33](https://www.thoughtworks.com/content/dam/thoughtworks/documents/radar/2025/11/tr_technology_radar_vol_33_en.pdf) #architecture
+- 22 Dec 2025. Notes from [Thoughtworks - Technology Radar vol 33](https://www.thoughtworks.com/content/dam/thoughtworks/documents/radar/2025/11/tr_technology_radar_vol_33_en.pdf) #architecture #databases #ai
   - text-to-sql solutions aren't working as expected
   - pnpm, langGraph, and pydantic recommended for adoption
 - 22 Dec 2025. [`npx -y npm-check-updates`](https://github.com/raineorshine/npm-check-updates) tells you the latest versions of your `package.json`, ignoring pinned versions. #javascript #tools
