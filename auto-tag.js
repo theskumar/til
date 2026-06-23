@@ -78,7 +78,7 @@ function buildTagTexts() {
 async function loadOrComputeTagEmbeddings() {
   const tagTexts = buildTagTexts();
   const tags = Object.keys(tagTexts);
-  const currentHash = JSON.stringify(tagTexts);
+  const currentHash = JSON.stringify({ v: 2, tagTexts });
 
   if (fs.existsSync(EMBED_CACHE_FILE)) {
     try {
@@ -89,7 +89,7 @@ async function loadOrComputeTagEmbeddings() {
     } catch {}
   }
 
-  const texts = tags.map(t => tagTexts[t]);
+  const texts = tags.map(t => `search_query: ${tagTexts[t]}`);
   const vectors = await getEmbeddings(texts);
   const embeddings = {};
   tags.forEach((t, i) => { embeddings[t] = vectors[i]; });
@@ -101,7 +101,7 @@ async function loadOrComputeTagEmbeddings() {
 async function scoreEmbedding(block, tagEmbeddings) {
   const blockText = block.replace(/https?:\/\/[^\s)\]]+/g, '').substring(0, 512);
   if (blockText.trim().length < 40) return {};
-  const [blockVec] = await getEmbeddings([blockText]);
+  const [blockVec] = await getEmbeddings([`search_document: ${blockText}`]);
   const scores = {};
   for (const [tag, tagVec] of Object.entries(tagEmbeddings)) {
     const sim = cosineSimilarity(blockVec, tagVec);
