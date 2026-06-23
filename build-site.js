@@ -722,7 +722,7 @@ footer.site-footer a:hover { color: var(--accent); }
 // ---------------------------------------------------------------------------
 
 function stripTags(text) {
-  return text.replace(/\s*#[a-zA-Z][a-zA-Z0-9_-]*/g, "").trim();
+  return text.replace(/\s*#[a-zA-Z][a-zA-Z0-9_-]*/g, "").trimEnd();
 }
 
 function renderNoteHTML(note) {
