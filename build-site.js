@@ -533,6 +533,7 @@ html.theme-anim *::after {
   text-decoration: none;
   color: var(--heading);
   font-size: 1rem;
+  flex-shrink: 0;
 }
 .week-link:hover { color: var(--accent); }
 .week-list .week-title { font-weight: 450; }
@@ -553,8 +554,10 @@ html.theme-anim *::after {
 .week-tags {
   display: flex;
   flex-wrap: wrap;
+  justify-content: flex-end;
   gap: 4px;
 }
+.tag-more { color: var(--muted); }
 .tag {
   font-family: var(--font-mono);
   font-size: 0.68rem;
@@ -742,8 +745,11 @@ function renderNoteTags(note, excludeTag) {
 function renderWeekRow(weekEnd, notes) {
   const title = formatWeekTitle(weekEnd);
   const weekTags = [...new Set(notes.flatMap((n) => n.tags))].sort();
+  const MAX_TAGS = 4;
+  const shownTags = weekTags.slice(0, MAX_TAGS);
+  const overflow = weekTags.length - shownTags.length;
   const tagsHTML = weekTags.length
-    ? `<span class="week-tags">${weekTags.map((t) => `<a href="${BASE_URL}/tags/${t}.html" class="tag" onclick="event.stopPropagation()">${escapeHTML(t)}</a>`).join("")}</span>`
+    ? `<span class="week-tags">${shownTags.map((t) => `<a href="${BASE_URL}/tags/${t}.html" class="tag" onclick="event.stopPropagation()">${escapeHTML(t)}</a>`).join("")}${overflow ? `<a href="${BASE_URL}/weekly/${weekEnd}.html" class="tag tag-more">+${overflow}</a>` : ""}</span>`
     : "";
   return `<li><div class="week-row"><a href="${BASE_URL}/weekly/${weekEnd}.html" class="week-link"><span class="week-title">${title}</span></a><span class="week-meta">${tagsHTML}<a href="${BASE_URL}/weekly/${weekEnd}.html" class="week-count">${pluralizeNotes(notes.length)}</a></span></div></li>`;
 }
