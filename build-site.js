@@ -615,12 +615,12 @@ a.tag:hover {
 
 /* Notes in weekly pages */
 .notes-list { list-style: none; margin: 0; padding: 0; }
-.notes-list li {
+.notes-list > li {
   padding: 1rem 0;
   border-top: 1px solid var(--border);
   line-height: 1.7;
 }
-.notes-list li:first-child { border-top: 0; }
+.notes-list > li:first-child { border-top: 0; }
 .note-date {
   font-family: var(--font-mono);
   font-size: 0.76rem;
