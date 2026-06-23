@@ -8,7 +8,6 @@ const SITE_TITLE = "TIL — Saurabh Kumar";
 const MAIN_SITE = "https://saurabh-kumar.com";
 
 const SOURCE_FILES = ["til.md"];
-const IGNORE_FILES = ["README.md", "til.md", "CLAUDE.md"];
 const IGNORE_DIRS = ["node_modules", ".git", ".github", "_site", "docs", ".pi"];
 
 // ---------------------------------------------------------------------------
@@ -41,7 +40,9 @@ function extractNotes(markdown) {
   for (const note of notes) {
     const text = note.lines.join(" ");
     const tagMatches = text.match(/#([a-zA-Z][a-zA-Z0-9_-]*)/g);
-    note.tags = tagMatches ? [...new Set(tagMatches.map(t => t.slice(1).toLowerCase()))] : [];
+    note.tags = tagMatches
+      ? [...new Set(tagMatches.map((t) => t.slice(1).toLowerCase()))]
+      : [];
   }
   return notes;
 }
@@ -91,7 +92,12 @@ async function discoverArticles() {
   const articles = [];
   const entries = await fs.readdir(".", { withFileTypes: true });
   for (const entry of entries) {
-    if (!entry.isDirectory() || IGNORE_DIRS.includes(entry.name) || entry.name === "weekly") continue;
+    if (
+      !entry.isDirectory() ||
+      IGNORE_DIRS.includes(entry.name) ||
+      entry.name === "weekly"
+    )
+      continue;
     const files = await fs.readdir(entry.name);
     for (const file of files) {
       if (!file.endsWith(".md")) continue;
@@ -108,7 +114,10 @@ async function discoverArticles() {
       });
     }
   }
-  return articles.sort((a, b) => a.category.localeCompare(b.category) || a.title.localeCompare(b.title));
+  return articles.sort(
+    (a, b) =>
+      a.category.localeCompare(b.category) || a.title.localeCompare(b.title),
+  );
 }
 
 // ---------------------------------------------------------------------------
@@ -120,7 +129,6 @@ function layout(title, body, { activeNav = "", canonical = "" } = {}) {
     ["Home", `${BASE_URL}/`],
     ["Articles", `${BASE_URL}/articles/`],
     ["Weekly", `${BASE_URL}/weekly/`],
-
   ];
 
   const navHTML = nav
@@ -719,22 +727,50 @@ function renderNoteHTML(note) {
   return marked.parse(md);
 }
 
-function renderNoteTags(note) {
-  if (!note.tags.length) return "";
-  return `<div class="note-tags">${note.tags.map(t => `<a href="${BASE_URL}/tags/${t}.html" class="tag">${escapeHTML(t)}</a>`).join("")}</div>`;
+function pluralizeNotes(n) {
+  return `${n} note${n !== 1 ? "s" : ""}`;
+}
+
+function renderNoteTags(note, excludeTag) {
+  const tags = excludeTag
+    ? note.tags.filter((t) => t !== excludeTag)
+    : note.tags;
+  if (!tags.length) return "";
+  return `<div class="note-tags">${tags.map((t) => `<a href="${BASE_URL}/tags/${t}.html" class="tag">${escapeHTML(t)}</a>`).join("")}</div>`;
+}
+
+function renderWeekRow(weekEnd, notes) {
+  const title = formatWeekTitle(weekEnd);
+  const weekTags = [...new Set(notes.flatMap((n) => n.tags))].sort();
+  const tagsHTML = weekTags.length
+    ? `<span class="week-tags">${weekTags.map((t) => `<a href="${BASE_URL}/tags/${t}.html" class="tag" onclick="event.stopPropagation()">${escapeHTML(t)}</a>`).join("")}</span>`
+    : "";
+  return `<li><div class="week-row"><a href="${BASE_URL}/weekly/${weekEnd}.html" class="week-link"><span class="week-title">${title}</span></a><span class="week-meta">${tagsHTML}<a href="${BASE_URL}/weekly/${weekEnd}.html" class="week-count">${pluralizeNotes(notes.length)}</a></span></div></li>`;
+}
+
+function renderTagCloudItems(tagMap) {
+  return [...tagMap.entries()].map(
+    ([tag, notes]) =>
+      `<a href="${BASE_URL}/tags/${tag}.html" class="tag">${escapeHTML(tag)}<span class="tag-count">${notes.length}</span></a>`,
+  );
+}
+
+function renderNotesListItems(notes, excludeTag) {
+  return [...notes]
+    .sort((a, b) => b.date - a.date)
+    .map((note) => {
+      const dateStr = formatDate(note.date);
+      const html = renderNoteHTML(note);
+      const tags = renderNoteTags(note, excludeTag);
+      return `<li><span class="note-date">${dateStr}</span>${html}${tags}</li>`;
+    })
+    .join("\n");
 }
 
 function buildHomePage(weeks, articles, tagMap) {
-  const recentWeeks = [...weeks.entries()].slice(0, 8);
-  const weekListHTML = recentWeeks
-    .map(([weekEnd, notes]) => {
-      const title = formatWeekTitle(weekEnd);
-      const weekTags = [...new Set(notes.flatMap(n => n.tags))].sort();
-      const tagsHTML = weekTags.length
-        ? `<span class="week-tags">${weekTags.map(t => `<a href="${BASE_URL}/tags/${t}.html" class="tag" onclick="event.stopPropagation()">${escapeHTML(t)}</a>`).join("")}</span>`
-        : "";
-      return `<li><div class="week-row"><a href="${BASE_URL}/weekly/${weekEnd}.html" class="week-link"><span class="week-title">${title}</span></a><span class="week-meta">${tagsHTML}<a href="${BASE_URL}/weekly/${weekEnd}.html" class="week-count">${notes.length} note${notes.length !== 1 ? "s" : ""}</a></span></div></li>`;
-    })
+  const weekListHTML = [...weeks.entries()]
+    .slice(0, 8)
+    .map(([weekEnd, notes]) => renderWeekRow(weekEnd, notes))
     .join("\n");
 
   const articleListHTML = articles
@@ -770,26 +806,23 @@ ${
     : ""
 }
 
-${tagMap && tagMap.size ? `<section class="home-section">
+${
+  tagMap && tagMap.size
+    ? `<section class="home-section">
   <h2>Tags</h2>
   <div class="tag-cloud">
-    ${[...tagMap.entries()].map(([tag, notes]) => `<a href="${BASE_URL}/tags/${tag}.html" class="tag">${escapeHTML(tag)}<span class="tag-count">${notes.length}</span></a>`).join("\n    ")}
+    ${renderTagCloudItems(tagMap).join("\n    ")}
   </div>
-</section>` : ""}`;
+</section>`
+    : ""
+}`;
 
   return layout("Home", body, { activeNav: "Home", canonical: `${BASE_URL}/` });
 }
 
 function buildWeeklyIndexPage(weeks) {
   const listHTML = [...weeks.entries()]
-    .map(([weekEnd, notes]) => {
-      const title = formatWeekTitle(weekEnd);
-      const weekTags = [...new Set(notes.flatMap(n => n.tags))].sort();
-      const tagsHTML = weekTags.length
-        ? `<span class="week-tags">${weekTags.map(t => `<a href="${BASE_URL}/tags/${t}.html" class="tag" onclick="event.stopPropagation()">${escapeHTML(t)}</a>`).join("")}</span>`
-        : "";
-      return `<li><div class="week-row"><a href="${BASE_URL}/weekly/${weekEnd}.html" class="week-link"><span class="week-title">${title}</span></a><span class="week-meta">${tagsHTML}<a href="${BASE_URL}/weekly/${weekEnd}.html" class="week-count">${notes.length} note${notes.length !== 1 ? "s" : ""}</a></span></div></li>`;
-    })
+    .map(([weekEnd, notes]) => renderWeekRow(weekEnd, notes))
     .join("\n");
 
   const body = `
@@ -801,21 +834,15 @@ function buildWeeklyIndexPage(weeks) {
   ${listHTML}
 </ul>`;
 
-  return layout("Weekly Notes", body, { activeNav: "Weekly", canonical: `${BASE_URL}/weekly/` });
+  return layout("Weekly Notes", body, {
+    activeNav: "Weekly",
+    canonical: `${BASE_URL}/weekly/`,
+  });
 }
 
 function buildWeekPage(weekEnd, notes, prevWeek, nextWeek) {
   const title = formatWeekTitle(weekEnd);
-  const sortedNotes = [...notes].sort((a, b) => b.date - a.date);
-
-  const notesHTML = sortedNotes
-    .map((note) => {
-      const dateStr = formatDate(note.date);
-      const html = renderNoteHTML(note);
-      const tags = renderNoteTags(note);
-      return `<li><span class="note-date">${dateStr}</span>${html}${tags}</li>`;
-    })
-    .join("\n");
+  const notesHTML = renderNotesListItems(notes);
 
   const prevLink = prevWeek
     ? `<a href="${BASE_URL}/weekly/${prevWeek}.html">&larr; Previous week</a>`
@@ -827,7 +854,7 @@ function buildWeekPage(weekEnd, notes, prevWeek, nextWeek) {
   const body = `
 <div class="page-head">
   <h1>${title}</h1>
-  <p class="sub">${notes.length} note${notes.length !== 1 ? "s" : ""} this week</p>
+  <p class="sub">${pluralizeNotes(notes.length)} this week</p>
 </div>
 <ul class="notes-list">
   ${notesHTML}
@@ -837,7 +864,10 @@ function buildWeekPage(weekEnd, notes, prevWeek, nextWeek) {
   ${nextLink}
 </nav>`;
 
-  return layout(title, body, { activeNav: "Weekly", canonical: `${BASE_URL}/weekly/${weekEnd}.html` });
+  return layout(title, body, {
+    activeNav: "Weekly",
+    canonical: `${BASE_URL}/weekly/${weekEnd}.html`,
+  });
 }
 
 function buildArticlesIndexPage(articles) {
@@ -869,7 +899,10 @@ function buildArticlesIndexPage(articles) {
 </div>
 ${sectionsHTML}`;
 
-  return layout("Articles", body, { activeNav: "Articles", canonical: `${BASE_URL}/articles/` });
+  return layout("Articles", body, {
+    activeNav: "Articles",
+    canonical: `${BASE_URL}/articles/`,
+  });
 }
 
 function buildArticlePage(article) {
@@ -909,11 +942,7 @@ function groupByTag(notes) {
 }
 
 function buildTagsIndexPage(tagMap) {
-  const tagsHTML = [...tagMap.entries()]
-    .map(([tag, notes]) =>
-      `<a href="${BASE_URL}/tags/${tag}.html" class="tag">${escapeHTML(tag)}<span class="tag-count">${notes.length}</span></a>`
-    )
-    .join("\n");
+  const tagsHTML = renderTagCloudItems(tagMap).join("\n");
 
   const body = `
 <div class="page-head">
@@ -924,34 +953,29 @@ function buildTagsIndexPage(tagMap) {
   ${tagsHTML}
 </div>`;
 
-  return layout("Tags", body, { activeNav: "Tags", canonical: `${BASE_URL}/tags/` });
+  return layout("Tags", body, {
+    activeNav: "Tags",
+    canonical: `${BASE_URL}/tags/`,
+  });
 }
 
 function buildTagPage(tag, notes) {
-  const sorted = [...notes].sort((a, b) => b.date - a.date);
-  const notesHTML = sorted
-    .map((note) => {
-      const dateStr = formatDate(note.date);
-      const html = renderNoteHTML(note);
-      const otherTags = note.tags.filter(t => t !== tag);
-      const otherTagsHTML = otherTags.length
-        ? `<div class="note-tags">${otherTags.map(t => `<a href="${BASE_URL}/tags/${t}.html" class="tag">${escapeHTML(t)}</a>`).join("")}</div>`
-        : "";
-      return `<li><span class="note-date">${dateStr}</span>${html}${otherTagsHTML}</li>`;
-    })
-    .join("\n");
+  const notesHTML = renderNotesListItems(notes, tag);
 
   const body = `
 <div class="page-head">
   <h1>#${escapeHTML(tag)}</h1>
-  <p class="sub">${notes.length} note${notes.length !== 1 ? "s" : ""}</p>
+  <p class="sub">${pluralizeNotes(notes.length)}</p>
 </div>
 <ul class="notes-list">
   ${notesHTML}
 </ul>
 <a class="view-all" href="${BASE_URL}/tags/">&larr; All tags</a>`;
 
-  return layout(`#${tag}`, body, { activeNav: "Tags", canonical: `${BASE_URL}/tags/${tag}.html` });
+  return layout(`#${tag}`, body, {
+    activeNav: "Tags",
+    canonical: `${BASE_URL}/tags/${tag}.html`,
+  });
 }
 
 // ---------------------------------------------------------------------------
@@ -965,7 +989,9 @@ function buildRSS(weeks, articles) {
     const title = `Week of ${formatWeekTitle(weekEnd)}`;
     const link = `${MAIN_SITE}${BASE_URL}/weekly/${weekEnd}.html`;
     const sortedNotes = [...notes].sort((a, b) => b.date - a.date);
-    const content = sortedNotes.map((n) => `<li>${escapeHTML(n.lines.join(" "))}</li>`).join("");
+    const content = sortedNotes
+      .map((n) => `<li>${escapeHTML(n.lines.join(" "))}</li>`)
+      .join("");
     const date = new Date(weekEnd + "T00:00:00Z");
     items.push({ title, link, content: `<ul>${content}</ul>`, date });
   }
@@ -1039,10 +1065,16 @@ async function build() {
   const tagMap = groupByTag(allNotes);
 
   // Home page
-  await fs.writeFile(path.join(SITE_DIR, "index.html"), buildHomePage(weeks, articles, tagMap));
+  await fs.writeFile(
+    path.join(SITE_DIR, "index.html"),
+    buildHomePage(weeks, articles, tagMap),
+  );
 
   // Weekly index
-  await fs.writeFile(path.join(SITE_DIR, "weekly", "index.html"), buildWeeklyIndexPage(weeks));
+  await fs.writeFile(
+    path.join(SITE_DIR, "weekly", "index.html"),
+    buildWeeklyIndexPage(weeks),
+  );
 
   // Weekly pages
   const weekKeys = [...weeks.keys()];
@@ -1058,17 +1090,29 @@ async function build() {
   for (const article of articles) {
     const dir = path.join(SITE_DIR, article.category);
     await fs.mkdir(dir, { recursive: true });
-    await fs.writeFile(path.join(dir, `${article.slug}.html`), buildArticlePage(article));
+    await fs.writeFile(
+      path.join(dir, `${article.slug}.html`),
+      buildArticlePage(article),
+    );
   }
 
   // Articles index
-  await fs.writeFile(path.join(SITE_DIR, "articles", "index.html"), buildArticlesIndexPage(articles));
+  await fs.writeFile(
+    path.join(SITE_DIR, "articles", "index.html"),
+    buildArticlesIndexPage(articles),
+  );
 
   // Tag pages
   await fs.mkdir(path.join(SITE_DIR, "tags"), { recursive: true });
-  await fs.writeFile(path.join(SITE_DIR, "tags", "index.html"), buildTagsIndexPage(tagMap));
+  await fs.writeFile(
+    path.join(SITE_DIR, "tags", "index.html"),
+    buildTagsIndexPage(tagMap),
+  );
   for (const [tag, tagNotes] of tagMap) {
-    await fs.writeFile(path.join(SITE_DIR, "tags", `${tag}.html`), buildTagPage(tag, tagNotes));
+    await fs.writeFile(
+      path.join(SITE_DIR, "tags", `${tag}.html`),
+      buildTagPage(tag, tagNotes),
+    );
   }
   console.log(`  ${tagMap.size} tags`);
 
