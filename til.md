@@ -1,6 +1,7 @@
 # Jun 2026
 
 - 28 Jun 2026. PostgreSQL `UNLOGGED` tables skip the write-ahead log, making writes considerably faster than ordinary tables. Trade-off: they are truncated after a crash or unclean shutdown and are not replicated to standbys. [hynek/psycache](https://github.com/hynek/psycache) exploits this as a PostgreSQL-native cache replacing Redis — crash truncation is acceptable since it's a cache anyway, and you reuse existing Postgres connections. #postgres #databases
+  Interesting idea: port this to Django as a custom `BaseCache` backend — swap `DatabaseCache`'s regular table for `CREATE UNLOGGED TABLE`, reuse Django's existing DB connections, and skip Redis entirely. ~200 lines.
 
 - 26 Jun 2026. [baidu/Unlimited-OCR](https://github.com/baidu/Unlimited-OCR) ([paper](https://arxiv.org/abs/2606.23050)) parses dozens of pages in one forward pass by fixing the real bottleneck in end-to-end OCR. #ai #ml #ocr
   - The problem: an OCR decoder types out the page token-by-token, and its KV cache grows unbounded with output length — so memory climbs and speed decays the longer the doc, forcing page-by-page loops that wipe memory each step.
