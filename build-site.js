@@ -427,9 +427,9 @@ body::before {
     linear-gradient(var(--border) 1px, transparent 1px),
     linear-gradient(90deg, var(--border) 1px, transparent 1px);
   background-size: 72px 72px;
-  opacity: 0.28;
-  mask-image: radial-gradient(120% 60% at 50% 0%, black 0%, transparent 78%);
-  -webkit-mask-image: radial-gradient(120% 60% at 50% 0%, black 0%, transparent 78%);
+  opacity: 0.15;
+  mask-image: radial-gradient(120% 60% at 50% 0%, black 0%, transparent 58%);
+  -webkit-mask-image: radial-gradient(120% 60% at 50% 0%, black 0%, transparent 58%);
 }
 
 body::after {
