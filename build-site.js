@@ -170,6 +170,7 @@ function layout(title, body, { activeNav = "", canonical = "" } = {}) {
 </head>
 <body>
   <header>
+    <canvas class="fx-hills" id="fx-hills" aria-hidden="true"></canvas>
     <div class="header-wrap">
       <div class="title">
         <svg class="logo-mark" width="22" height="22" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M9 5v22M9 16 23 6M9 16l14 10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="9" cy="5" r="2.4" fill="currentColor"/><circle cx="9" cy="27" r="2.4" fill="currentColor"/><circle cx="23" cy="6" r="2.4" fill="currentColor"/><circle cx="23" cy="26" r="2.4" fill="currentColor"/><circle class="mark-node" cx="9" cy="16" r="2.9"/></svg>
@@ -187,14 +188,13 @@ function layout(title, body, { activeNav = "", canonical = "" } = {}) {
     </div>
     <nav class="site-nav">
       ${navHTML}
-      <canvas class="fx-nav" id="fx-nav" aria-hidden="true"></canvas>
     </nav>
   </header>
   <main>
     ${body}
   </main>
   <footer class="site-footer">
-    <canvas class="fx-ridge" id="fx-ridge" aria-hidden="true"></canvas>
+    <canvas class="fx-waves" id="fx-waves" aria-hidden="true"></canvas>
     <span>&copy; ${new Date().getFullYear()} Saurabh Kumar</span>
     <span>
       <a href="${BASE_URL}/rss.xml">RSS</a>
@@ -224,108 +224,123 @@ function layout(title, body, { activeNav = "", canonical = "" } = {}) {
       });
     });
   </script>
-  <script>
-    /* Organic ink: living header contour + footer ridgescape (mirrors main site). */
-    (function () {
-      var navC = document.getElementById('fx-nav');
-      var ridgeC = document.getElementById('fx-ridge');
-      if (!navC && !ridgeC) return;
-      var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      var dpr = Math.min(window.devicePixelRatio || 1, 2);
-      function hash(i) { var s = Math.sin(i * 127.1) * 43758.5453; return s - Math.floor(s); }
-      function noise(x) {
-        var i = Math.floor(x), f = x - i, u = f * f * (3 - 2 * f);
-        return hash(i) * (1 - u) + hash(i + 1) * u;
+  <script type="module">
+    /* The tattoo: hills into ocean (mirrors saurabh-kumar.com). Hills crest at
+       the browser top, swells lap at the bottom. simplex-noise via CDN with a
+       value-noise shim as offline fallback; theme-aware, 30fps, paused
+       offscreen, static under reduced motion. */
+    let createNoise2D;
+    try {
+      ({ createNoise2D } = await import('https://cdn.jsdelivr.net/npm/simplex-noise@4.0.3/dist/esm/simplex-noise.min.js'));
+    } catch (e) {
+      createNoise2D = function () {
+        function h(ix, iy) { const s = Math.sin(ix * 127.1 + iy * 311.7) * 43758.5453; return s - Math.floor(s); }
+        return function (x, y) {
+          const ix = Math.floor(x), iy = Math.floor(y), fx = x - ix, fy = y - iy;
+          const ux = fx * fx * (3 - 2 * fx), uy = fy * fy * (3 - 2 * fy);
+          const a = h(ix, iy), b = h(ix + 1, iy), c = h(ix, iy + 1), d = h(ix + 1, iy + 1);
+          return ((a * (1 - ux) + b * ux) * (1 - uy) + (c * (1 - ux) + d * ux) * uy) * 2 - 1;
+        };
+      };
+    }
+    const n2 = createNoise2D();
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const accent = () =>
+      document.documentElement.getAttribute('data-theme') === 'dark' ? '#E08B54' : '#B4491F';
+    const paper = () => getComputedStyle(document.documentElement).backgroundColor;
+    function scene(canvas, draw) {
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      let W = 0, H = 0, ink = '#A59C87', rafId = null, visible = false, last = 0;
+      function layout() {
+        const r = canvas.getBoundingClientRect();
+        W = Math.max(1, r.width); H = Math.max(1, r.height);
+        canvas.width = Math.round(W * dpr); canvas.height = Math.round(H * dpr);
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        ink = getComputedStyle(canvas).color || ink;
       }
-      function accent() {
-        return document.documentElement.getAttribute('data-theme') === 'dark' ? '#E08B54' : '#B4491F';
+      function frame(ts) {
+        rafId = null;
+        if (ts - last >= 33) { last = ts; draw(ctx, W, H, ts, ink); }
+        if (visible && !reduce) rafId = requestAnimationFrame(frame);
       }
-      function makeScene(canvas, draw) {
-        var ctx = canvas.getContext('2d');
-        var W = 0, H = 0, ink = '#A59C87', rafId = null, visible = false, last = 0;
-        function layout() {
-          var r = canvas.getBoundingClientRect();
-          W = Math.max(1, r.width); H = Math.max(1, r.height);
-          canvas.width = Math.round(W * dpr); canvas.height = Math.round(H * dpr);
-          ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-          ink = getComputedStyle(canvas).color || ink;
-        }
-        function frame(ts) {
-          rafId = null;
-          if (ts - last >= 33) { last = ts; draw(ctx, W, H, ts, ink); }
-          if (visible && !reduce) rafId = requestAnimationFrame(frame);
-        }
-        function start() {
-          if (reduce) { draw(ctx, W, H, 0, ink); return; }
-          if (rafId == null) rafId = requestAnimationFrame(frame);
-        }
-        function stop() { if (rafId != null) { cancelAnimationFrame(rafId); rafId = null; } }
-        new IntersectionObserver(function (entries) {
-          visible = entries[0].isIntersecting;
-          if (visible && !document.hidden) start(); else stop();
-        }).observe(canvas);
-        document.addEventListener('visibilitychange', function () {
-          if (document.hidden) stop(); else if (visible) start();
-        });
-        window.addEventListener('resize', function () { layout(); if (reduce) draw(ctx, W, H, 0, ink); });
-        new MutationObserver(function () {
-          ink = getComputedStyle(canvas).color || ink;
-          if (reduce) draw(ctx, W, H, 0, ink);
-        }).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
-        layout();
-        draw(ctx, W, H, 0, ink);
-      }
-      if (navC) makeScene(navC, function (ctx, W, H, t, ink) {
-        ctx.clearRect(0, 0, W, H);
-        var mid = H / 2, tt = t * 0.00012;
-        ctx.strokeStyle = ink; ctx.globalAlpha = 0.9; ctx.lineWidth = 1;
+      const start = () => {
+        if (reduce) { draw(ctx, W, H, 0, ink); return; }
+        if (rafId == null) rafId = requestAnimationFrame(frame);
+      };
+      const stop = () => { if (rafId != null) { cancelAnimationFrame(rafId); rafId = null; } };
+      new IntersectionObserver((entries) => {
+        visible = entries[0].isIntersecting;
+        if (visible && !document.hidden) start(); else stop();
+      }).observe(canvas);
+      document.addEventListener('visibilitychange', () => {
+        if (document.hidden) stop(); else if (visible) start();
+      });
+      window.addEventListener('resize', () => { layout(); if (reduce) draw(ctx, W, H, 0, ink); });
+      new MutationObserver(() => {
+        ink = getComputedStyle(canvas).color || ink;
+        if (reduce) draw(ctx, W, H, 0, ink);
+      }).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+      layout();
+      draw(ctx, W, H, 0, ink);
+    }
+    const ridgeAt = (x, layer, tt, base, amp) =>
+      base - Math.abs(n2(x * (0.0032 - layer * 0.0006) - tt * (0.35 + layer * 0.2), layer * 17.3)) * amp
+           - n2(x * 0.02, layer * 5 + 40) * 2;
+    const swellAt = (x, layer, t, tt, base, amp) =>
+      base + n2(x * 0.0055 - tt * (0.5 + layer * 0.25), layer * 29.7) * amp
+           + Math.sin(x * 0.016 - t * 0.0011 + layer * 1.9) * (1.6 + layer * 0.9);
+    scene(document.getElementById('fx-hills'), (ctx, W, H, t, ink) => {
+      ctx.clearRect(0, 0, W, H);
+      const tt = t * 0.00004;
+      for (let i = 0; i < 3; i++) {
+        const base = H * (0.42 + i * 0.24);
+        const amp = H * (0.38 - i * 0.06);
         ctx.beginPath();
-        for (var x = 0; x <= W; x += 3) {
-          var y = mid + (noise(x * 0.012 + tt * 3) - 0.5) * 5 + (noise(x * 0.045 + 90 - tt * 5) - 0.5) * 2;
+        for (let x = 0; x <= W; x += 5) {
+          const y = ridgeAt(x, i, tt, base, amp);
           x === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
         }
+        ctx.lineTo(W, H); ctx.lineTo(0, H); ctx.closePath();
+        ctx.globalAlpha = 1; ctx.fillStyle = paper(); ctx.fill();
+        ctx.globalAlpha = 0.26 + i * 0.14;
+        ctx.strokeStyle = ink; ctx.lineWidth = 1;
         ctx.stroke();
-        var sx = ((t * 0.018) % (W + 60)) - 30;
-        if (sx >= 0 && sx <= W) {
-          var sy = mid + (noise(sx * 0.012 + tt * 3) - 0.5) * 5 + (noise(sx * 0.045 + 90 - tt * 5) - 0.5) * 2;
-          ctx.globalAlpha = 1; ctx.fillStyle = accent();
-          ctx.beginPath(); ctx.arc(sx, sy, 1.6, 0, 6.2832); ctx.fill();
-        }
-        ctx.globalAlpha = 1;
-      });
-      function ridgeY(x, i, tt, H) {
-        var base = H * (0.34 + i * 0.15);
-        var amp = 6 + i * 3.5;
-        var f = 0.007 - i * 0.0008;
-        return base
-          - Math.abs(noise(x * f + i * 37 + tt * (1.5 + i * 0.6)) - 0.5) * 2 * amp
-          + (noise(x * 0.02 + i * 91 - tt) - 0.5) * 3;
       }
-      if (ridgeC) makeScene(ridgeC, function (ctx, W, H, t, ink) {
-        ctx.clearRect(0, 0, W, H);
-        var tt = t * 0.00005, lines = 5;
-        var paper = getComputedStyle(document.documentElement).backgroundColor;
-        for (var i = 0; i < lines; i++) {
-          ctx.beginPath();
-          for (var x = 0; x <= W; x += 4) {
-            var y = ridgeY(x, i, tt, H);
-            x === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
-          }
-          ctx.lineTo(W, H); ctx.lineTo(0, H); ctx.closePath();
-          ctx.globalAlpha = 1; ctx.fillStyle = paper; ctx.fill();
-          ctx.globalAlpha = 0.3 + i * 0.15;
-          ctx.strokeStyle = ink; ctx.lineWidth = 1;
-          ctx.stroke();
+      const sx = ((t * 0.01) % (W + 60)) - 30;
+      if (sx >= 0 && sx <= W) {
+        const sy = ridgeAt(sx, 2, tt, H * 0.9, H * 0.26);
+        ctx.globalAlpha = 1; ctx.fillStyle = accent();
+        ctx.beginPath(); ctx.arc(sx, sy - 3, 1.8, 0, 6.2832); ctx.fill();
+      }
+      ctx.globalAlpha = 1;
+    });
+    scene(document.getElementById('fx-waves'), (ctx, W, H, t, ink) => {
+      ctx.clearRect(0, 0, W, H);
+      const tt = t * 0.00005;
+      for (let i = 0; i < 4; i++) {
+        const base = H * (0.34 + i * 0.19);
+        const amp = 5 + i * 2.5;
+        ctx.beginPath();
+        for (let x = 0; x <= W; x += 5) {
+          const y = swellAt(x, i, t, tt, base, amp);
+          x === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
         }
-        var sx = W - (((t * 0.012) % (W + 80)) - 40);
-        if (sx >= 0 && sx <= W) {
-          var sy = ridgeY(sx, lines - 1, tt, H);
-          ctx.globalAlpha = 1; ctx.fillStyle = accent();
-          ctx.beginPath(); ctx.arc(sx, sy - 2.5, 1.8, 0, 6.2832); ctx.fill();
-        }
-        ctx.globalAlpha = 1;
-      });
-    })();
+        ctx.lineTo(W, H); ctx.lineTo(0, H); ctx.closePath();
+        ctx.globalAlpha = 1; ctx.fillStyle = paper(); ctx.fill();
+        ctx.globalAlpha = 0.28 + i * 0.15;
+        ctx.strokeStyle = ink; ctx.lineWidth = 1;
+        ctx.stroke();
+      }
+      const sx = W - (((t * 0.008) % (W + 80)) - 40);
+      if (sx >= 0 && sx <= W) {
+        const sy = swellAt(sx, 1, t, tt, H * 0.53, 7.5);
+        ctx.globalAlpha = 1; ctx.fillStyle = accent();
+        ctx.beginPath(); ctx.arc(sx, sy - 3, 1.8, 0, 6.2832); ctx.fill();
+      }
+      ctx.globalAlpha = 1;
+    });
   </script>
 </body>
 </html>`;
@@ -569,12 +584,20 @@ nav.site-nav a {
 }
 nav.site-nav a:hover { color: var(--heading); border-bottom-color: var(--border-strong); }
 nav.site-nav a.active { color: var(--accent); border-bottom-color: var(--accent); }
-.js nav.site-nav { border-bottom-color: transparent; }
-.fx-nav {
-  position: absolute; left: 0; right: 0; bottom: -10px;
-  width: 100%; height: 20px;
-  pointer-events: none;
-  color: var(--faint);
+/* Full-bleed organic ink: hills crest at the top of the browser, swells lap
+   at the bottom — the tattoo, hills into ocean. */
+.fx-hills, .fx-waves { pointer-events: none; color: var(--faint); }
+.fx-hills {
+  position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+  width: 100vw; height: 130px; z-index: -1;
+  mask-image: linear-gradient(to bottom, black 35%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, black 35%, transparent 100%);
+}
+.fx-waves {
+  position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);
+  width: 100vw; height: 150px; z-index: -1;
+  mask-image: linear-gradient(to top, black 55%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to top, black 55%, transparent 100%);
 }
 
 
@@ -826,12 +849,6 @@ footer.site-footer {
   gap: 10px;
 }
 .js footer.site-footer { border-top-color: transparent; }
-.fx-ridge {
-  position: absolute; left: 0; right: 0; top: -92px;
-  width: 100%; height: 92px;
-  pointer-events: none;
-  color: var(--faint);
-}
 footer.site-footer a { color: var(--muted); text-decoration: none; }
 footer.site-footer a:hover { color: var(--accent); }
 
