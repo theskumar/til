@@ -150,7 +150,7 @@ function layout(title, body, { activeNav = "", canonical = "" } = {}) {
   <title>${escapeHTML(title)} | ${SITE_TITLE}</title>
   ${canonicalTag}
   <link rel="alternate" type="application/rss+xml" href="${BASE_URL}/rss.xml" title="${SITE_TITLE}" />
-  <meta name="theme-color" content="#FBFBFA">
+  <meta name="theme-color" content="#F7F4ED">
   <script>
     (function () {
       var el = document.documentElement;
@@ -160,18 +160,19 @@ function layout(title, body, { activeNav = "", canonical = "" } = {}) {
       var theme = (stored === 'dark' || stored === 'light') ? stored : (prefersDark ? 'dark' : 'light');
       el.setAttribute('data-theme', theme);
       var m = document.querySelector('meta[name="theme-color"]');
-      if (m) m.setAttribute('content', theme === 'dark' ? '#1A1917' : '#FBFBFA');
+      if (m) m.setAttribute('content', theme === 'dark' ? '#171411' : '#F7F4ED');
     })();
   </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&family=Geist+Mono:wght@400;500&family=Newsreader:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,400..600;1,6..72,400..500&display=swap" rel="stylesheet">
   <style>${CSS}</style>
 </head>
 <body>
   <header>
     <div class="header-wrap">
       <div class="title">
+        <svg class="logo-mark" width="22" height="22" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M9 5v22M9 16 23 6M9 16l14 10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="9" cy="5" r="2.4" fill="currentColor"/><circle cx="9" cy="27" r="2.4" fill="currentColor"/><circle cx="23" cy="6" r="2.4" fill="currentColor"/><circle cx="23" cy="26" r="2.4" fill="currentColor"/><circle class="mark-node" cx="9" cy="16" r="2.9"/></svg>
         <a href="${BASE_URL}/" class="brand">TIL</a>
         <a href="${MAIN_SITE}" class="brand-sub">Saurabh Kumar</a>
       </div>
@@ -186,13 +187,14 @@ function layout(title, body, { activeNav = "", canonical = "" } = {}) {
     </div>
     <nav class="site-nav">
       ${navHTML}
-
+      <canvas class="fx-nav" id="fx-nav" aria-hidden="true"></canvas>
     </nav>
   </header>
   <main>
     ${body}
   </main>
   <footer class="site-footer">
+    <canvas class="fx-ridge" id="fx-ridge" aria-hidden="true"></canvas>
     <span>&copy; ${new Date().getFullYear()} Saurabh Kumar</span>
     <span>
       <a href="${BASE_URL}/rss.xml">RSS</a>
@@ -218,9 +220,112 @@ function layout(title, body, { activeNav = "", canonical = "" } = {}) {
         el.setAttribute('data-theme', next);
         localStorage.setItem('theme', next);
         var m = document.querySelector('meta[name="theme-color"]');
-        if (m) m.setAttribute('content', next === 'dark' ? '#1A1917' : '#FBFBFA');
+        if (m) m.setAttribute('content', next === 'dark' ? '#171411' : '#F7F4ED');
       });
     });
+  </script>
+  <script>
+    /* Organic ink: living header contour + footer ridgescape (mirrors main site). */
+    (function () {
+      var navC = document.getElementById('fx-nav');
+      var ridgeC = document.getElementById('fx-ridge');
+      if (!navC && !ridgeC) return;
+      var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var dpr = Math.min(window.devicePixelRatio || 1, 2);
+      function hash(i) { var s = Math.sin(i * 127.1) * 43758.5453; return s - Math.floor(s); }
+      function noise(x) {
+        var i = Math.floor(x), f = x - i, u = f * f * (3 - 2 * f);
+        return hash(i) * (1 - u) + hash(i + 1) * u;
+      }
+      function accent() {
+        return document.documentElement.getAttribute('data-theme') === 'dark' ? '#E08B54' : '#B4491F';
+      }
+      function makeScene(canvas, draw) {
+        var ctx = canvas.getContext('2d');
+        var W = 0, H = 0, ink = '#A59C87', rafId = null, visible = false, last = 0;
+        function layout() {
+          var r = canvas.getBoundingClientRect();
+          W = Math.max(1, r.width); H = Math.max(1, r.height);
+          canvas.width = Math.round(W * dpr); canvas.height = Math.round(H * dpr);
+          ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+          ink = getComputedStyle(canvas).color || ink;
+        }
+        function frame(ts) {
+          rafId = null;
+          if (ts - last >= 33) { last = ts; draw(ctx, W, H, ts, ink); }
+          if (visible && !reduce) rafId = requestAnimationFrame(frame);
+        }
+        function start() {
+          if (reduce) { draw(ctx, W, H, 0, ink); return; }
+          if (rafId == null) rafId = requestAnimationFrame(frame);
+        }
+        function stop() { if (rafId != null) { cancelAnimationFrame(rafId); rafId = null; } }
+        new IntersectionObserver(function (entries) {
+          visible = entries[0].isIntersecting;
+          if (visible && !document.hidden) start(); else stop();
+        }).observe(canvas);
+        document.addEventListener('visibilitychange', function () {
+          if (document.hidden) stop(); else if (visible) start();
+        });
+        window.addEventListener('resize', function () { layout(); if (reduce) draw(ctx, W, H, 0, ink); });
+        new MutationObserver(function () {
+          ink = getComputedStyle(canvas).color || ink;
+          if (reduce) draw(ctx, W, H, 0, ink);
+        }).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+        layout();
+        draw(ctx, W, H, 0, ink);
+      }
+      if (navC) makeScene(navC, function (ctx, W, H, t, ink) {
+        ctx.clearRect(0, 0, W, H);
+        var mid = H / 2, tt = t * 0.00012;
+        ctx.strokeStyle = ink; ctx.globalAlpha = 0.9; ctx.lineWidth = 1;
+        ctx.beginPath();
+        for (var x = 0; x <= W; x += 3) {
+          var y = mid + (noise(x * 0.012 + tt * 3) - 0.5) * 5 + (noise(x * 0.045 + 90 - tt * 5) - 0.5) * 2;
+          x === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+        }
+        ctx.stroke();
+        var sx = ((t * 0.018) % (W + 60)) - 30;
+        if (sx >= 0 && sx <= W) {
+          var sy = mid + (noise(sx * 0.012 + tt * 3) - 0.5) * 5 + (noise(sx * 0.045 + 90 - tt * 5) - 0.5) * 2;
+          ctx.globalAlpha = 1; ctx.fillStyle = accent();
+          ctx.beginPath(); ctx.arc(sx, sy, 1.6, 0, 6.2832); ctx.fill();
+        }
+        ctx.globalAlpha = 1;
+      });
+      function ridgeY(x, i, tt, H) {
+        var base = H * (0.34 + i * 0.15);
+        var amp = 6 + i * 3.5;
+        var f = 0.007 - i * 0.0008;
+        return base
+          - Math.abs(noise(x * f + i * 37 + tt * (1.5 + i * 0.6)) - 0.5) * 2 * amp
+          + (noise(x * 0.02 + i * 91 - tt) - 0.5) * 3;
+      }
+      if (ridgeC) makeScene(ridgeC, function (ctx, W, H, t, ink) {
+        ctx.clearRect(0, 0, W, H);
+        var tt = t * 0.00005, lines = 5;
+        var paper = getComputedStyle(document.documentElement).backgroundColor;
+        for (var i = 0; i < lines; i++) {
+          ctx.beginPath();
+          for (var x = 0; x <= W; x += 4) {
+            var y = ridgeY(x, i, tt, H);
+            x === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+          }
+          ctx.lineTo(W, H); ctx.lineTo(0, H); ctx.closePath();
+          ctx.globalAlpha = 1; ctx.fillStyle = paper; ctx.fill();
+          ctx.globalAlpha = 0.3 + i * 0.15;
+          ctx.strokeStyle = ink; ctx.lineWidth = 1;
+          ctx.stroke();
+        }
+        var sx = W - (((t * 0.012) % (W + 80)) - 40);
+        if (sx >= 0 && sx <= W) {
+          var sy = ridgeY(sx, lines - 1, tt, H);
+          ctx.globalAlpha = 1; ctx.fillStyle = accent();
+          ctx.beginPath(); ctx.arc(sx, sy - 2.5, 1.8, 0, 6.2832); ctx.fill();
+        }
+        ctx.globalAlpha = 1;
+      });
+    })();
   </script>
 </body>
 </html>`;
@@ -247,21 +352,23 @@ const CSS = `
   --font-mono: 'Geist Mono', 'SF Mono', 'JetBrains Mono', ui-monospace, monospace;
   --font-scale: 1.0625rem;
 
-  --bg:            light-dark(#FBFBFA, #1A1917);
-  --bg-tint:       light-dark(#F7F6F3, #211F1D);
-  --surface:       light-dark(#FFFFFF, #221F1C);
-  --surface-2:     light-dark(#F9F9F8, #262320);
-  --border:        light-dark(#EAEAEA, rgba(255,255,255,0.09));
-  --border-strong: light-dark(#E2E1DD, rgba(255,255,255,0.16));
-  --heading:       light-dark(#1A1A1A, #F3F1EC);
-  --text:          light-dark(#2F3437, #CFCDC7);
-  --muted:         light-dark(#787774, #918E87);
-  --faint:         light-dark(#9B9A96, #6F6C66);
-  --accent:        light-dark(#9A3B2E, #E0876A);
-  --code-bg:       light-dark(#F4F3F1, #242220);
-  --code-color:    light-dark(#1A1A1A, #E7E4DE);
-  --tag-bg:        light-dark(#F2F1EE, #2A2724);
-  --tag-text:      light-dark(#5C5A55, #BEBAB2);
+  /* "Systems that hold" identity — tokens mirror saurabh-kumar.com. */
+  --bg:            light-dark(#F7F4ED, #171411);
+  --bg-tint:       light-dark(#F1EDE3, #1D1A15);
+  --surface:       light-dark(#FCFAF5, #1E1B16);
+  --surface-2:     light-dark(#F3F0E8, #242019);
+  --border:        light-dark(rgba(30,25,16,0.12), rgba(240,232,214,0.11));
+  --border-strong: light-dark(rgba(30,25,16,0.22), rgba(240,232,214,0.2));
+  --hairline:      light-dark(rgba(30,25,16,0.16), rgba(240,232,214,0.14));
+  --heading:       light-dark(#1D1810, #F1EBDD);
+  --text:          light-dark(#3B352A, #C9C2B1);
+  --muted:         light-dark(#7C7462, #8F8875);
+  --faint:         light-dark(#A59C87, #6A6455);
+  --accent:        light-dark(#B4491F, #E08B54);
+  --code-bg:       light-dark(#F0ECE2, #211E18);
+  --code-color:    light-dark(#1D1810, #E7E1D2);
+  --tag-bg:        light-dark(#EEEADF, #29251D);
+  --tag-text:      light-dark(#5D584B, #B4AC99);
 }
 
 [data-theme="light"] { color-scheme: light; }
@@ -286,19 +393,20 @@ body {
   text-rendering: optimizeLegibility;
 }
 
+/* Faint blueprint grid pinned behind the page. */
 body::before {
   content: "";
   position: fixed;
-  inset: -20%;
+  inset: 0;
   z-index: -2;
   pointer-events: none;
-  background: radial-gradient(50% 42% at 50% 0%, light-dark(rgba(154,59,46,0.05), rgba(224,135,106,0.06)), transparent 70%);
-  animation: fx-drift 36s ease-in-out infinite alternate;
-  will-change: transform;
-}
-@keyframes fx-drift {
-  0%   { transform: translate3d(-3%, -2%, 0); }
-  100% { transform: translate3d(4%, 4%, 0); }
+  background-image:
+    linear-gradient(var(--border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--border) 1px, transparent 1px);
+  background-size: 72px 72px;
+  opacity: 0.28;
+  mask-image: radial-gradient(120% 60% at 50% 0%, black 0%, transparent 78%);
+  -webkit-mask-image: radial-gradient(120% 60% at 50% 0%, black 0%, transparent 78%);
 }
 
 body::after {
@@ -313,11 +421,18 @@ body::after {
 }
 html[data-theme="dark"] body::after { opacity: 0.016; }
 
-h1, h2, h3, h4, h5, h6 {
+h1, h2, h3 {
+  font-family: var(--font-serif);
+  color: var(--heading);
+  font-weight: 500;
+  letter-spacing: -0.015em;
+  line-height: 1.18;
+}
+h4, h5, h6 {
   color: var(--heading);
   font-weight: 600;
-  letter-spacing: -0.02em;
-  line-height: 1.2;
+  letter-spacing: -0.01em;
+  line-height: 1.3;
 }
 h1 { font-size: 1.9rem; margin: 0 0 0.5em; }
 h2 { font-size: 1.4rem; margin: 2.2em 0 0.6em; }
@@ -351,7 +466,7 @@ time {
 
 hr { border: 0; border-top: 1px solid var(--border); margin: 2.4em 0; }
 
-img { max-width: 100%; height: auto; border-radius: 6px; }
+img { max-width: 100%; height: auto; border-radius: 3px; }
 
 p code, li code, td code {
   font-family: var(--font-mono);
@@ -365,7 +480,7 @@ p code, li code, td code {
 
 pre {
   border: 1px solid var(--border);
-  border-radius: 8px;
+  border-radius: 4px;
   margin: 1.5em 0;
   overflow-x: auto;
   max-width: 100%;
@@ -408,7 +523,9 @@ header { margin-bottom: 2.5rem; }
   justify-content: space-between;
   gap: 12px;
 }
-.title { display: flex; align-items: baseline; gap: 8px; }
+.title { display: flex; align-items: center; gap: 10px; }
+.title .logo-mark { color: var(--heading); flex-shrink: 0; }
+.title .logo-mark .mark-node { fill: var(--accent); }
 .title .brand {
   font-family: var(--font-serif);
   font-size: 1.35rem;
@@ -421,31 +538,44 @@ header { margin-bottom: 2.5rem; }
 .title .brand:hover { color: var(--accent); }
 .title .brand-sub {
   font-family: var(--font-mono);
-  font-size: 0.72rem;
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
   color: var(--muted);
-  letter-spacing: 0;
   text-decoration: none;
 }
 .title .brand-sub:hover { color: var(--heading); }
 
 nav.site-nav {
+  position: relative;
   display: flex;
-  gap: 20px;
+  gap: 1.5rem;
   margin-top: 0.9rem;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.85rem;
+  border-bottom: 1px solid var(--hairline);
   align-items: center;
+  font-family: var(--font-mono);
 }
 nav.site-nav a {
-  font-size: 0.82rem;
+  font-size: 0.75rem;
   text-transform: uppercase;
-  letter-spacing: 0.07em;
+  letter-spacing: 0.13em;
   color: var(--muted);
   text-decoration: none;
-  font-weight: 500;
+  padding-bottom: 0.85rem;
+  margin-bottom: -0.85rem;
+  border-bottom: 1px solid transparent;
+  transition: color 0.18s ease, border-color 0.18s ease;
 }
-nav.site-nav a:hover { color: var(--heading); }
-nav.site-nav a.active { color: var(--heading); }
+nav.site-nav a:hover { color: var(--heading); border-bottom-color: var(--border-strong); }
+nav.site-nav a.active { color: var(--accent); border-bottom-color: var(--accent); }
+.js nav.site-nav { border-bottom-color: transparent; }
+.fx-nav {
+  position: absolute; left: 0; right: 0; bottom: -10px;
+  width: 100%; height: 20px;
+  pointer-events: none;
+  color: var(--faint);
+}
 
 
 .theme-toggle {
@@ -454,7 +584,7 @@ nav.site-nav a.active { color: var(--heading); }
   height: 32px;
   background: none;
   border: 1px solid var(--border);
-  border-radius: 6px;
+  border-radius: 3px;
   color: var(--muted);
   cursor: pointer;
   flex-shrink: 0;
@@ -511,7 +641,7 @@ html.theme-anim *::after {
   letter-spacing: -0.025em;
   margin: 0 0 0.7rem;
 }
-.article-content h2 { font-family: var(--font-sans); }
+.article-content h2 { font-size: 1.45rem; }
 .article-content ul, .article-content ol { padding-left: 1.3em; }
 .article-content li { margin: 0.3em 0; }
 .article-content li::marker { color: var(--faint); }
@@ -654,17 +784,24 @@ a.tag:hover {
 .week-nav a { color: var(--muted); }
 .week-nav a:hover { color: var(--heading); }
 
-/* Home sections */
+/* Home sections — mono annotations with a trailing hairline, per the brand. */
 .home-section { margin-bottom: 3rem; }
-.home-section h2 {
-  font-family: var(--font-sans);
-  font-size: 0.78rem;
+.home-section h2, .cat-label {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
   text-transform: uppercase;
-  letter-spacing: 0.12em;
-  color: var(--faint);
+  letter-spacing: 0.14em;
+  color: var(--muted);
   margin: 0 0 1rem;
   font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.7em;
 }
+.home-section h2::after, .cat-label::after {
+  content: ""; flex: 1; height: 1px; background: var(--hairline);
+}
+.cat-label { margin: 2rem 0 1rem; }
 .view-all {
   font-size: 0.85rem;
   color: var(--muted);
@@ -674,17 +811,28 @@ a.tag:hover {
 
 /* Footer */
 footer.site-footer {
-  margin: 5rem 0 0;
-  padding: 2rem 0 2.5rem;
-  border-top: 1px solid var(--border);
-  color: var(--muted);
-  font-size: 0.88rem;
+  position: relative;
+  margin: calc(3rem + 92px) 0 0;
+  padding: 1.3rem 0 2.2rem;
+  border-top: 1px solid var(--hairline);
+  color: var(--faint);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.07em;
   display: flex;
   justify-content: space-between;
+  align-items: baseline;
   flex-wrap: wrap;
   gap: 10px;
 }
-footer.site-footer a { color: var(--muted); }
+.js footer.site-footer { border-top-color: transparent; }
+.fx-ridge {
+  position: absolute; left: 0; right: 0; top: -92px;
+  width: 100%; height: 92px;
+  pointer-events: none;
+  color: var(--faint);
+}
+footer.site-footer a { color: var(--muted); text-decoration: none; }
 footer.site-footer a:hover { color: var(--accent); }
 
 @media (max-width: 720px) {
@@ -892,7 +1040,7 @@ function buildArticlesIndexPage(articles) {
       )
       .join("\n");
     sectionsHTML += `
-<h2 style="font-family: var(--font-sans); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--faint); font-weight: 500; margin: 2rem 0 1rem;">${category}</h2>
+<h2 class="cat-label">${category}</h2>
 <ul class="article-list">
   ${listHTML}
 </ul>`;
