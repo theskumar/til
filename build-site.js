@@ -397,7 +397,8 @@ body {
   font-size: var(--font-scale);
   font-weight: 400;
   margin: 0 auto;
-  padding: 28px 24px 0;
+  /* Top padding clears the hills frieze; type starts on clean paper. */
+  padding: 104px 24px 0;
   max-width: var(--width);
   color: var(--text);
   line-height: 1.65;
@@ -589,15 +590,15 @@ nav.site-nav a.active { color: var(--accent); border-bottom-color: var(--accent)
 .fx-hills, .fx-waves { pointer-events: none; color: var(--faint); }
 .fx-hills {
   position: absolute; top: 0; left: 50%; transform: translateX(-50%);
-  width: 100vw; height: 130px; z-index: -1;
-  mask-image: linear-gradient(to bottom, black 35%, transparent 100%);
-  -webkit-mask-image: linear-gradient(to bottom, black 35%, transparent 100%);
+  width: 100vw; height: 88px; z-index: -1;
+  mask-image: linear-gradient(to bottom, black 35%, transparent 96%);
+  -webkit-mask-image: linear-gradient(to bottom, black 35%, transparent 96%);
 }
 .fx-waves {
   position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);
-  width: 100vw; height: 150px; z-index: -1;
-  mask-image: linear-gradient(to top, black 55%, transparent 100%);
-  -webkit-mask-image: linear-gradient(to top, black 55%, transparent 100%);
+  width: 100vw; height: 100px; z-index: -1;
+  mask-image: linear-gradient(to top, black 60%, transparent 96%);
+  -webkit-mask-image: linear-gradient(to top, black 60%, transparent 96%);
 }
 
 
@@ -835,8 +836,9 @@ a.tag:hover {
 /* Footer */
 footer.site-footer {
   position: relative;
-  margin: calc(3rem + 92px) 0 0;
-  padding: 1.3rem 0 2.2rem;
+  margin: 4rem 0 0;
+  /* Bottom padding is open water: text on paper, sea below. */
+  padding: 1.3rem 0 calc(1.5rem + 104px);
   border-top: 1px solid var(--hairline);
   color: var(--faint);
   font-family: var(--font-mono);
@@ -848,12 +850,12 @@ footer.site-footer {
   flex-wrap: wrap;
   gap: 10px;
 }
-.js footer.site-footer { border-top-color: transparent; }
 footer.site-footer a { color: var(--muted); text-decoration: none; }
 footer.site-footer a:hover { color: var(--accent); }
 
 @media (max-width: 720px) {
-  body { padding: 22px 18px 0; }
+  body { padding: 84px 18px 0; }
+  .fx-hills { height: 72px; }
   footer.site-footer { flex-direction: column; align-items: center; text-align: center; }
   nav.site-nav { flex-wrap: wrap; gap: 14px; }
   .week-row {
