@@ -408,7 +408,13 @@ body {
   overflow-wrap: break-word;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+  /* Sticky footer: on short pages the sea still meets the bottom edge. */
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
 }
+body > header, body > footer { flex-shrink: 0; }
+main { flex: 1 0 auto; width: 100%; }
 
 /* Faint blueprint grid pinned behind the page. */
 body::before {
