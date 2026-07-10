@@ -681,10 +681,8 @@ html.theme-anim *::after {
 /* Week list */
 .week-list { list-style: none; margin: 0; padding: 0; }
 .week-list li {
-  padding: 1rem 0;
-  border-top: 1px solid var(--border);
+  padding: 1.1rem 0;
 }
-.week-list li:first-child { border-top: 0; }
 .week-row {
   display: flex;
   justify-content: space-between;
@@ -762,10 +760,8 @@ a.tag:hover {
 /* Article list */
 .article-list { list-style: none; margin: 0; padding: 0; }
 .article-list li {
-  padding: 0.7rem 0;
-  border-top: 1px solid var(--border);
+  padding: 0.8rem 0;
 }
-.article-list li:first-child { border-top: 0; }
 .article-list a {
   display: flex;
   justify-content: space-between;
@@ -789,11 +785,9 @@ a.tag:hover {
 /* Notes in weekly pages */
 .notes-list { list-style: none; margin: 0; padding: 0; }
 .notes-list > li {
-  padding: 1rem 0;
-  border-top: 1px solid var(--border);
+  padding: 1.1rem 0;
   line-height: 1.7;
 }
-.notes-list > li:first-child { border-top: 0; }
 .note-date {
   font-family: var(--font-mono);
   font-size: 0.76rem;
