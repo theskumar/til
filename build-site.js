@@ -361,7 +361,8 @@ function escapeHTML(s) {
 const CSS = `
 :root {
   color-scheme: light dark;
-  --width: 720px;
+  --width: 880px;   /* page chrome — matches saurabh-kumar.com */
+  --measure: 720px; /* long-form reading column */
   --font-serif: 'Newsreader', 'Lyon Text', Georgia, 'Times New Roman', serif;
   --font-sans: 'Geist', 'SF Pro Display', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   --font-mono: 'Geist Mono', 'SF Mono', 'JetBrains Mono', ui-monospace, monospace;
@@ -647,7 +648,8 @@ html.theme-anim *::after {
 }
 .page-head .sub { color: var(--muted); margin: 0; font-size: 1.02rem; }
 
-/* Article page */
+/* Article page — reading column stays book-width inside the wider chrome. */
+.article-header, .article-content { max-width: var(--measure); }
 .article-header { margin-bottom: 2.2rem; }
 .article-header .eyebrow {
   font-family: var(--font-mono);
