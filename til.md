@@ -1,5 +1,7 @@
 # Jul 2026
 
+- 13 Jul 2026. [Recordly](https://github.com/webadderallorg/Recordly) does video recording, screenshots, and demo editing in one open-source Electron app. Not in Homebrew core, but easy to ship via a [personal tap](https://github.com/theskumar/homebrew-tap): `brew install --cask theskumar/tap/recordly`. Replacing my previous screenshot/recording workflow with this as the single default (see [Default Apps 2025](https://saurabh-kumar.com/articles/2025/11/default-apps-2025/)). #tools #macos
+
 - 11 Jul 2026. Python 3.15 datetime docs now officially recommend [`import datetime as dt`](https://docs.python.org/3.15/library/datetime.html#module-datetime:~:text=Tip%20import%20datetime%20as%20dt) in a Tip block, to disambiguate the module from the `datetime.datetime` class. The tip cites [Adam Johnson's 2019 post](https://adamj.eu/tech/2019/09/12/how-i-import-pythons-datetime-module/) — 6 years from community convention to CPython docs. Fixes both traps: `from datetime import datetime` shadows the module, and `import datetime` reads ambiguously as `datetime.datetime.now()`. [via](https://fosstodon.org/@adamchainz/116897748723239892) #python
 
 # Jun 2026
