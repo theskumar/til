@@ -1,5 +1,11 @@
 # Jul 2026
 
+- 19 Jul 2026. Go interfaces are implicit: a type satisfies an interface by having the right methods, no `implements` keyword.
+  - Closest Python equivalent is `typing.Protocol` (structural subtyping, checked by mypy), but Go enforces it at compile time, not via a separate type checker.
+  - Sharp edge: a nil concrete pointer wrapped in an interface value is not `nil`. `var dog *Dog = nil; var s Speaker = dog` gives `s != nil` because the interface holds `(*Dog, nil)`, a typed pair. Bites hardest when returning `error` interfaces.
+  - Go proverb: "the bigger the interface, the weaker the abstraction." Keep them to 1-3 methods, define where consumed not where implemented.
+  #golang #architecture
+
 - 18 Jul 2026. [Lobste.rs moved to SQLite](https://lobste.rs/s/ko1ji1), and the [HN thread](https://news.ycombinator.com/item?id=48899847) had sharper lessons than the post itself: #sqlite #databases #production
   - WAL checkpoints only run during "reader gaps." Keep reads/writes continuously overlapping and the WAL file grows unbounded, a DoS vector kgeist reproduced with short-lived reads/writes, not just long-lived readers as the docs imply.
   - Writes are fully serialized, one fsync each, yet app-layer batching still gets 100k+ writes/sec.
