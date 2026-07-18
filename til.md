@@ -1,5 +1,11 @@
 # Jul 2026
 
+- 18 Jul 2026. [Lobste.rs moved to SQLite](https://lobste.rs/s/ko1ji1), and the [HN thread](https://news.ycombinator.com/item?id=48899847) had sharper lessons than the post itself: #sqlite #databases #production
+  - WAL checkpoints only run during "reader gaps." Keep reads/writes continuously overlapping and the WAL file grows unbounded, a DoS vector kgeist reproduced with short-lived reads/writes, not just long-lived readers as the docs imply.
+  - Writes are fully serialized, one fsync each, yet app-layer batching still gets 100k+ writes/sec.
+  - Plain rsync on a live .db file can silently corrupt it since it doesn't understand SQLite transactions. Use [sqlite3_rsync](https://sqlite.org/rsync.html) instead.
+  - The real weak point is schema migrations: treat SQLite like a KV store, or reach for CQRS, to keep the churn low.
+
 - 15 Jul 2026. [gistpreview.github.io](https://gistpreview.github.io/) renders any GitHub Gist as a live HTML page. Pass the gist ID as a query param (`?<gist_id>`) and it fetches via GitHub API + `document.write()`. Entire thing is 2 files (index.html + main.js), no build step, trivially self-hostable. Useful for quick HTML/CSS demos without spinning up CodePen or deploying anything. #tools
 
 - 15 Jul 2026. [SecretSpec](https://secretspec.dev/) declares secrets once in `secretspec.toml` (names + descriptions, never values) and resolves them from any of 11 backends: keyring, 1Password, Vault, AWS, GCP, .env. Same command everywhere: `secretspec run --profile production -- npm start`. Per-secret fallback chains (`providers = ["vault", "keyring", "env"]`) and a `ref = { item, field }` form points at a secret you already have elsewhere, no renaming. Sharpest bit: agents get held to a stricter bar by default. `require_reason = "agents"` forces `secretspec run --reason "..."` before an AI agent can read a secret, appended to a local audit log; humans running interactively are unaffected. Rust core, SDKs for Python/Go/Node/Ruby/PHP/Haskell. Worth piloting on a project drowning in `.env` sprawl. #tools #devops #security
