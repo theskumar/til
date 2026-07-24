@@ -1,0 +1,19 @@
+name: Post to Mastodon
+
+on:
+  push:
+    branches: [main]
+    paths: [til.md]
+
+jobs:
+  post:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Post new TIL entries to Mastodon
+        env:
+          MASTODON_ACCESS_TOKEN: ${{ secrets.MASTODON_ACCESS_TOKEN }}
+        run: python3 scripts/post-mastodon.py
