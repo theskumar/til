@@ -1,5 +1,7 @@
 # Jul 2026
 
+- 24 Jul 2026. - [django-crawl](https://django-crawl.readthedocs.io/en/latest/) by Adam Johnson: BFS-crawls your Django site using the test client, no real HTTP overhead. [Origin story](https://adamj.eu/tech/2026/07/22/introducing-django-crawl/): diffing CSP headers during a Django 6.0 migration accidentally caught 7 non-CSP bugs in a 100%-coverage project. HTML parsing via Rust (html5ever), follows links/sitemaps/feeds. Works as a management command or a TestCase smoke test that raises `ExceptionGroup` on errors. #django #python
+
 - 24 Jul 2026. Embedding pipelines do not feed whole documents straight into the model. They first use the embedding model's tokenizer to measure and split text into token-bounded, overlapping chunks, then embed each chunk and store the vectors. Tokenizer must match the model. Tools like [marcelroed/gigatoken](https://github.com/marcelroed/gigatoken) accelerate this preparation at corpus scale but do not create embeddings themselves. #rag #ai #performance
 
 - 19 Jul 2026. Go interfaces are implicit: a type satisfies an interface by having the right methods, no `implements` keyword.
