@@ -8,6 +8,7 @@ on:
 jobs:
   post:
     runs-on: ubuntu-latest
+    if: "!contains(github.event.head_commit.message, 'chore: add mastodon discuss link')"
     steps:
       - uses: actions/checkout@v4
         with:
@@ -17,3 +18,13 @@ jobs:
         env:
           MASTODON_ACCESS_TOKEN: ${{ secrets.MASTODON_ACCESS_TOKEN }}
         run: python3 scripts/post-mastodon.py
+
+      - name: Commit discuss links
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add til.md
+          if ! git diff --cached --quiet; then
+            git commit -m "chore: add mastodon discuss link"
+            git push
+          fi
