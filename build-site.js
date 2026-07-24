@@ -11,7 +11,7 @@ const SOURCE_FILES = ["til.md"];
 const IGNORE_DIRS = ["node_modules", ".git", ".github", "_site", "docs", ".pi"];
 
 // ---------------------------------------------------------------------------
-// Note parsing (mirrors extract-weekly.js)
+// Note parsing
 // ---------------------------------------------------------------------------
 
 function extractNotes(markdown) {
@@ -796,6 +796,10 @@ a.tag:hover {
   letter-spacing: 0.08em;
   display: block;
   margin-bottom: 0.35rem;
+  text-decoration: none;
+}
+.note-date:hover {
+  color: var(--accent);
 }
 
 /* Week nav */
@@ -890,6 +894,16 @@ footer.site-footer a:hover { color: var(--accent); }
 // Page generators
 // ---------------------------------------------------------------------------
 
+function slugifyNote(note) {
+  const text = note.lines[0] || "";
+  const linkMatch = text.match(/\[([^\]]+)\]/);
+  const raw = linkMatch ? linkMatch[1] : text.slice(0, 60);
+  return raw
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
+}
+
 function stripTags(text) {
   return text.replace(/\s*#[a-zA-Z][a-zA-Z0-9_-]*/g, "").trimEnd();
 }
@@ -935,9 +949,10 @@ function renderNotesListItems(notes, excludeTag) {
     .sort((a, b) => b.date - a.date)
     .map((note) => {
       const dateStr = formatDate(note.date);
+      const slug = slugifyNote(note);
       const html = renderNoteHTML(note);
       const tags = renderNoteTags(note, excludeTag);
-      return `<li><span class="note-date">${dateStr}</span>${html}${tags}</li>`;
+      return `<li id="${slug}"><a href="#${slug}" class="note-date">${dateStr}</a>${html}${tags}</li>`;
     })
     .join("\n");
 }

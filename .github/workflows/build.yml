@@ -1,6 +1,4 @@
-# This workflow:
-# 1. Extracts weekly notes from til.md into weekly/*.md files
-# 2. Builds static HTML site and deploys to GitHub Pages
+# Builds static HTML site from til.md and deploys to GitHub Pages
 
 name: Build & Deploy
 
@@ -13,7 +11,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
   pages: write
   id-token: write
 
@@ -27,8 +25,6 @@ jobs:
     steps:
       - name: Check out repo
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -37,17 +33,6 @@ jobs:
 
       - name: Install dependencies
         run: npm install
-
-      - name: Extract weekly notes
-        run: node extract-weekly.js
-
-      - name: Commit repo changes
-        run: |-
-          git config --global user.email "actions@users.noreply.github.com"
-          git config --global user.name "TIL Bot"
-          git add -A
-          git diff --staged --quiet || git commit --message "Update weekly notes and rss.xml"
-          git push
 
       - name: Build static site
         run: node build-site.js
