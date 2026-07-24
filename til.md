@@ -1,5 +1,7 @@
 # Jul 2026
 
+- 24 Jul 2026. Embedding pipelines do not feed whole documents straight into the model. They first use the embedding model's tokenizer to measure and split text into token-bounded, overlapping chunks, then embed each chunk and store the vectors. Tokenizer must match the model. Tools like [marcelroed/gigatoken](https://github.com/marcelroed/gigatoken) accelerate this preparation at corpus scale but do not create embeddings themselves. #rag #ai #performance
+
 - 19 Jul 2026. Go interfaces are implicit: a type satisfies an interface by having the right methods, no `implements` keyword.
   - Closest Python equivalent is `typing.Protocol` (structural subtyping, checked by mypy), but Go enforces it at compile time, not via a separate type checker.
   - Sharp edge: a nil concrete pointer wrapped in an interface value is not `nil`. `var dog *Dog = nil; var s Speaker = dog` gives `s != nil` because the interface holds `(*Dog, nil)`, a typed pair. Bites hardest when returning `error` interfaces.
