@@ -44,14 +44,16 @@ def get_new_entries(diff_text: str) -> list[str]:
 
 def format_for_mastodon(entry: str) -> str:
     """Convert a TIL entry to a Mastodon-friendly post."""
-    text = re.sub(r"\[([^\]]+)\]\(([^)]+)\)", r"\1 (\2)", entry)
+    text = re.sub(r"^\d{1,2} \w+ \d{4}\.\s*-?\s*", "", entry)
+    text = re.sub(r"\[([^\]]+)\]\(([^)]+)\)", r"\1 (\2)", text)
 
     tags = re.findall(r"#(\w[\w-]*)", text)
     text = re.sub(r"\s*#\w[\w-]*", "", text)
     text = text.rstrip()
 
+    tags.insert(0, "TIL")
     hashtags = " ".join(f"#{t}" for t in tags)
-    suffix = f"\n\n{hashtags}\n\n{TIL_URL}" if hashtags else f"\n\n{TIL_URL}"
+    suffix = f"\n\n{hashtags}"
 
     available = CHAR_LIMIT - len(suffix)
     if len(text) > available:
