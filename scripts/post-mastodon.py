@@ -13,17 +13,15 @@ TIL_URL = "https://saurabh-kumar.com/til"
 CHAR_LIMIT = 500
 
 
-def get_new_entries(diff_text: str) -> list[str]:
-    """Parse added TIL entries from a unified diff of til.md."""
+def _parse_entries(diff_text: str, prefix: str) -> list[str]:
+    """Parse TIL entries from diff lines starting with the given prefix ('+' or '-')."""
     entries = []
     current_lines: list[str] = []
 
     for line in diff_text.splitlines():
-        if not line.startswith("+"):
+        if not line.startswith(prefix) or line.startswith(prefix * 3):
             continue
-        if line.startswith("+++"):
-            continue
-        content = line[1:]
+        content = line[len(prefix):]
 
         if content.startswith("- ") and re.match(r"^- \d{1,2} \w+ \d{4}\. ", content):
             if current_lines:
@@ -40,6 +38,26 @@ def get_new_entries(diff_text: str) -> list[str]:
         entries.append("\n".join(current_lines))
 
     return entries
+
+
+# match date prefix to get a stable identity for deduping edits vs new entries
+_DATE_PREFIX_RE = re.compile(r"^(\d{1,2} \w+ \d{4})\.")
+
+
+def get_new_entries(diff_text: str) -> list[str]:
+    """Parse truly new TIL entries, excluding edits to existing ones."""
+    added = _parse_entries(diff_text, "+")
+    removed = _parse_entries(diff_text, "-")
+
+    removed_dates = set()
+    for entry in removed:
+        m = _DATE_PREFIX_RE.match(entry)
+        if m:
+            removed_dates.add(m.group(1))
+
+    return [e for e in added if not (
+        (m := _DATE_PREFIX_RE.match(e)) and m.group(1) in removed_dates
+    )]
 
 
 def format_for_mastodon(entry: str) -> str:
