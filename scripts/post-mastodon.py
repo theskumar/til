@@ -112,14 +112,43 @@ def note_permalink(entry: str) -> str | None:
     return f"{SITE_BASE}/weekly/{week}.html#{_slug(entry)}"
 
 
+_TOOT_RE = re.compile(r"<!--\s*toot:\s*(.*?)\s*-->", re.DOTALL)
+
+
+def extract_toot_override(entry: str) -> str | None:
+    """An optional hand-written short form: `<!-- toot: ... -->` in the entry."""
+    m = _TOOT_RE.search(entry)
+    return m.group(1).strip() if m else None
+
+
+def smart_truncate(text: str, limit: int) -> str:
+    """Trim to a sentence boundary if one is near the limit, else a word one.
+
+    Never cuts mid-word. Caller appends the ellipsis.
+    """
+    if len(text) <= limit:
+        return text
+    cut = text[:limit]
+    for sep in (". ", "! ", "? "):
+        idx = cut.rfind(sep)
+        if idx >= limit * 0.6:
+            return cut[: idx + 1].rstrip()
+    idx = cut.rfind(" ")
+    if idx > 0:
+        cut = cut[:idx]
+    return cut.rstrip()
+
+
 def format_for_mastodon(entry: str) -> str:
-    text = strip_discuss_link(entry)
+    override = extract_toot_override(entry)
+    entry_wo = _TOOT_RE.sub("", entry)
+    tags = re.findall(r"#(\w[\w-]*)", entry_wo)
+
+    text = override if override is not None else entry_wo
+    text = strip_discuss_link(text)
     text = re.sub(r"^\d{1,2} \w+ \d{4}\.\s*-?\s*", "", text)
     text = re.sub(r"\[([^\]]+)\]\(([^)]+)\)", r"\1 (\2)", text)
-
-    tags = re.findall(r"#(\w[\w-]*)", text)
-    text = re.sub(r"\s*#\w[\w-]*", "", text)
-    text = text.rstrip()
+    text = re.sub(r"\s*#\w[\w-]*", "", text).rstrip()
 
     tags.insert(0, "TIL")
     hashtags = " ".join(f"#{t}" for t in tags)
@@ -135,10 +164,10 @@ def format_for_mastodon(entry: str) -> str:
     permalink = note_permalink(entry)
     if permalink:
         tail = f"…\n\nFull note: {permalink}"
-        text = text[: available - len(tail)].rstrip()
+        text = smart_truncate(text, available - len(tail))
         return f"{text}{tail}{suffix}"
 
-    return text[: available - 1].rstrip() + "…" + suffix
+    return smart_truncate(text, available - 1) + "…" + suffix
 
 
 def append_discuss_link(entry_date: str, mastodon_url: str):
