@@ -11,10 +11,13 @@ import re
 import subprocess
 import sys
 import urllib.request
+from datetime import datetime, timedelta
 from pathlib import Path
 
 MASTODON_INSTANCE = "https://mastodon.social"
 CHAR_LIMIT = 500
+# Site permalink base (mirrors build-site.js MAIN_SITE + BASE_URL).
+SITE_BASE = "https://saurabh-kumar.com/til"
 TIL_MD = Path(__file__).resolve().parent.parent / "til.md"
 
 _DATE_PREFIX_RE = re.compile(r"^(\d{1,2} \w+ \d{4})\.")
@@ -81,6 +84,34 @@ def strip_discuss_link(entry: str) -> str:
     return _DISCUSS_RE.sub("", entry)
 
 
+def _week_end(entry: str) -> str | None:
+    """Replicate build-site.js getWeekEnd: the Sunday on/after the entry date."""
+    key = _entry_key(entry)
+    if not key:
+        return None
+    d = datetime.strptime(key, "%d %b %Y")
+    js_dow = (d.weekday() + 1) % 7  # JS getUTCDay: Sunday=0
+    days = (7 - js_dow) % 7 or 7
+    return (d + timedelta(days=days)).strftime("%Y-%m-%d")
+
+
+def _slug(entry: str) -> str:
+    """Replicate build-site.js slugifyNote on the entry's first line."""
+    first = strip_discuss_link(entry.split("\n", 1)[0])
+    text = re.sub(r"^\d{1,2} \w+ \d{4}\.\s*", "", first)
+    m = re.search(r"\[([^\]]+)\]", text)
+    raw = m.group(1) if m else text[:60]
+    return re.sub(r"^-+|-+$", "", re.sub(r"[^a-z0-9]+", "-", raw.lower()))
+
+
+def note_permalink(entry: str) -> str | None:
+    """Deep link to the full note on its weekly page anchor."""
+    week = _week_end(entry)
+    if not week:
+        return None
+    return f"{SITE_BASE}/weekly/{week}.html#{_slug(entry)}"
+
+
 def format_for_mastodon(entry: str) -> str:
     text = strip_discuss_link(entry)
     text = re.sub(r"^\d{1,2} \w+ \d{4}\.\s*-?\s*", "", text)
@@ -95,10 +126,19 @@ def format_for_mastodon(entry: str) -> str:
     suffix = f"\n\n{hashtags}"
 
     available = CHAR_LIMIT - len(suffix)
-    if len(text) > available:
-        text = text[: available - 1].rstrip() + "…"
+    if len(text) <= available:
+        return text + suffix
 
-    return text + suffix
+    # Truncated: reserve room for a read-more permalink so readers can reach the
+    # full note. Mastodon counts any URL as 23 chars, so reserving its real
+    # length is conservative and never overflows the real limit.
+    permalink = note_permalink(entry)
+    if permalink:
+        tail = f"…\n\nFull note: {permalink}"
+        text = text[: available - len(tail)].rstrip()
+        return f"{text}{tail}{suffix}"
+
+    return text[: available - 1].rstrip() + "…" + suffix
 
 
 def append_discuss_link(entry_date: str, mastodon_url: str):
