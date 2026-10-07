@@ -1,3 +1,17 @@
+# Oct 2026
+
+- 07 Oct 2026. [Pi Durable](https://earendil.com/posts/pi-durable/) is Earendil's experimental agent harness, shipped alongside Pi 1.0. [TannerMidd/pi-pocket](https://github.com/TannerMidd/pi-pocket) is a mobile-first, multiplayer web app for Pi built on it. #ai #tools #architecture
+  - Every model call and tool call is a task that checkpoints to storage (SQLite, JSONL, or memory) before moving on. Kill the process and a new one opens the same file and resumes.
+  - Recovery is per step: a cut-off model request is resent with the partial answer kept and marked aborted. A cut-off tool call reruns only if it is replay-safe; otherwise the model is told it was interrupted.
+  - A `requestId` makes a submission exactly-once, so a client retrying after a crash gets the original back.
+  - Forks see the parent transcript up to the fork point without copying it.
+  - ~15k lines total, small enough for an agent to read end to end.
+  - pi-pocket: restart the server mid-run and the work continues. Several people can watch, steer, or queue messages on the same session.
+  - `npm start -- --access tailscale` binds only to the tailnet address, so my phone gets it with no tunnel.
+  - The shift: the session lives in a SQLite file, not a terminal process, so the phone is just another client. Could replace my Moshi + tmux setup.
+  - Caveat: anyone who can steer runs shell commands as you.
+  <!-- toot: Pi Durable (Earendil, ships with Pi 1.0) checkpoints every model and tool call to SQLite, so a killed agent resumes where it stopped: replay-safe tools rerun, others report "interrupted". pi-pocket builds a mobile, multiplayer web app on it. The session lives in a file, not a terminal, so the phone is just another client. https://github.com/TannerMidd/pi-pocket -->
+
 # Sep 2026
 
 - 30 Sep 2026. [django-ox](https://oxpull.com/django-ox/) makes the database the Django task queue: transactional enqueue inside `atomic()`, no Redis/RabbitMQ, retries, worker-death recovery, recurring schedules, admin and metrics. Adoption read: pilot it for ordinary Django jobs; keep Celery for broker-scale workflows. #django #python #databases
