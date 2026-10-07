@@ -1,6 +1,6 @@
 # Oct 2026
 
-- 07 Oct 2026. [Pi Durable](https://earendil.com/posts/pi-durable/) is Earendil's experimental agent harness, shipped alongside Pi 1.0. [TannerMidd/pi-pocket](https://github.com/TannerMidd/pi-pocket) is a mobile-first, multiplayer web app for Pi built on it. #ai #tools #architecture
+- 07 Oct 2026. [Pi Durable](https://earendil.com/posts/pi-durable/) is Earendil's experimental agent harness, shipped alongside Pi 1.0. [TannerMidd/pi-pocket](https://github.com/TannerMidd/pi-pocket) is a mobile-first, multiplayer web app for Pi built on it. #ai #tools #architecture [discuss](https://mastodon.social/@theskumar/117397611239587047)
   - Every model call and tool call is a task that checkpoints to storage (SQLite, JSONL, or memory) before moving on. Kill the process and a new one opens the same file and resumes.
   - Recovery is per step: a cut-off model request is resent with the partial answer kept and marked aborted. A cut-off tool call reruns only if it is replay-safe; otherwise the model is told it was interrupted.
   - A `requestId` makes a submission exactly-once, so a client retrying after a crash gets the original back.
