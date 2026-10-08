@@ -1,5 +1,8 @@
 # Oct 2026
 
+- 09 Oct 2026. [Pi Pocket's subagent implementation](https://github.com/TannerMidd/pi-pocket/blob/3e6046612db4358b599da302d5c96bd407d9de5c/src/server/extensions/subagents.ts) gives each worker a retained conversation and uses durable tasks to deliver messages and report answers. Request IDs and recorded answer IDs prevent duplicate delivery and reporting after restart. The idea worth stealing: make the handoff durable, not just the worker. #ai #architecture
+  <!-- toot: Pi Pocket separates the worker from the job of delivering its task and reporting its answer. Durable reporters use request IDs so a restart doesn't send the same message twice. The worker surviving isn't enough. Its handoff needs to survive too. https://github.com/TannerMidd/pi-pocket/blob/main/src/server/extensions/subagents.ts -->
+
 - 09 Oct 2026. [Arnav Gupta's pi-subagent-manager](https://github.com/championswimmer/pi-subagent-manager) makes context inheritance explicit. Nested threads receive their parent's snapshot; independent roots start without its history. Threads stay around for steering and resume. I want synchronous coordination by default, forks for continuity and fresh context for independent review. #ai #tools
   <!-- toot: Arnav Gupta's pi-subagent-manager separates agent type from thread ancestry. Children inherit their parent's snapshot; independent roots start fresh. I want to wait, inspect and steer, not launch a swarm and hope. Fork for continuity, fresh context for review. https://github.com/championswimmer/pi-subagent-manager -->
 
