@@ -1,5 +1,8 @@
 # Oct 2026
 
+- 09 Oct 2026. [Arnav Gupta's pi-subagent-manager](https://github.com/championswimmer/pi-subagent-manager) makes context inheritance explicit. Nested threads receive their parent's snapshot; independent roots start without its history. Threads stay around for steering and resume. I want synchronous coordination by default, forks for continuity and fresh context for independent review. #ai #tools
+  <!-- toot: Arnav Gupta's pi-subagent-manager separates agent type from thread ancestry. Children inherit their parent's snapshot; independent roots start fresh. I want to wait, inspect and steer, not launch a swarm and hope. Fork for continuity, fresh context for review. https://github.com/championswimmer/pi-subagent-manager -->
+
 - 09 Oct 2026. [Armin Ronacher's subagent extension](https://github.com/mitsuhiko/agent-stuff/blob/main/extensions/subagent.ts) runs one observable Pi child at a time in tmux. The parent waits for the result, while I can attach to inspect or intervene. Worth preserving when adding hierarchy: synchronous coordination must not mean invisible execution. #ai #tools
   <!-- toot: Armin Ronacher's Pi subagents run one at a time in tmux. The parent waits, but I can attach to inspect or intervene. That's the bit I want to keep when adding hierarchy. More agents shouldn't mean less control. https://github.com/mitsuhiko/agent-stuff/blob/main/extensions/subagent.ts -->
 
