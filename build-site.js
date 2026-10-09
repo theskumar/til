@@ -173,7 +173,7 @@ function layout(title, body, { activeNav = "", canonical = "" } = {}) {
     <canvas class="fx-hills" id="fx-hills" aria-hidden="true"></canvas>
     <div class="header-wrap">
       <div class="title">
-        <svg class="logo-mark" width="22" height="22" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M9 5v22M9 16 23 6M9 16l14 10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="9" cy="5" r="2.4" fill="currentColor"/><circle cx="9" cy="27" r="2.4" fill="currentColor"/><circle cx="23" cy="6" r="2.4" fill="currentColor"/><circle cx="23" cy="26" r="2.4" fill="currentColor"/><circle class="mark-node" cx="9" cy="16" r="2.9"/></svg>
+        <svg class="logo-mark" width="22" height="22" viewBox="0 0 32 32" fill="none" aria-hidden="true"><g stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="miter"><path d="M2 23c4-.6 5-8 10.4-8C13.3 15 13.6 15.6 12.9 16 11.8 16.7 10.5 17.4 10.5 19c0 2.4 1 4 4 4L19.5 12.26 24.5 23"/><path d="M21.5 16.55 25.5 8.5 30.5 19.6"/></g><circle class="mark-node" cx="8" cy="8.5" r="2.1"/></svg>
         <a href="${BASE_URL}/" class="brand">TIL</a>
         <a href="${MAIN_SITE}" class="brand-sub">Saurabh Kumar</a>
       </div>
