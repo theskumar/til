@@ -25,6 +25,8 @@ jobs:
     steps:
       - name: Check out repo
         uses: actions/checkout@v5
+        with:
+          fetch-depth: 0 # article dates come from git history
 
       - name: Setup Node.js
         uses: actions/setup-node@v5

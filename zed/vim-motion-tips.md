@@ -1,3 +1,5 @@
+# Vim motion tips for Zed
+
 ## Configure Relative Line Numbers
 
 Set `relative_line_numbers` to allow you to navigate faster.

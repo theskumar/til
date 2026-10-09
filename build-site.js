@@ -1,4 +1,5 @@
 const fs = require("fs").promises;
+const { execFileSync } = require("child_process");
 const path = require("path");
 const { marked } = require("marked");
 
@@ -88,6 +89,25 @@ function formatWeekTitle(weekEnd) {
 // Article discovery
 // ---------------------------------------------------------------------------
 
+// First commit that added the file. Needs full history (fetch-depth: 0 in CI).
+function gitAddedDate(filepath) {
+  try {
+    const out = execFileSync(
+      "git",
+      ["log", "--diff-filter=A", "--follow", "--format=%as", "--", filepath],
+      { encoding: "utf-8", stdio: ["ignore", "pipe", "ignore"] },
+    ).trim();
+    const last = out.split("\n").filter(Boolean).pop();
+    return last ? new Date(last + "T12:00:00Z") : null;
+  } catch {
+    return null;
+  }
+}
+
+function formatMonthYear(d) {
+  return d.toLocaleDateString("en-US", { month: "short", year: "numeric", timeZone: "UTC" });
+}
+
 async function discoverArticles() {
   const articles = [];
   const entries = await fs.readdir(".", { withFileTypes: true });
@@ -106,6 +126,7 @@ async function discoverArticles() {
       const titleMatch = content.match(/^# (.+)$/m);
       const title = titleMatch ? titleMatch[1] : file.replace(".md", "");
       articles.push({
+        added: gitAddedDate(filepath),
         category: entry.name,
         slug: file.replace(".md", ""),
         filepath,
@@ -839,6 +860,36 @@ a.tag:hover {
   margin-top: 0.8rem;
 }
 
+/* Home: latest notes */
+.home-notes > li { padding: 1rem 0 1.2rem; border-bottom: 1px solid var(--hairline); }
+.home-notes > li:last-child { border-bottom: 0; }
+.home-notes .note-lead p { margin: 0; }
+.note-more { margin-top: 0.45rem; }
+.note-more > summary {
+  cursor: pointer;
+  list-style: none;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+  display: inline-block;
+}
+.note-more > summary::-webkit-details-marker { display: none; }
+.note-more > summary::after { content: " →"; }
+.note-more > summary:hover { color: var(--accent); }
+.note-more[open] { margin-top: 0.7rem; }
+.note-more[open] > summary { display: none; }
+.note-more > p:first-of-type { margin-top: 0; }
+
+/* Home: archive by month */
+.archive { display: flex; flex-direction: column; gap: 0.6rem; }
+.archive-year { display: flex; gap: 1.2rem; align-items: baseline; }
+.archive-y { font-family: var(--font-mono); font-size: 0.78rem; color: var(--faint); flex-shrink: 0; }
+.archive-months { display: flex; flex-wrap: wrap; gap: 0.4rem 1.1rem; }
+.archive-months a { color: var(--heading); text-decoration: none; font-size: 0.95rem; }
+.archive-months a:hover { color: var(--accent); }
+
 /* Footer */
 footer.site-footer {
   position: relative;
@@ -957,16 +1008,96 @@ function renderNotesListItems(notes, excludeTag) {
     .join("\n");
 }
 
-function buildHomePage(weeks, articles, tagMap) {
-  const weekListHTML = [...weeks.entries()]
-    .slice(0, 8)
-    .map(([weekEnd, notes]) => renderWeekRow(weekEnd, notes))
+function monthKey(weekEnd) {
+  return weekEnd.slice(0, 7);
+}
+
+function formatMonthKey(key, opts = { month: "long", year: "numeric" }) {
+  return new Date(key + "-15T12:00:00Z").toLocaleDateString("en-US", { ...opts, timeZone: "UTC" });
+}
+
+// Weeks grouped by the month their week ends in, newest first.
+function groupWeeksByMonth(weeks) {
+  const months = new Map();
+  for (const [weekEnd, notes] of weeks) {
+    const key = monthKey(weekEnd);
+    if (!months.has(key)) months.set(key, []);
+    months.get(key).push([weekEnd, notes]);
+  }
+  return months;
+}
+
+// Split a markdown paragraph after its first sentence or two, never inside a
+// link, code span or parentheses. Returns [lead, rest].
+function splitLead(text, maxChars = 300) {
+  let depth = 0;
+  let inCode = false;
+  let cut = -1;
+  for (let i = 0; i < text.length - 1; i++) {
+    const c = text[i];
+    if (c === "\x60") inCode = !inCode;
+    if (inCode) continue;
+    if (c === "[" || c === "(") depth++;
+    if (c === "]" || c === ")") depth = Math.max(0, depth - 1);
+    if (depth === 0 && (c === "." || c === "!" || c === "?") && text[i + 1] === " ") {
+      // Keep whole sentences up to maxChars; always keep the first one.
+      if (cut !== -1 && i > maxChars) break;
+      cut = i + 1;
+    }
+  }
+  // Don't hide a short tail such as a lone "discuss" link.
+  if (cut === -1 || visibleLength(text.slice(cut)) < 80) return [text, ""];
+  return [text.slice(0, cut), text.slice(cut).trim()];
+}
+
+// Visible length of a markdown string (link URLs don't count).
+function visibleLength(md) {
+  return md.replace(/\]\([^)]*\)/g, "]").length;
+}
+
+function renderNotePreview(note) {
+  const weekEnd = getWeekEnd(note.date);
+  const slug = slugifyNote(note);
+  const lines = note.lines.map(stripTags).filter((l) => !/^\s*<!--/.test(l));
+  // Short notes show in full; long ones get a lead and a "Continue reading" toggle.
+  const whole = lines.join("\n").trim();
+  const [lead, restOfFirst] =
+    visibleLength(whole) <= 480 ? [whole, ""] : splitLead(lines[0] || "");
+  const rest = lead === whole ? "" : [restOfFirst, ...lines.slice(1)].join("\n").trim();
+  const more = rest
+    ? `<details class="note-more"><summary>Continue reading</summary>${marked.parse(rest)}</details>`
+    : "";
+  return `<li id="${slug}"><a href="${BASE_URL}/weekly/${weekEnd}.html#${slug}" class="note-date">${formatDate(note.date)}</a><div class="note-lead">${marked.parse(lead)}</div>${more}${renderNoteTags(note)}</li>`;
+}
+
+function renderArchive(weeks) {
+  const byYear = new Map();
+  for (const [key, items] of groupWeeksByMonth(weeks)) {
+    const year = key.slice(0, 4);
+    const count = items.reduce((n, [, notes]) => n + notes.length, 0);
+    if (!byYear.has(year)) byYear.set(year, []);
+    byYear.get(year).push(
+      `<a href="${BASE_URL}/weekly/#m-${key}">${formatMonthKey(key, { month: "short" })}<span class="tag-count">${count}</span></a>`,
+    );
+  }
+  return [...byYear]
+    .map(([year, months]) => `<div class="archive-year"><span class="archive-y">${year}</span><span class="archive-months">${months.join("")}</span></div>`)
+    .join("\n");
+}
+
+function buildHomePage(weeks, articles, tagMap, notes) {
+  const LATEST = 8;
+  const latestHTML = [...notes]
+    .sort((a, b) => b.date - a.date)
+    .slice(0, LATEST)
+    .map(renderNotePreview)
     .join("\n");
 
-  const articleListHTML = articles
+  const articleListHTML = [...articles]
+    .sort((a, b) => (b.added || 0) - (a.added || 0))
     .map(
       (a) =>
-        `<li><a href="${BASE_URL}/${a.category}/${a.slug}.html"><span class="article-title">${escapeHTML(a.title)}</span><span class="article-category">${a.category}</span></a></li>`,
+        `<li><a href="${BASE_URL}/${a.category}/${a.slug}.html"><span class="article-title">${escapeHTML(a.title)}</span><span class="article-category">${a.category}${a.added ? ` · ${formatMonthYear(a.added)}` : ""}</span></a></li>`,
     )
     .join("\n");
 
@@ -977,11 +1108,11 @@ function buildHomePage(weeks, articles, tagMap) {
 </div>
 
 <section class="home-section">
-  <h2>Recent Weeks</h2>
-  <ul class="week-list">
-    ${weekListHTML}
+  <h2>Latest notes</h2>
+  <ul class="notes-list home-notes">
+    ${latestHTML}
   </ul>
-  <a class="view-all" href="${BASE_URL}/weekly/">All weeks &rarr;</a>
+  <a class="view-all" href="${BASE_URL}/weekly/">All ${notes.length} notes, by week &rarr;</a>
 </section>
 
 ${
@@ -995,6 +1126,13 @@ ${
 </section>`
     : ""
 }
+
+<section class="home-section">
+  <h2>Archive</h2>
+  <div class="archive">
+    ${renderArchive(weeks)}
+  </div>
+</section>
 
 ${
   tagMap && tagMap.size
@@ -1011,8 +1149,13 @@ ${
 }
 
 function buildWeeklyIndexPage(weeks) {
-  const listHTML = [...weeks.entries()]
-    .map(([weekEnd, notes]) => renderWeekRow(weekEnd, notes))
+  const listHTML = [...groupWeeksByMonth(weeks)]
+    .map(
+      ([key, items]) => `<h2 class="cat-label" id="m-${key}">${formatMonthKey(key)}</h2>
+<ul class="week-list">
+  ${items.map(([weekEnd, notes]) => renderWeekRow(weekEnd, notes)).join("\n")}
+</ul>`,
+    )
     .join("\n");
 
   const body = `
@@ -1020,9 +1163,7 @@ function buildWeeklyIndexPage(weeks) {
   <h1>Weekly Notes</h1>
   <p class="sub">Notes grouped by the week I learned them.</p>
 </div>
-<ul class="week-list">
-  ${listHTML}
-</ul>`;
+${listHTML}`;
 
   return layout("Weekly Notes", body, {
     activeNav: "Weekly",
@@ -1257,7 +1398,7 @@ async function build() {
   // Home page
   await fs.writeFile(
     path.join(SITE_DIR, "index.html"),
-    buildHomePage(weeks, articles, tagMap),
+    buildHomePage(weeks, articles, tagMap, allNotes),
   );
 
   // Weekly index
