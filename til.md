@@ -2,6 +2,12 @@
 
 - 10 Oct 2026. [Sebastian Raschka's history of text classifiers](https://magazine.sebastianraschka.com/p/classifier-history-and-jev) puts numbers on why [Jev](https://typesafe.ai/blog/introducing-system-one-models-and-jev) feels new. On IMDb, bag-of-words + logistic regression gets 89.9%, a fine-tuned ModernBERT about 95%, and Jev 96.5% zero-shot for $0.65 across 25k reviews. Under the hood it is likely still a pretrained transformer with a one-number head that scores each answer option. The hard part is broad training data and calibrated probabilities. What changes is the cost of starting: no labelling, training or hosting per task. Specialists still win on huge volume, the last point of accuracy, or data that can't leave your network. Within a month [OpenAI](https://developers.openai.com/api/docs/guides/decisions) and [Microsoft](https://commandline.microsoft.com/microsoft-decision-1-model-foundry/) shipped the same yes/no, choice and score contract. #ai [discuss](https://mastodon.social/@theskumar/117415807409381705)
 
+- 10 Oct 2026. [Microsoft eXecution Container (MXC)](https://github.com/microsoft/mxc) is an embeddable SDK for running untrusted commands under OS-enforced policies, not a hosted sandbox service.
+  - Defaults: Seatbelt on macOS, Bubblewrap on Linux, ProcessContainer on Windows. SDKs for Node, Rust, and .NET.
+  - Restricts filesystem and network access. macOS hostname allowlists need a caller-managed proxy; not every backend is a VM.
+  - Useful boundary: sandbox the command where it executes, not just the agent's tool-composition script. Isolation limits damage; it does not make generated output trustworthy. #ai #tools #security
+
+
 - 09 Oct 2026. [Pi Pocket's subagent implementation](https://github.com/TannerMidd/pi-pocket/blob/3e6046612db4358b599da302d5c96bd407d9de5c/src/server/extensions/subagents.ts) gives each worker a retained conversation and uses durable tasks to deliver messages and report answers. Request IDs and recorded answer IDs prevent duplicate delivery and reporting after restart. The idea worth stealing: make the handoff durable, not just the worker. #ai #architecture [discuss](https://mastodon.social/@theskumar/117406946949402110)
   <!-- toot: Pi Pocket separates the worker from the job of delivering its task and reporting its answer. Durable reporters use request IDs so a restart doesn't send the same message twice. The worker surviving isn't enough. Its handoff needs to survive too. https://github.com/TannerMidd/pi-pocket/blob/main/src/server/extensions/subagents.ts -->
 
