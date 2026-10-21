@@ -1,5 +1,4 @@
 const fs = require("fs").promises;
-const { execFileSync } = require("child_process");
 const path = require("path");
 const { marked } = require("marked");
 
@@ -7,9 +6,53 @@ const SITE_DIR = "_site";
 const BASE_URL = "/til";
 const SITE_TITLE = "TIL — Saurabh Kumar";
 const MAIN_SITE = "https://saurabh-kumar.com";
+const MAIN_NAV = [
+  ["Writing", `${MAIN_SITE}/articles/`],
+  ["Projects", `${MAIN_SITE}/projects/`],
+  ["TIL", `${BASE_URL}/`],
+  ["Now", `${MAIN_SITE}/now/`],
+  ["About", `${MAIN_SITE}/`],
+];
+// TIL's own sections, shown in the page-head eyebrow row.
+const SUB_NAV = [
+  ["Notes", `${BASE_URL}/`],
+  ["Weekly", `${BASE_URL}/weekly/`],
+  ["Tags", `${BASE_URL}/tags/`],
+];
+
+function subNav(active) {
+  const links = SUB_NAV.map(([label, href]) => {
+    const cls = label === active ? ' class="active" aria-current="page"' : "";
+    return `<a href="${href}"${cls}>${label}</a>`;
+  }).join("");
+  return `<nav class="eyebrow sub-nav" aria-label="TIL sections">${links}</nav>`;
+}
+
+function pageHead(active, title, sub) {
+  return `<div class="page-head">
+  <span class="crosshair" aria-hidden="true"></span>
+  ${subNav(active)}
+  <h1>${title}</h1>
+  <p class="sub">${sub}</p>
+</div>`;
+}
 
 const SOURCE_FILES = ["til.md"];
-const IGNORE_DIRS = ["node_modules", ".git", ".github", "_site", "docs", ".pi"];
+
+// Standalone articles were retired in Oct 2026: the long ones moved to the
+// Writing section of the main site, the short ones became dated notes in
+// til.md. GitHub Pages can't redirect, so each old URL gets a stub page.
+const RETIRED_ARTICLES = [
+  ["articles/index.html", `${BASE_URL}/`],
+  ["fts/pg_textsearch.html", `${MAIN_SITE}/articles/2025/12/bm25-ranking-in-postgresql-with-pg-textsearch/`],
+  ["llm/prompt-caching.html", `${MAIN_SITE}/articles/2026/06/how-prompt-caching-works/`],
+  ["github/checkout-can-leak-github-creds.html", { date: "2024-12-10", match: "actions/checkout" }],
+  ["react/setstate-is-async.html", { date: "2023-11-08", match: "setState" }],
+  ["vscode/navigating-between-terminals.html", { date: "2023-10-05", match: "VS Code" }],
+  ["ideas/django-unlogged-cache-backend.html", { date: "2026-06-28", match: "UNLOGGED" }],
+  ["zed/vim-motion-tips.html", { date: "2026-06-21", match: "Vim motion" }],
+  ["zed/hidden-gems-discussion.html", { date: "2026-06-21", match: "Hidden Gems" }],
+];
 
 // ---------------------------------------------------------------------------
 // Note parsing
@@ -86,78 +129,15 @@ function formatWeekTitle(weekEnd) {
 }
 
 // ---------------------------------------------------------------------------
-// Article discovery
-// ---------------------------------------------------------------------------
-
-// First commit that added the file. Needs full history (fetch-depth: 0 in CI).
-function gitAddedDate(filepath) {
-  try {
-    const out = execFileSync(
-      "git",
-      ["log", "--diff-filter=A", "--follow", "--format=%as", "--", filepath],
-      { encoding: "utf-8", stdio: ["ignore", "pipe", "ignore"] },
-    ).trim();
-    const last = out.split("\n").filter(Boolean).pop();
-    return last ? new Date(last + "T12:00:00Z") : null;
-  } catch {
-    return null;
-  }
-}
-
-function formatMonthYear(d) {
-  return d.toLocaleDateString("en-US", { month: "short", year: "numeric", timeZone: "UTC" });
-}
-
-async function discoverArticles() {
-  const articles = [];
-  const entries = await fs.readdir(".", { withFileTypes: true });
-  for (const entry of entries) {
-    if (
-      !entry.isDirectory() ||
-      IGNORE_DIRS.includes(entry.name) ||
-      entry.name === "weekly"
-    )
-      continue;
-    const files = await fs.readdir(entry.name);
-    for (const file of files) {
-      if (!file.endsWith(".md")) continue;
-      const filepath = path.join(entry.name, file);
-      const content = await fs.readFile(filepath, "utf-8");
-      const titleMatch = content.match(/^# (.+)$/m);
-      const title = titleMatch ? titleMatch[1] : file.replace(".md", "");
-      articles.push({
-        added: gitAddedDate(filepath),
-        category: entry.name,
-        slug: file.replace(".md", ""),
-        filepath,
-        title,
-        content,
-      });
-    }
-  }
-  return articles.sort(
-    (a, b) =>
-      a.category.localeCompare(b.category) || a.title.localeCompare(b.title),
-  );
-}
-
-// ---------------------------------------------------------------------------
 // HTML template
 // ---------------------------------------------------------------------------
 
-function layout(title, body, { activeNav = "", canonical = "" } = {}) {
-  const nav = [
-    ["Home", `${BASE_URL}/`],
-    ["Articles", `${BASE_URL}/articles/`],
-    ["Weekly", `${BASE_URL}/weekly/`],
-  ];
-
-  const navHTML = nav
-    .map(([label, href]) => {
-      const cls = activeNav === label ? ' class="active"' : "";
-      return `<a href="${href}"${cls}>${label}</a>`;
-    })
-    .join("\n      ");
+function layout(title, body, { canonical = "" } = {}) {
+  // Same menu as saurabh-kumar.com (hugo.toml [[menus.main]]), with TIL active.
+  const navHTML = MAIN_NAV.map(([label, href]) => {
+    const cls = label === "TIL" ? ' class="active"' : "";
+    return `<a href="${href}"${cls}>${label}</a>`;
+  }).join("\n      ");
 
   const canonicalTag = canonical
     ? `<link rel="canonical" href="${MAIN_SITE}${canonical}" />`
@@ -193,11 +173,10 @@ function layout(title, body, { activeNav = "", canonical = "" } = {}) {
   <header>
     <canvas class="fx-hills" id="fx-hills" aria-hidden="true"></canvas>
     <div class="header-wrap">
-      <div class="title">
-        <svg class="logo-mark" width="22" height="22" viewBox="0 0 32 32" fill="none" aria-hidden="true"><g stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="miter"><path d="M2 23c4-.6 5-8 10.4-8C13.3 15 13.6 15.6 12.9 16 11.8 16.7 10.5 17.4 10.5 19c0 2.4 1 4 4 4L19.5 12.26 24.5 23"/><path d="M21.5 16.55 25.5 8.5 30.5 19.6"/></g><circle class="mark-node" cx="8" cy="8.5" r="2.1"/></svg>
-        <a href="${BASE_URL}/" class="brand">TIL</a>
-        <a href="${MAIN_SITE}" class="brand-sub">Saurabh Kumar</a>
-      </div>
+      <a href="${MAIN_SITE}/" class="title">
+        <svg class="logo-mark" width="24" height="24" viewBox="0 0 32 32" fill="none" aria-hidden="true"><g stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="miter"><path d="M2 23c4-.6 5-8 10.4-8C13.3 15 13.6 15.6 12.9 16 11.8 16.7 10.5 17.4 10.5 19c0 2.4 1 4 4 4L19.5 12.26 24.5 23"/><path d="M21.5 16.55 25.5 8.5 30.5 19.6"/></g><circle class="mark-node" cx="8" cy="8.5" r="2.1"/></svg>
+        <span class="brand">Saurabh Kumar</span>
+      </a>
       <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode" title="Toggle dark mode">
         <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
@@ -217,12 +196,13 @@ function layout(title, body, { activeNav = "", canonical = "" } = {}) {
   <footer class="site-footer">
     <canvas class="fx-waves" id="fx-waves" aria-hidden="true"></canvas>
     <span>&copy; ${new Date().getFullYear()} Saurabh Kumar</span>
+    <span>28.67°N&thinsp;/&thinsp;77.43°E — Ghaziabad, IN</span>
     <span>
       <a href="${BASE_URL}/rss.xml">RSS</a>
       &nbsp;&middot;&nbsp;
       <a href="https://github.com/theskumar/til">Source</a>
       &nbsp;&middot;&nbsp;
-      <a href="${MAIN_SITE}">Main site</a>
+      <a href="${MAIN_SITE}/#contact">Say hello</a>
     </span>
   </footer>
   <script>
@@ -559,60 +539,68 @@ table { width: 100%; border-collapse: collapse; font-size: 0.95em; margin: 1.4em
 th, td { text-align: left; padding: 8px 12px; border-bottom: 1px solid var(--border); }
 th { color: var(--heading); font-weight: 600; }
 
-/* Header */
-header { margin-bottom: 2.5rem; }
+/* Header — mirrors saurabh-kumar.com layouts/partials/style.html */
 .header-wrap {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
 }
-.title { display: flex; align-items: center; gap: 10px; }
-.title .logo-mark { color: var(--heading); flex-shrink: 0; }
-.title .logo-mark .mark-node { fill: var(--accent); }
-.title .brand {
+a.title { text-decoration: none; display: inline-flex; align-items: center; gap: 11px; }
+.logo-mark { display: block; color: var(--heading); flex-shrink: 0; }
+.logo-mark .mark-node { fill: var(--accent); }
+a.title .brand {
   font-family: var(--font-serif);
-  font-size: 1.35rem;
   font-weight: 500;
+  font-size: 1.22rem;
+  letter-spacing: -0.01em;
   color: var(--heading);
-  letter-spacing: -0.02em;
-  line-height: 1;
-  text-decoration: none;
 }
-.title .brand:hover { color: var(--accent); }
-.title .brand-sub {
-  font-family: var(--font-mono);
-  font-size: 0.7rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--muted);
-  text-decoration: none;
-}
-.title .brand-sub:hover { color: var(--heading); }
+a.title:hover .brand { color: var(--accent); }
 
 nav.site-nav {
   position: relative;
   display: flex;
   gap: 1.5rem;
-  margin-top: 0.9rem;
-  padding-bottom: 0.85rem;
+  margin: 0.9rem 0 0;
   border-bottom: 1px solid var(--hairline);
-  align-items: center;
   font-family: var(--font-mono);
-}
-nav.site-nav a {
   font-size: 0.75rem;
-  text-transform: uppercase;
   letter-spacing: 0.13em;
-  color: var(--muted);
-  text-decoration: none;
-  padding-bottom: 0.85rem;
-  margin-bottom: -0.85rem;
-  border-bottom: 1px solid transparent;
-  transition: color 0.18s ease, border-color 0.18s ease;
+  text-transform: uppercase;
 }
+nav.site-nav a { color: var(--muted); text-decoration: none; padding-bottom: 0.85rem; margin-bottom: -1px; border-bottom: 1px solid transparent; transition: color 0.18s ease, border-color 0.18s ease; }
 nav.site-nav a:hover { color: var(--heading); border-bottom-color: var(--border-strong); }
 nav.site-nav a.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1.1rem;
+}
+.eyebrow a { color: inherit; text-decoration: none; }
+.eyebrow a:hover { color: var(--heading); }
+/* TIL sections ride in the eyebrow row: the current one in accent. */
+.sub-nav { display: flex; flex-wrap: wrap; gap: 0 1.4em; }
+.sub-nav a { color: var(--muted); }
+.sub-nav a.active { color: var(--accent); }
+
+/* Registration crosshair, drawn in CSS. */
+.crosshair {
+  position: absolute; width: 15px; height: 15px; color: var(--faint);
+  background:
+    linear-gradient(currentColor, currentColor) center/1px 100% no-repeat,
+    linear-gradient(currentColor, currentColor) center/100% 1px no-repeat;
+  opacity: 0.8;
+}
+.crosshair::after {
+  content: ""; position: absolute; inset: 3px;
+  border: 1px solid currentColor; border-radius: 50%;
+}
+
 /* Full-bleed organic ink: hills crest at the top of the browser, swells lap
    at the bottom — the tattoo, hills into ocean. */
 .fx-hills, .fx-waves { pointer-events: none; color: var(--faint); }
@@ -635,7 +623,7 @@ nav.site-nav a.active { color: var(--accent); border-bottom-color: var(--accent)
   width: 32px;
   height: 32px;
   background: none;
-  border: 1px solid var(--border);
+  border: 1px solid transparent;
   border-radius: 3px;
   color: var(--muted);
   cursor: pointer;
@@ -647,8 +635,8 @@ nav.site-nav a.active { color: var(--accent); border-bottom-color: var(--accent)
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 17px;
-  height: 17px;
+  width: 16px;
+  height: 16px;
   transition: opacity 0.3s ease, transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .theme-toggle .sun-icon  { opacity: 1; transform: translate(-50%, -50%) rotate(0deg) scale(1); }
@@ -665,39 +653,12 @@ html.theme-anim *::after {
 }
 
 /* Page head */
-.page-head { padding: 1rem 0 1.6rem; }
-.page-head h1 {
-  font-family: var(--font-serif);
-  font-weight: 400;
-  font-size: clamp(2rem, 4.5vw, 2.6rem);
-  letter-spacing: -0.025em;
-  margin: 0 0 0.4rem;
-}
-.page-head .sub { color: var(--muted); margin: 0; font-size: 1.02rem; }
-
-/* Article page — reading column stays book-width inside the wider chrome. */
-.article-header, .article-content { max-width: var(--measure); }
-.article-header { margin-bottom: 2.2rem; }
-.article-header .eyebrow {
-  font-family: var(--font-mono);
-  font-size: 0.74rem;
-  text-transform: uppercase;
-  letter-spacing: 0.14em;
-  color: var(--accent);
-  margin-bottom: 0.8rem;
-}
-.article-header h1 {
-  font-family: var(--font-serif);
-  font-weight: 400;
-  font-size: clamp(2rem, 4.8vw, 2.8rem);
-  line-height: 1.12;
-  letter-spacing: -0.025em;
-  margin: 0 0 0.7rem;
-}
-.article-content h2 { font-size: 1.45rem; }
-.article-content ul, .article-content ol { padding-left: 1.3em; }
-.article-content li { margin: 0.3em 0; }
-.article-content li::marker { color: var(--faint); }
+.page-head { padding: 2.4rem 0 1rem; position: relative; }
+.page-head h1 { font-size: clamp(1.9rem, 4.5vw, 2.5rem); margin: 0 0 0.4rem; letter-spacing: -0.02em; }
+.page-head .sub { color: var(--muted); margin: 0; font-size: 0.98rem; max-width: 34rem; }
+.page-head .crosshair { top: 2.8rem; right: 0; }
+/* 56px from the head's text to the first content row, as on the main site. */
+main .page-head + * { margin-top: 2.5rem; }
 
 /* Week list */
 .week-list { list-style: none; margin: 0; padding: 0; }
@@ -778,30 +739,6 @@ a.tag:hover {
   margin-top: 0.5rem;
 }
 
-/* Article list */
-.article-list { list-style: none; margin: 0; padding: 0; }
-.article-list li {
-  padding: 0.8rem 0;
-}
-.article-list a {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: 14px;
-  text-decoration: none;
-  color: var(--heading);
-  font-size: 0.96rem;
-}
-.article-list a:hover { color: var(--accent); }
-.article-list .article-title { font-weight: 450; }
-.article-list .article-category {
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--faint);
-  flex-shrink: 0;
-}
 
 /* Notes in weekly pages */
 .notes-list { list-style: none; margin: 0; padding: 0; }
@@ -859,6 +796,15 @@ a.tag:hover {
   display: inline-block;
   margin-top: 0.8rem;
 }
+.browse {
+  margin: 1.4rem 0 0;
+  padding-top: 1rem;
+  border-top: 1px solid var(--hairline);
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+.browse a { text-decoration: none; }
+.browse a:hover { color: var(--accent); }
 
 /* Home: latest notes */
 .home-notes > li { padding: 1rem 0 1.2rem; border-bottom: 1px solid var(--hairline); }
@@ -882,13 +828,6 @@ a.tag:hover {
 .note-more[open] > summary { display: none; }
 .note-more > p:first-of-type { margin-top: 0; }
 
-/* Home: archive by month */
-.archive { display: flex; flex-direction: column; gap: 0.6rem; }
-.archive-year { display: flex; gap: 1.2rem; align-items: baseline; }
-.archive-y { font-family: var(--font-mono); font-size: 0.78rem; color: var(--faint); flex-shrink: 0; }
-.archive-months { display: flex; flex-wrap: wrap; gap: 0.4rem 1.1rem; }
-.archive-months a { color: var(--heading); text-decoration: none; font-size: 0.95rem; }
-.archive-months a:hover { color: var(--accent); }
 
 /* Footer */
 footer.site-footer {
@@ -905,7 +844,7 @@ footer.site-footer {
   justify-content: space-between;
   align-items: baseline;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 1rem;
 }
 footer.site-footer a { color: var(--muted); text-decoration: none; }
 footer.site-footer a:hover { color: var(--accent); }
@@ -913,8 +852,7 @@ footer.site-footer a:hover { color: var(--accent); }
 @media (max-width: 720px) {
   body { padding: 84px 18px 0; }
   .fx-hills { height: 72px; }
-  footer.site-footer { flex-direction: column; align-items: center; text-align: center; }
-  nav.site-nav { flex-wrap: wrap; gap: 14px; }
+  footer.site-footer { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
   .week-row {
     flex-wrap: wrap;
   }
@@ -1070,82 +1008,26 @@ function renderNotePreview(note) {
   return `<li id="${slug}"><a href="${BASE_URL}/weekly/${weekEnd}.html#${slug}" class="note-date">${formatDate(note.date)}</a><div class="note-lead">${marked.parse(lead)}</div>${more}${renderNoteTags(note)}</li>`;
 }
 
-function renderArchive(weeks) {
-  const byYear = new Map();
-  for (const [key, items] of groupWeeksByMonth(weeks)) {
-    const year = key.slice(0, 4);
-    const count = items.reduce((n, [, notes]) => n + notes.length, 0);
-    if (!byYear.has(year)) byYear.set(year, []);
-    byYear.get(year).push(
-      `<a href="${BASE_URL}/weekly/#m-${key}">${formatMonthKey(key, { month: "short" })}<span class="tag-count">${count}</span></a>`,
-    );
-  }
-  return [...byYear]
-    .map(([year, months]) => `<div class="archive-year"><span class="archive-y">${year}</span><span class="archive-months">${months.join("")}</span></div>`)
-    .join("\n");
-}
-
-function buildHomePage(weeks, articles, tagMap, notes) {
-  const LATEST = 8;
+function buildHomePage(notes) {
+  const LATEST = 12;
   const latestHTML = [...notes]
     .sort((a, b) => b.date - a.date)
     .slice(0, LATEST)
     .map(renderNotePreview)
     .join("\n");
 
-  const articleListHTML = [...articles]
-    .sort((a, b) => (b.added || 0) - (a.added || 0))
-    .map(
-      (a) =>
-        `<li><a href="${BASE_URL}/${a.category}/${a.slug}.html"><span class="article-title">${escapeHTML(a.title)}</span><span class="article-category">${a.category}${a.added ? ` · ${formatMonthYear(a.added)}` : ""}</span></a></li>`,
-    )
-    .join("\n");
-
   const body = `
-<div class="page-head">
-  <h1>Things I Learned</h1>
-  <p class="sub">A collection of useful things I've learned. Quick notes and deeper write-ups.</p>
-</div>
+${pageHead("Notes", "Things I Learned", `Short, dated notes on things I've learned. Longer write-ups live in <a href="${MAIN_SITE}/articles/">Writing</a>.`)}
 
 <section class="home-section">
   <h2>Latest notes</h2>
   <ul class="notes-list home-notes">
     ${latestHTML}
   </ul>
-  <a class="view-all" href="${BASE_URL}/weekly/">All ${notes.length} notes, by week &rarr;</a>
-</section>
+  <p class="browse">Browse all ${notes.length} notes <a href="${BASE_URL}/weekly/">by week &rarr;</a> &middot; <a href="${BASE_URL}/tags/">by tag &rarr;</a></p>
+</section>`;
 
-${
-  articles.length
-    ? `<section class="home-section">
-  <h2>Articles</h2>
-  <ul class="article-list">
-    ${articleListHTML}
-  </ul>
-  <a class="view-all" href="${BASE_URL}/articles/">All articles &rarr;</a>
-</section>`
-    : ""
-}
-
-<section class="home-section">
-  <h2>Archive</h2>
-  <div class="archive">
-    ${renderArchive(weeks)}
-  </div>
-</section>
-
-${
-  tagMap && tagMap.size
-    ? `<section class="home-section">
-  <h2>Tags</h2>
-  <div class="tag-cloud">
-    ${renderTagCloudItems(tagMap).join("\n    ")}
-  </div>
-</section>`
-    : ""
-}`;
-
-  return layout("Home", body, { activeNav: "Home", canonical: `${BASE_URL}/` });
+  return layout("Home", body, { canonical: `${BASE_URL}/` });
 }
 
 function buildWeeklyIndexPage(weeks) {
@@ -1159,14 +1041,10 @@ function buildWeeklyIndexPage(weeks) {
     .join("\n");
 
   const body = `
-<div class="page-head">
-  <h1>Weekly Notes</h1>
-  <p class="sub">Notes grouped by the week I learned them.</p>
-</div>
+${pageHead("Weekly", "Weekly Notes", "Notes grouped by the week I learned them.")}
 ${listHTML}`;
 
   return layout("Weekly Notes", body, {
-    activeNav: "Weekly",
     canonical: `${BASE_URL}/weekly/`,
   });
 }
@@ -1183,10 +1061,7 @@ function buildWeekPage(weekEnd, notes, prevWeek, nextWeek) {
     : "<span></span>";
 
   const body = `
-<div class="page-head">
-  <h1>${title}</h1>
-  <p class="sub">${pluralizeNotes(notes.length)} this week</p>
-</div>
+${pageHead("Weekly", title, `${pluralizeNotes(notes.length)} this week`)}
 <ul class="notes-list">
   ${notesHTML}
 </ul>
@@ -1196,65 +1071,35 @@ function buildWeekPage(weekEnd, notes, prevWeek, nextWeek) {
 </nav>`;
 
   return layout(title, body, {
-    activeNav: "Weekly",
     canonical: `${BASE_URL}/weekly/${weekEnd}.html`,
   });
 }
 
-function buildArticlesIndexPage(articles) {
-  const grouped = new Map();
-  for (const a of articles) {
-    if (!grouped.has(a.category)) grouped.set(a.category, []);
-    grouped.get(a.category).push(a);
-  }
-
-  let sectionsHTML = "";
-  for (const [category, items] of grouped) {
-    const listHTML = items
-      .map(
-        (a) =>
-          `<li><a href="${BASE_URL}/${a.category}/${a.slug}.html"><span class="article-title">${escapeHTML(a.title)}</span></a></li>`,
-      )
-      .join("\n");
-    sectionsHTML += `
-<h2 class="cat-label">${category}</h2>
-<ul class="article-list">
-  ${listHTML}
-</ul>`;
-  }
-
-  const body = `
-<div class="page-head">
-  <h1>Articles</h1>
-  <p class="sub">Longer write-ups on specific topics.</p>
-</div>
-${sectionsHTML}`;
-
-  return layout("Articles", body, {
-    activeNav: "Articles",
-    canonical: `${BASE_URL}/articles/`,
-  });
+function buildRedirectPage(target) {
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Moved</title>
+  <link rel="canonical" href="${target}">
+  <meta http-equiv="refresh" content="0; url=${target}">
+  <meta name="robots" content="noindex">
+</head>
+<body><p>This page moved to <a href="${target}">${target}</a>.</p></body>
+</html>`;
 }
 
-function buildArticlePage(article) {
-  const contentWithoutTitle = article.content.replace(/^# .+\n/, "");
-  const html = marked.parse(contentWithoutTitle);
-
-  const body = `
-<article>
-  <header class="article-header">
-    <div class="eyebrow">${article.category}</div>
-    <h1>${escapeHTML(article.title)}</h1>
-  </header>
-  <div class="article-content">
-    ${html}
-  </div>
-</article>`;
-
-  return layout(article.title, body, {
-    activeNav: "Articles",
-    canonical: `${BASE_URL}/${article.category}/${article.slug}.html`,
-  });
+function resolveRetiredTarget(target, notes) {
+  if (typeof target === "string") return target;
+  const note = notes.find(
+    (n) =>
+      // Note dates are parsed in local time, so compare local parts.
+      [n.date.getFullYear(), n.date.getMonth() + 1, n.date.getDate()]
+        .map((x) => String(x).padStart(2, "0")).join("-") === target.date &&
+      n.lines.join(" ").includes(target.match),
+  );
+  if (!note) throw new Error(`No note for retired article: ${JSON.stringify(target)}`);
+  return `${BASE_URL}/weekly/${getWeekEnd(note.date)}.html#${slugifyNote(note)}`;
 }
 
 // ---------------------------------------------------------------------------
@@ -1276,16 +1121,12 @@ function buildTagsIndexPage(tagMap) {
   const tagsHTML = renderTagCloudItems(tagMap).join("\n");
 
   const body = `
-<div class="page-head">
-  <h1>Tags</h1>
-  <p class="sub">${tagMap.size} tags across all notes.</p>
-</div>
+${pageHead("Tags", "Tags", `${tagMap.size} tags across all notes.`)}
 <div class="tag-cloud">
   ${tagsHTML}
 </div>`;
 
   return layout("Tags", body, {
-    activeNav: "Tags",
     canonical: `${BASE_URL}/tags/`,
   });
 }
@@ -1294,17 +1135,13 @@ function buildTagPage(tag, notes) {
   const notesHTML = renderNotesListItems(notes, tag);
 
   const body = `
-<div class="page-head">
-  <h1>#${escapeHTML(tag)}</h1>
-  <p class="sub">${pluralizeNotes(notes.length)}</p>
-</div>
+${pageHead("Tags", `#${escapeHTML(tag)}`, pluralizeNotes(notes.length))}
 <ul class="notes-list">
   ${notesHTML}
 </ul>
 <a class="view-all" href="${BASE_URL}/tags/">&larr; All tags</a>`;
 
   return layout(`#${tag}`, body, {
-    activeNav: "Tags",
     canonical: `${BASE_URL}/tags/${tag}.html`,
   });
 }
@@ -1313,7 +1150,7 @@ function buildTagPage(tag, notes) {
 // RSS
 // ---------------------------------------------------------------------------
 
-function buildRSS(weeks, articles) {
+function buildRSS(weeks) {
   const items = [];
 
   for (const [weekEnd, notes] of [...weeks.entries()].slice(0, 5)) {
@@ -1325,17 +1162,6 @@ function buildRSS(weeks, articles) {
       .join("");
     const date = new Date(weekEnd + "T00:00:00Z");
     items.push({ title, link, content: `<ul>${content}</ul>`, date });
-  }
-
-  for (const a of articles) {
-    const contentWithoutTitle = a.content.replace(/^# .+\n/, "");
-    const html = marked.parse(contentWithoutTitle);
-    items.push({
-      title: `TIL: ${a.title}`,
-      link: `${MAIN_SITE}${BASE_URL}/${a.category}/${a.slug}.html`,
-      content: html,
-      date: new Date(),
-    });
   }
 
   items.sort((a, b) => b.date - a.date);
@@ -1382,15 +1208,10 @@ async function build() {
   const weeks = groupByWeek(allNotes);
   console.log(`  ${weeks.size} weeks`);
 
-  // Discover articles
-  const articles = await discoverArticles();
-  console.log(`  ${articles.length} articles`);
-
   // Clean and create output dir
   await fs.rm(SITE_DIR, { recursive: true, force: true });
   await fs.mkdir(SITE_DIR, { recursive: true });
   await fs.mkdir(path.join(SITE_DIR, "weekly"), { recursive: true });
-  await fs.mkdir(path.join(SITE_DIR, "articles"), { recursive: true });
 
   // Tag map
   const tagMap = groupByTag(allNotes);
@@ -1398,7 +1219,7 @@ async function build() {
   // Home page
   await fs.writeFile(
     path.join(SITE_DIR, "index.html"),
-    buildHomePage(weeks, articles, tagMap, allNotes),
+    buildHomePage(allNotes),
   );
 
   // Weekly index
@@ -1417,21 +1238,12 @@ async function build() {
     await fs.writeFile(path.join(SITE_DIR, "weekly", `${weekEnd}.html`), html);
   }
 
-  // Article pages
-  for (const article of articles) {
-    const dir = path.join(SITE_DIR, article.category);
-    await fs.mkdir(dir, { recursive: true });
-    await fs.writeFile(
-      path.join(dir, `${article.slug}.html`),
-      buildArticlePage(article),
-    );
+  // Redirect stubs for retired article URLs
+  for (const [oldPath, target] of RETIRED_ARTICLES) {
+    const file = path.join(SITE_DIR, oldPath);
+    await fs.mkdir(path.dirname(file), { recursive: true });
+    await fs.writeFile(file, buildRedirectPage(resolveRetiredTarget(target, allNotes)));
   }
-
-  // Articles index
-  await fs.writeFile(
-    path.join(SITE_DIR, "articles", "index.html"),
-    buildArticlesIndexPage(articles),
-  );
 
   // Tag pages
   await fs.mkdir(path.join(SITE_DIR, "tags"), { recursive: true });
@@ -1448,7 +1260,7 @@ async function build() {
   console.log(`  ${tagMap.size} tags`);
 
   // RSS
-  await fs.writeFile(path.join(SITE_DIR, "rss.xml"), buildRSS(weeks, articles));
+  await fs.writeFile(path.join(SITE_DIR, "rss.xml"), buildRSS(weeks));
 
   // .nojekyll (GitHub Pages)
   await fs.writeFile(path.join(SITE_DIR, ".nojekyll"), "");

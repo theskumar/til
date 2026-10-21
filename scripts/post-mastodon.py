@@ -206,6 +206,19 @@ def edit_status(status_id: str, status: str, token: str) -> dict:
     return mastodon_request("PUT", f"/api/v1/statuses/{status_id}", token, {"status": status})
 
 
+# Entries dated further back than this are backfills (moved or restored
+# notes), not new learnings, so they don't get a fresh toot.
+BACKFILL_DAYS = 14
+
+
+def _is_backfill(key: str) -> bool:
+    try:
+        entry_date = datetime.strptime(key, "%d %b %Y")
+    except ValueError:
+        return False
+    return datetime.now() - entry_date > timedelta(days=BACKFILL_DAYS)
+
+
 def main():
     token = os.environ.get("MASTODON_ACCESS_TOKEN", "")
     if not token:
@@ -227,6 +240,9 @@ def main():
     for entry in new_entries:
         status = format_for_mastodon(entry)
         key = _entry_key(entry)
+        if key and _is_backfill(key):
+            print(f"Skipping backfilled entry dated {key}.")
+            continue
         print(f"--- New post ({len(status)} chars) ---")
         print(status)
         print("---")

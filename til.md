@@ -119,6 +119,13 @@
   - Proof R-SWA is live: instrument the KV cache during decode — on a 540-token page it plateaus at `prefill(277) + window(128) = 405` and never grows (full MHA would hit 817). That constant-cache assertion + Distinct-35≈1.0 are the decisive signals, not edit distance (too noisy vs a single reference).
   - Gotcha: feeding all pages to one `generate()` (`infer_multi`) **loops at the document level** — the 128-token decode window forgets the doc was already transcribed while the vision prefix still shows every page, so it restarts from page 1. Fix = one `generate()` per page (matches official `infer.py` `PAGE_SIZE=1`). Accuracy then lands at/below gemini-vs-docai inter-annotator noise (~0.31 mean edit). ~35–55 s/page on M1.
 - 23 Jun 2026. Many asymmetric embedding models need task prefixes on inputs, and skipping them quietly degrades relevance. Each model has its own scheme: nomic (`search_query:`/`search_document:`), E5 (`query:`/`passage:`), BGE (a query instruction sentence, bare docs) — not interchangeable. OpenAI `text-embedding-3-*` and `all-MiniLM-L6-v2` need none. Whether you add the prefix depends on the serving layer, not the model: raw endpoints (llama.cpp `/v1/embeddings`, HF TEI, Ollama) send bare text so it's on you, while sentence-transformers (`prompt_name="query"`) and vendor SDKs inject it for you. Adding `search_query:`/`search_document:` to a nomic-v1.5 call lifted cosine similarity on a real query/doc pair from 0.54 to 0.60 at zero cost. #rag #ai
+- 21 Jun 2026. Vim motion tips for Zed. Turn on relative line numbers, and let [vim mode](https://zed.dev/docs/vim) switch them to absolute in Insert mode, so you get jump distances in Normal mode and context while typing. #tools #editor
+  ```json
+  { "relative_line_numbers": true, "vim": { "toggle_relative_line_numbers": true } }
+  ```
+  - `[[` / `]]` jump between function definitions in a large Django or FastAPI file.
+  - `f:` moves to the end of an `if`, `def` or `class` line.
+- 21 Jun 2026. Zed's [Hidden Gems: Community Edition](https://github.com/zed-industries/zed/discussions/22581) thread collects users' favourite Zed features and workflows, a companion to [Hidden Gems: Team Edition](https://zed.dev/blog/hidden-gems-part-1). One tip from it: point `agent.commit_message_model` at `gemini-2.0-flash` on a free Gemini API key to write commit messages. #tools #editor
 - 15 Jun 2026. [Moshi](https://getmoshi.app/) is the best SSH client I've found for iPhone — connects to your laptop's tmux sessions over [Mosh](https://mosh.org/), making it rock-solid on mobile networks with roaming support. Perfect for an agent view on the go; I use it to monitor and interact with running pi/Claude sessions from my iPhone without losing the session on network switches. #macos #tools #ai
 - 08 Jun 2026. [faberic](https://github.com/danielmiessler/fabric) is a crowd-sourced collection of prompts bundeled with a cli to use them via piped interfaces. #ai #tools #open-source
 - 08 Jun 2026. [karpathy/autoresearch] is a concept/framework that allows one to leverage LLM to run an optimization loops based on a criteria. [davebcn87/pi-autoresearch](https://github.com/davebcn87/pi-autoresearch) takes this further has built a generic optimization long run loop method on top of pi agent. [gemini](https://gemini.google.com/app/7dcee9714f7955ce) #ai #performance
@@ -239,3 +246,42 @@
 - 19 Dec 2025. Notes from ["Django rapid architecture"](https://www.django-rapid-architecture.org/) #django #architecture
   - Recommends organizing the codebase with interfaces at the top layer followed by readers and "actions", Finally, 'data' as the bottom layer to organize Django codebase to allow for a simple code structure that allows for scaling
 - 19 Dec 2025. [VectorChord](https://github.com/tensorchord/VectorChord/) is a faster pgvector alternative. #databases #rag
+
+# Dec 2024
+
+- 10 Dec 2024. [`actions/checkout`](https://github.com/actions/checkout) saves the workflow token (`GITHUB_TOKEN` or a custom one) in the checked-out repo's `.git/config` by default. Workflows that upload the repo as an artifact leak it, and [Unit 42 found many projects doing this](https://unit42.paloaltonetworks.com/github-repo-artifacts-leak-tokens/). GitHub calls it intended behaviour. Turn it off, and scan workflows with [zizmor](https://github.com/woodruffw/zizmor), which [would have caught the Ultralytics injection](https://blog.yossarian.net/2024/12/06/zizmor-ultralytics-injection). #security #devops
+  ```yml
+  - uses: actions/checkout@v4
+    with:
+      persist-credentials: false
+  ```
+
+# Nov 2023
+
+- 08 Nov 2023. React's `setState` is asynchronous: read `this.state` right after calling it and you may get the old value. To act on the new state, pass a callback, or use `componentDidUpdate` (which also fires on prop changes). From [React gotchas](https://daveceddia.com/react-gotchas/). #javascript
+  ```js
+  this.setState({ name: 'Jon' }, () => {
+    // runs after the state update and re-render
+  });
+  ```
+
+# Oct 2023
+
+- 05 Oct 2023. VS Code's built-in terminals are hard to move between from the keyboard. These `keybindings.json` entries fix it, adapted from [jbranchaud's TIL](https://github.com/jbranchaud/til/blob/master/vscode/toggle-between-terminals.md): #tools #editor
+  - `cmd+[` / `cmd+]`: previous / next terminal
+  - `cmd+1` to `cmd+5`: terminal by position
+  - `cmd+n`: new terminal; `cmd+w`: kill it
+  - `cmd+t`: toggle between terminal and editor
+  ```json
+  { "key": "cmd+]", "command": "workbench.action.terminal.focusNext", "when": "terminalFocus" },
+  { "key": "cmd+[", "command": "workbench.action.terminal.focusPrevious", "when": "terminalFocus" },
+  { "key": "cmd+1", "command": "workbench.action.terminal.focusAtIndex1", "when": "terminalFocus" },
+  { "key": "cmd+2", "command": "workbench.action.terminal.focusAtIndex2", "when": "terminalFocus" },
+  { "key": "cmd+3", "command": "workbench.action.terminal.focusAtIndex3", "when": "terminalFocus" },
+  { "key": "cmd+4", "command": "workbench.action.terminal.focusAtIndex4", "when": "terminalFocus" },
+  { "key": "cmd+5", "command": "workbench.action.terminal.focusAtIndex5", "when": "terminalFocus" },
+  { "key": "cmd+n", "command": "workbench.action.terminal.new", "when": "terminalFocus && terminalHasBeenCreated || terminalFocus && terminalProcessSupported" },
+  { "key": "cmd+w", "command": "workbench.action.terminal.kill", "when": "terminalFocus" },
+  { "key": "cmd+t", "command": "workbench.action.terminal.focus", "when": "!terminalFocus" },
+  { "key": "cmd+t", "command": "workbench.action.terminal.toggleTerminal" }
+  ```
